@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.pfe.nova.Controller.SignupController"
+      alignment="CENTER"
+      spacing="20"
+      style="-fx-padding: 20;">
+
+    <!-- Username Input -->
+    <TextField fx:id="usernameField"
+               promptText="Username"
+               style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+
+    <!-- Email Input -->
+    <TextField fx:id="emailField"
+               promptText="Email"
+               style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+
+    <!-- Password Input -->
+    <PasswordField fx:id="passwordField"
+                   promptText="Password"
+                   style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+
+    <!-- Confirm Password Input -->
+    <PasswordField fx:id="confirmPasswordField"
+                   promptText="Confirm Password"
+                   style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+
+    <!-- Sign Up Button -->
+    <Button text="Sign Up"
+            fx:id="signupButton"
+            onAction="#handleSignup"
+            style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+
+    <!-- Error Message -->
+    <Label fx:id="errorLabel"
+           style="-fx-text-fill: #e74c3c; -fx-font-size: 15px;"
+           visible="false"/>
+
+</VBox>
