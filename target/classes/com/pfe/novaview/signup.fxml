@@ -4,6 +4,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <VBox xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.pfe.nova.Controller.SignupController"
@@ -30,6 +32,16 @@
     <PasswordField fx:id="confirmPasswordField"
                    promptText="Confirm Password"
                    style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+    <ComboBox fx:id="roleComboBox"
+              promptText="Sélectionnez un rôle"
+              style="-fx-pref-width: 300px; -fx-pref-height: 40px">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Patient"/>
+                <String fx:value="Donateur"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
 
     <!-- Sign Up Button -->
     <Button text="Sign Up"
@@ -41,5 +53,8 @@
     <Label fx:id="errorLabel"
            style="-fx-text-fill: #e74c3c; -fx-font-size: 15px;"
            visible="false"/>
+    <!-- Role Selection -->
+
+
 
 </VBox>

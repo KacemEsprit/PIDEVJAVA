@@ -18,5 +18,7 @@ module com.pfe.nova {
     exports com.pfe.nova.Application;
     exports com.pfe.nova.Controller;
     opens com.pfe.nova.Controller to javafx.fxml;
+    exports com.pfe.nova.services;
+    opens com.pfe.nova.services to javafx.fxml;
 
 }
