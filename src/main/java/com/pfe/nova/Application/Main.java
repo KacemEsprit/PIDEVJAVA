@@ -15,14 +15,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Test database connection
         testDatabaseConnection();
 
-        // Using the verified correct path
-        Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/login.fxml"));
-
-        primaryStage.setTitle("Login System");
-        primaryStage.setScene(new Scene(root, 600, 400));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/post-list.fxml"));
+        primaryStage.setTitle("Posts");
+        primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
     }
     private void testDatabaseConnection() {
