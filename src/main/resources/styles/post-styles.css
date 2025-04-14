@@ -1,0 +1,165 @@
+.post-box {
+    -fx-background-color: white;
+    -fx-padding: 15px;
+    -fx-spacing: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-margin: 10px;
+}
+
+.post-content {
+    -fx-font-size: 14px;
+    -fx-wrap-text: true;
+    -fx-padding: 10px 0;
+}
+
+.post-category {
+    -fx-text-fill: #666666;
+    -fx-font-size: 12px;
+}
+
+.post-author {
+    -fx-font-style: italic;
+    -fx-text-fill: #888888;
+    -fx-font-size: 12px;
+}
+
+.post-buttons {
+    -fx-spacing: 10px;
+}
+
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-padding: 8px 15px;
+    -fx-background-radius: 3px;
+}
+
+.button:hover {
+    -fx-background-color: #45a049;
+}
+
+.delete-button {
+    -fx-background-color: #f44336;
+}
+
+.delete-button:hover {
+    -fx-background-color: #da190b;
+}
+
+.post-form {
+    -fx-background-color: #f5f5f5;
+    -fx-padding: 20px;
+}
+
+.image-preview-pane {
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+    -fx-alignment: center-left;
+}
+
+.posts-container {
+    -fx-background-color: #f0f0f0;
+    -fx-padding: 20px;
+    -fx-spacing: 20px;  /* Increased spacing between posts */
+}
+
+.post-box {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+    -fx-spacing: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px;
+    -fx-margin: 0 0 15px 0;
+}
+
+.post-separator {
+    -fx-padding: 0 0 10px 0;
+    -fx-opacity: 0.6;
+}
+
+.category-filter {
+    -fx-padding: 10px;
+    -fx-background-color: white;
+    -fx-background-radius: 3px;
+}
+
+.comments-box {
+    -fx-padding: 10px;
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+}
+
+.comments-list {
+    -fx-padding: 10px 0;
+}
+
+.comment-box {
+    -fx-padding: 5px;
+    -fx-background-color: white;
+    -fx-border-color: #e9ecef;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+}
+
+.comment-author {
+    -fx-font-weight: bold;
+}
+
+.comment-content {
+    -fx-wrap-text: true;
+}
+
+.comment-delete-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #dc3545;
+    -fx-padding: 0 5px;
+    -fx-cursor: hand;
+}
+
+.comment-delete-button:hover {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+}
+
+.comments-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 0;
+}
+
+.comment-input {
+    -fx-spacing: 10px;
+    -fx-padding: 10px;
+    -fx-alignment: center-left;
+}
+
+.comment-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+}
+
+.comment-button:hover {
+    -fx-background-color: #45a049;
+}
+
+.no-comments {
+    -fx-text-fill: #666666;
+    -fx-font-style: italic;
+    -fx-padding: 10px;
+}
+
+.comments-box {
+    -fx-background-color: #f8f9fa;
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+}
