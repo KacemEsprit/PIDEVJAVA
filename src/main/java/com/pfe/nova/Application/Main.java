@@ -17,7 +17,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         testDatabaseConnection();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/post-list.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/CreateRapport.fxml"));
         primaryStage.setTitle("Posts");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
