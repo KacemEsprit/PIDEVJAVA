@@ -29,7 +29,14 @@
                     <Label fx:id="addressLabel" style="-fx-font-size: 14px;"/>
                     <!-- Role specific info will be added dynamically -->
                     <VBox fx:id="roleSpecificContent" spacing="10"/>
+                    <Label fx:id="sessionTestLabel" style="-fx-font-size: 14px; -fx-text-fill: green;"/>
+                    <Button text="Create Rapport" fx:id="createRapportButton" onAction="#handleCreateRapport"
+                            style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
+                    <Button text="View Rapports" fx:id="viewRapportsButton" onAction="#handleViewRapports"
+                            style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
                 </VBox>
+
+
             </Tab>
 
             <!-- Medecin Specific Tabs -->

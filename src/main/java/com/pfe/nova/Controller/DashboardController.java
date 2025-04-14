@@ -2,6 +2,7 @@ package com.pfe.nova.Controller;
 
 import com.pfe.nova.configuration.DatabaseConnection;
 import com.pfe.nova.models.*;
+import com.pfe.nova.utils.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -91,6 +93,40 @@ public class DashboardController {
         loadData();
     }
 
+    @FXML private Button createRapportButton;
+    @FXML private Button viewRapportsButton;
+
+    @FXML
+    private void handleCreateRapport() {
+//        try {
+//            Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/create-rapport.fxml"));
+//            Stage stage = new Stage();
+//            stage.setTitle("Create Rapport");
+//            stage.setScene(new Scene(root));
+//            stage.show();
+//        } catch (IOException e) {
+//            showError("Error loading Create Rapport page: " + e.getMessage());
+//            e.printStackTrace();
+//        }
+    }
+
+    @FXML
+    private void handleViewRapports() {
+//        try {
+//            Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/view-rapports.fxml"));
+//            Stage stage = new Stage();
+//            stage.setTitle("View Rapports");
+//            stage.setScene(new Scene(root));
+//            stage.show();
+//        } catch (IOException e) {
+//            showError("Error loading View Rapports page: " + e.getMessage());
+//            e.printStackTrace();
+//        }
+    }
+
+
+    @FXML private Label sessionTestLabel;
+
     private void setupUserInterface() {
         welcomeLabel.setText("Welcome, " + currentUser.getNom() + " " + currentUser.getPrenom());
         nameLabel.setText("Name: " + currentUser.getNom() + " " + currentUser.getPrenom());
@@ -98,14 +134,31 @@ public class DashboardController {
         phoneLabel.setText("Phone: " + currentUser.getTel());
         addressLabel.setText("Address: " + currentUser.getAdresse());
 
-        // Show/hide tabs based on user role
-        if (patientsTab != null) patientsTab.setDisable(!(currentUser instanceof Medecin));
-        if (findDoctorsTab != null) findDoctorsTab.setDisable(!(currentUser instanceof Patient));
-        if (adminTab != null) adminTab.setDisable(!(currentUser.getRole().equals("ADMIN")));
-        if (donationsTab != null) donationsTab.setDisable(!(currentUser instanceof Donateur));
-        
+        // Test session and display connected user
+        User sessionUser = Session.getUtilisateurConnecte();
+        if (sessionUser != null) {
+            sessionTestLabel.setText("Session User: " + sessionUser.getEmail());
+        } else {
+            sessionTestLabel.setText("No user in session.");
+        }
+
         setupRoleSpecificContent();
     }
+//    private void setupUserInterface() {
+//        welcomeLabel.setText("Welcome, " + currentUser.getNom() + " " + currentUser.getPrenom());
+//        nameLabel.setText("Name: " + currentUser.getNom() + " " + currentUser.getPrenom());
+//        emailLabel.setText("Email: " + currentUser.getEmail());
+//        phoneLabel.setText("Phone: " + currentUser.getTel());
+//        addressLabel.setText("Address: " + currentUser.getAdresse());
+//
+//        // Show/hide tabs based on user role
+//        if (patientsTab != null) patientsTab.setDisable(!(currentUser instanceof Medecin));
+//        if (findDoctorsTab != null) findDoctorsTab.setDisable(!(currentUser instanceof Patient));
+//        if (adminTab != null) adminTab.setDisable(!(currentUser.getRole().equals("ADMIN")));
+//        if (donationsTab != null) donationsTab.setDisable(!(currentUser instanceof Donateur));
+//
+//        setupRoleSpecificContent();
+//    }
 
     private void setupRoleSpecificContent() {
         roleSpecificContent.getChildren().clear();
