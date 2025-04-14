@@ -2,6 +2,7 @@ package com.pfe.nova.Controller;
 
 import com.pfe.nova.configuration.DatabaseConnection;
 import com.pfe.nova.models.*;
+import com.pfe.nova.utils.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,11 +37,32 @@ public class LoginController {
 
         User user = authenticateUser(email, password);
         if (user != null) {
+            // Store the connected user in the session
+            Session.setUtilisateurConnecte(user);
+            System.out.println("User session set for: " + user.getEmail());
+
+            // Navigate to the dashboard
             navigateToDashboard(user);
         } else {
             showError("Invalid email or password");
         }
     }
+//    private void handleLogin() {
+//        String email = emailField.getText();
+//        String password = passwordField.getText();
+//
+//        if (email.isEmpty() || password.isEmpty()) {
+//            showError("Please fill in all fields");
+//            return;
+//        }
+//
+//        User user = authenticateUser(email, password);
+//        if (user != null) {
+//            navigateToDashboard(user);
+//        } else {
+//            showError("Invalid email or password");
+//        }
+//    }
 
     @FXML
     private void navigateToSignup() {
