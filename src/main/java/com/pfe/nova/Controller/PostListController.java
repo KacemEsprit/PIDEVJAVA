@@ -215,9 +215,7 @@ public class PostListController {
         Button commentBtn = new Button("💬 Comment");
         commentBtn.getStyleClass().add("post-action-button");
         
-        // Share button
-        Button shareBtn = new Button("🔗 Share");
-        shareBtn.getStyleClass().add("post-action-button");
+
         
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -233,7 +231,7 @@ public class PostListController {
         editButton.setOnAction(e -> handleEditPost(post));
         deleteButton.setOnAction(e -> handleDeletePost(post));
         
-        reactionBox.getChildren().addAll(likeButton, likeCountLabel, commentBtn, shareBtn, spacer, editButton, deleteButton);
+        reactionBox.getChildren().addAll(likeButton, likeCountLabel, commentBtn, spacer, editButton, deleteButton);
         
         // Comments section
         VBox commentsBox = new VBox(10);

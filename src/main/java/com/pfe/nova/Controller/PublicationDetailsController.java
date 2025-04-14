@@ -128,14 +128,12 @@ public class PublicationDetailsController {
         Label likeCountLabel = new Label(Integer.toString(likeCount));
         likeCountLabel.getStyleClass().add("details-like-count");
 
-        // Share button
-        Button shareButton = new Button("Share");
-        shareButton.getStyleClass().add("share-button");
+
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        reactionsBox.getChildren().addAll(heartButton, likeCountLabel, spacer, shareButton);
+        reactionsBox.getChildren().addAll(heartButton, likeCountLabel, spacer);
 
         // Set up like button action
         heartButton.setOnAction(e -> {
