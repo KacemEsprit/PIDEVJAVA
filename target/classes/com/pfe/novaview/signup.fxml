@@ -11,35 +11,47 @@
       spacing="20"
       style="-fx-padding: 20;">
 
-    <!-- Username Input -->
-    <TextField fx:id="usernameField"
-               promptText="Username"
+    <ComboBox fx:id="roleComboBox" 
+              promptText="Select Role"
+              style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+
+    <TextField fx:id="nomField"
+               promptText="Nom"
                style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
 
-    <!-- Email Input -->
+    <TextField fx:id="prenomField"
+               promptText="Prenom"
+               style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+
     <TextField fx:id="emailField"
                promptText="Email"
                style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
 
-    <!-- Password Input -->
+    <TextField fx:id="telField"
+               promptText="Telephone"
+               style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+
+    <TextField fx:id="adresseField"
+               promptText="Adresse"
+               style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+
     <PasswordField fx:id="passwordField"
                    promptText="Password"
                    style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
 
-    <!-- Confirm Password Input -->
     <PasswordField fx:id="confirmPasswordField"
                    promptText="Confirm Password"
                    style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
 
-    <!-- Sign Up Button -->
+    <!-- Dynamic fields container -->
+    <VBox fx:id="dynamicFieldsContainer" spacing="10"/>
+
     <Button text="Sign Up"
             fx:id="signupButton"
             onAction="#handleSignup"
             style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
 
-    <!-- Error Message -->
     <Label fx:id="errorLabel"
            style="-fx-text-fill: #e74c3c; -fx-font-size: 15px;"
            visible="false"/>
-
 </VBox>

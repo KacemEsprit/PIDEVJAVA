@@ -1,27 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1"
-      alignment="TOP_CENTER"
-      spacing="20"
-      style="-fx-padding: 20;"
-      fx:controller="com.pfe.nova.Controller.DashboardController">
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.pfe.nova.Controller.DashboardController"
+            prefWidth="800"
+            prefHeight="600">
+    
+    <top>
+        <HBox alignment="CENTER_RIGHT" spacing="10" style="-fx-padding: 10; -fx-background-color: #3498db;">
+            <Label fx:id="welcomeLabel" style="-fx-text-fill: white; -fx-font-size: 16px;"/>
+            <Button text="Logout" fx:id="logoutButton" onAction="#handleLogout"
+                    style="-fx-background-color: #e74c3c;"/>
+        </HBox>
+    </top>
+    
+    <center>
+        <TabPane fx:id="contentTabPane">
+            <!-- Profile Tab -->
+            <Tab text="Profile" closable="false">
+                <VBox fx:id="profileContent" spacing="10" style="-fx-padding: 20;">
+                    <Label fx:id="nameLabel" style="-fx-font-size: 14px;"/>
+                    <Label fx:id="emailLabel" style="-fx-font-size: 14px;"/>
+                    <Label fx:id="phoneLabel" style="-fx-font-size: 14px;"/>
+                    <Label fx:id="addressLabel" style="-fx-font-size: 14px;"/>
+                    <!-- Role specific info will be added dynamically -->
+                    <VBox fx:id="roleSpecificContent" spacing="10"/>
+                </VBox>
+            </Tab>
 
-    <Label fx:id="welcomeLabel" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
-    <Label text="Dashboard" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+            <!-- Medecin Specific Tabs -->
+            <Tab text="Patients List" fx:id="patientsTab" disable="true">
+                <VBox spacing="10" style="-fx-padding: 20;">
+                    <TableView fx:id="patientsTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="patientNameColumn" text="Name"/>
+                            <TableColumn fx:id="patientEmailColumn" text="Email"/>
+                            <TableColumn fx:id="patientAgeColumn" text="Age"/>
+                            <TableColumn fx:id="patientGenderColumn" text="Gender"/>
+                            <TableColumn fx:id="patientBloodTypeColumn" text="Blood Type"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
 
-    <HBox spacing="10">
-        <Button text="Button 1" onAction="#handleButton1"/>
-        <Button text="Button 2" onAction="#handleButton2"/>
-        <Button text="Button 3" onAction="#handleButton3"/>
-    </HBox>
+            <!-- Patient Specific Tabs -->
+            <Tab text="Find Doctors" fx:id="findDoctorsTab" disable="true">
+                <VBox spacing="10" style="-fx-padding: 20;">
+                    <TableView fx:id="doctorsTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="doctorNameColumn" text="Name"/>
+                            <TableColumn fx:id="specialityColumn" text="Speciality"/>
+                            <TableColumn fx:id="experienceColumn" text="Experience"/>
+                            <TableColumn fx:id="contactColumn" text="Contact"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
 
-    <Label fx:id="statusLabel" text="Status: Ready" style="-fx-font-size: 16px;"/>
+            <!-- Appointments Tab (for both Medecin and Patient) -->
+            <Tab text="Appointments" fx:id="appointmentsTab" disable="true">
+                <VBox spacing="10" style="-fx-padding: 20;">
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Button text="New Appointment" fx:id="newAppointmentButton" 
+                                style="-fx-background-color: #2ecc71;"/>
+                    </HBox>
+                    <TableView fx:id="appointmentsTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="appointmentDateColumn" text="Date"/>
+                            <TableColumn fx:id="appointmentTimeColumn" text="Time"/>
+                            <TableColumn fx:id="appointmentWithColumn" text="With"/>
+                            <TableColumn fx:id="appointmentStatusColumn" text="Status"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
 
-</VBox>
+            <!-- Donateur Specific Tab -->
+            <Tab text="My Donations" fx:id="donationsTab" disable="true">
+                <VBox spacing="10" style="-fx-padding: 20;">
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Button text="New Donation" fx:id="newDonationButton"
+                                style="-fx-background-color: #2ecc71;"/>
+                    </HBox>
+                    <TableView fx:id="donationsTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="donationDateColumn" text="Date"/>
+                            <TableColumn fx:id="donationTypeColumn" text="Type"/>
+                            <TableColumn fx:id="donationAmountColumn" text="Amount"/>
+                            <TableColumn fx:id="donationStatusColumn" text="Status"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
+            
+            <!-- Admin Tab -->
+            <Tab text="Administration" fx:id="adminTab" disable="true">
+                <VBox spacing="10" style="-fx-padding: 20;">
+                    <TableView fx:id="usersTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="userNameColumn" text="Name"/>
+                            <TableColumn fx:id="userEmailColumn" text="Email"/>
+                            <TableColumn fx:id="userRoleColumn" text="Role"/>
+                            <TableColumn fx:id="userStatusColumn" text="Status"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
+        </TabPane>
+    </center>
+</BorderPane>

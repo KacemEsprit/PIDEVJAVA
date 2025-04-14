@@ -101,7 +101,7 @@ public class PostListController {
         categoryLabel.getStyleClass().add("post-category");
         
         Label authorLabel = new Label("Posted by " + 
-                (post.isAnonymous() ? "Anonymous" : post.getUser().getUsername()));
+                (post.isAnonymous() ? "Anonymous" : post.getUser().getNom()));
         authorLabel.getStyleClass().add("post-author");
         
         Region headerSpacer = new Region();
@@ -317,7 +317,7 @@ public class PostListController {
         commentContent.getStyleClass().add("comment-content-box");
         commentContent.setStyle("-fx-background-color: #f0f2f5; -fx-background-radius: 10; -fx-padding: 8;");
         
-        Label authorLabel = new Label(comment.getUser().getUsername());
+        Label authorLabel = new Label(comment.getUser().getNom());
         authorLabel.getStyleClass().add("comment-author");
         authorLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
         
