@@ -52,7 +52,7 @@ public class PublicationDetailsController {
         categoryLabel.getStyleClass().add("publication-category");
 
         // Author info with proper styling
-        Label authorLabel = new Label(post.isAnonymous() ? "Anonymous" : post.getUser().getUsername());
+        Label authorLabel = new Label(post.isAnonymous() ? "Anonymous" : post.getUser().getNom());
         authorLabel.getStyleClass().add("publication-author");
 
         // Date info
@@ -246,7 +246,7 @@ public class PublicationDetailsController {
         StackPane avatarPane = new StackPane();
         avatarPane.getStyleClass().add("comment-avatar");
 
-        Text initial = new Text(comment.getUser().getUsername().substring(0, 1).toUpperCase());
+        Text initial = new Text(comment.getUser().getNom().substring(0, 1).toUpperCase());
         initial.setFill(Color.WHITE);
         initial.setStyle("-fx-font-weight: bold;");
 
@@ -261,7 +261,7 @@ public class PublicationDetailsController {
         HBox headerBox = new HBox(10);
         headerBox.getStyleClass().add("comment-header");
 
-        Label authorLabel = new Label(comment.getUser().getUsername());
+        Label authorLabel = new Label(comment.getUser().getNom());
         authorLabel.getStyleClass().add("comment-author");
 
         Label dateLabel = new Label("Just now"); // Replace with actual date when available

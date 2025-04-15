@@ -62,7 +62,7 @@ public class CommentDAO {
                 
                 User user = new User();
                 user.setId(rs.getInt("user_id"));
-                user.setUsername(rs.getString("nom"));
+                user.setNom(rs.getString("nom"));
                 comment.setUser(user);
                 
                 comments.add(comment);
