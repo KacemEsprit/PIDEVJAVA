@@ -139,17 +139,17 @@ public class PostDAO {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        
+
         try {
             conn = DatabaseConnection.getConnection();
             String sql = "SELECT COUNT(*) FROM publication";
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
-            
+
             if (rs.next()) {
                 return rs.getInt(1);
             }
-            
+
             return 0;
         } finally {
             if (rs != null) rs.close();

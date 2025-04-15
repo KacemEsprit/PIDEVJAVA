@@ -9,11 +9,11 @@
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.pfe.nova.Controller.PostListController"
       spacing="25" styleClass="main-container">
-    
+
     <padding>
         <Insets top="30" right="30" bottom="30" left="30"/>
     </padding>
-    
+
     <!-- Filter and Actions -->
     <HBox spacing="15" alignment="CENTER_LEFT" styleClass="filter-container">
         <Label text="Filter by:" styleClass="filter-label"/>
@@ -21,7 +21,7 @@
         <Region HBox.hgrow="ALWAYS"/>
         <Button text="✏️ Create New Post" onAction="#handleNewPost" styleClass="new-post-button"/>
     </HBox>
-    
+
     <!-- Posts List -->
     <ScrollPane fitToWidth="true" styleClass="posts-scroll" VBox.vgrow="ALWAYS">
         <VBox fx:id="postsContainer" spacing="20" styleClass="posts-container"/>

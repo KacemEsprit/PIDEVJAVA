@@ -92,35 +92,35 @@ public class PostListController {
         VBox postBox = new VBox(15);
         postBox.getStyleClass().addAll("post-box", "post-card");  // Add both classes
         postBox.setPadding(new Insets(20));
-        
+
         // Header with category and author
         HBox header = new HBox(15);
         header.setAlignment(Pos.CENTER_LEFT);
-        
+
         Label categoryLabel = new Label(post.getCategory());
         categoryLabel.getStyleClass().add("post-category");
-        
-        Label authorLabel = new Label("Posted by " + 
+
+        Label authorLabel = new Label("Posted by " +
                 (post.isAnonymous() ? "Anonymous" : post.getUser().getUsername()));
         authorLabel.getStyleClass().add("post-author");
-        
+
         Region headerSpacer = new Region();
         HBox.setHgrow(headerSpacer, Priority.ALWAYS);
-        
+
         Label dateLabel = new Label("Today"); // Replace with actual date
         dateLabel.getStyleClass().add("post-date");
-        
+
         header.getChildren().addAll(categoryLabel, authorLabel, headerSpacer, dateLabel);
-        
+
         // Content
         Label contentLabel = new Label(post.getContent());
         contentLabel.getStyleClass().add("post-content");
         contentLabel.setWrapText(true);
-        
+
         // Images with improved layout
         FlowPane imagePane = new FlowPane(15, 15);
         imagePane.getStyleClass().add("post-images");
-        
+
         for (String imagePath : post.getImageUrls()) {
             try {
                 Image image;
@@ -129,35 +129,35 @@ public class PostListController {
                 } else {
                     image = new Image(new File(imagePath).toURI().toString());
                 }
-                
+
                 ImageView imageView = new ImageView(image);
                 imageView.setFitHeight(150);
                 imageView.setFitWidth(150);
                 imageView.setPreserveRatio(true);
                 imageView.getStyleClass().add("post-image");
-                
+
                 // Add a container for the image with styling
                 VBox imageContainer = new VBox(imageView);
                 imageContainer.getStyleClass().add("image-container");
                 imageContainer.setStyle("-fx-background-color: #f8f9fa; -fx-padding: 5; -fx-background-radius: 5;");
-                
+
                 imagePane.getChildren().add(imageContainer);
             } catch (Exception e) {
                 System.err.println("Error loading image: " + imagePath + " - " + e.getMessage());
             }
         }
-        
+
         // Actions section with modern styling
         HBox actionsBox = new HBox(20);
         actionsBox.getStyleClass().add("post-actions");
         actionsBox.setAlignment(Pos.CENTER_LEFT);
-        
+
         // Reaction section (likes)
         HBox reactionBox = new HBox(15);
         reactionBox.getStyleClass().add("post-actions");
         reactionBox.setAlignment(Pos.CENTER_LEFT);
         reactionBox.setPadding(new Insets(10, 0, 10, 0));
-        
+
         // Get like count and user like status
         int likeCount = 0;
         boolean userHasLiked = false;
@@ -167,11 +167,11 @@ public class PostListController {
         } catch (SQLException e) {
             System.err.println("Error loading likes: " + e.getMessage());
         }
-        
+
         // Create styled like button
         ToggleButton likeButton = new ToggleButton();
         likeButton.getStyleClass().add("post-action-button");
-        
+
         if (userHasLiked) {
             likeButton.setSelected(true);
             likeButton.setText("❤ Liked");
@@ -179,19 +179,19 @@ public class PostListController {
         } else {
             likeButton.setText("♡ Like");
         }
-        
+
         // Like count label
         Label likeCountLabel = new Label(likeCount + " likes");
         likeCountLabel.getStyleClass().add("post-like-count");
-        
+
         likeButton.setOnAction(e -> {
             try {
                 Like like = new Like();
                 like.setPublicationId(post.getId());
                 like.setUserId(4); // Replace with actual logged-in user ID
-                
+
                 LikeDAO.save(like);
-                
+
                 // Update UI
                 if (likeButton.isSelected()) {
                     likeButton.setText("❤ Liked");
@@ -210,63 +210,63 @@ public class PostListController {
                 System.err.println("Error updating like: " + ex.getMessage());
             }
         });
-        
+
         // Comment button
         Button commentBtn = new Button("💬 Comment");
         commentBtn.getStyleClass().add("post-action-button");
-        
 
-        
+
+
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        
+
         // Action buttons
         Button editButton = new Button("Edit");
         editButton.getStyleClass().add("post-action-button");
-        
+
         Button deleteButton = new Button("Delete");  // Add this line
         deleteButton.getStyleClass().add("post-action-button");  // Add this line
         deleteButton.setStyle("-fx-text-fill: #e74c3c;");
-        
+
         editButton.setOnAction(e -> handleEditPost(post));
         deleteButton.setOnAction(e -> handleDeletePost(post));
-        
+
         reactionBox.getChildren().addAll(likeButton, likeCountLabel, commentBtn, spacer, editButton, deleteButton);
-        
+
         // Comments section
         VBox commentsBox = new VBox(10);
         commentsBox.getStyleClass().add("comments-container");
         commentsBox.setPadding(new Insets(10, 0, 0, 0));
-        
+
         // Comment input
         HBox commentInput = new HBox(10);
         commentInput.setAlignment(Pos.CENTER_LEFT);
         commentInput.getStyleClass().add("comment-input");
-        
+
         TextField commentField = new TextField();
         commentField.setPromptText("Write a comment...");
         commentField.setPrefWidth(300);
         commentField.getStyleClass().add("comment-field");
         HBox.setHgrow(commentField, Priority.ALWAYS);
-        
+
         Button submitComment = new Button("Post");
         submitComment.getStyleClass().add("comment-submit-button");
         submitComment.setOnAction(e -> handleAddComment(post.getId(), commentField));
-        
+
         commentInput.getChildren().addAll(commentField, submitComment);
-        
+
         // Add a label for comments section
         Label commentsLabel = new Label("Comments");
         commentsLabel.getStyleClass().add("comments-header");
         commentsLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 5 0;");
-        
+
         commentsBox.getChildren().addAll(commentsLabel, commentInput);
-        
+
         // Add separator
         Separator separator = new Separator();
         separator.getStyleClass().add("comment-separator");
         commentsBox.getChildren().add(separator);
-        
+
         // Load existing comments
         try {
             List<Comment> comments = CommentDAO.findByPostId(post.getId());
@@ -277,25 +277,25 @@ public class PostListController {
         } catch (SQLException ex) {
             System.err.println("Error loading comments: " + ex.getMessage());
         }
-        
+
         // Make the post clickable
         postBox.setOnMouseClicked(e -> {
-            if (e.getTarget() != commentField && e.getTarget() != submitComment 
+            if (e.getTarget() != commentField && e.getTarget() != submitComment
                     && e.getTarget() != editButton && e.getTarget() != deleteButton
                     && e.getTarget() != likeButton) {
                 openPublicationDetails(post);
             }
         });
-        
+
         // Add all components to the post box in correct order
         postBox.getChildren().addAll(header, contentLabel);
-        
+
         if (!post.getImageUrls().isEmpty()) {
             postBox.getChildren().add(imagePane);
         }
-        
+
         postBox.getChildren().addAll(reactionBox, commentsBox);
-        
+
         return postBox;
     }
 
@@ -303,7 +303,7 @@ public class PostListController {
         HBox commentBox = new HBox(10);
         commentBox.getStyleClass().add("comment-box");
         commentBox.setPadding(new Insets(10));
-        
+
         // Avatar placeholder (you can replace with actual user avatar)
         Region avatarPlaceholder = new Region();
         avatarPlaceholder.setPrefSize(32, 32);
@@ -311,43 +311,43 @@ public class PostListController {
         avatarPlaceholder.setMaxSize(32, 32);
         avatarPlaceholder.getStyleClass().add("comment-avatar");
         avatarPlaceholder.setStyle("-fx-background-color: #3498db; -fx-background-radius: 16;");
-        
+
         VBox commentContent = new VBox(5);
         commentContent.setPrefWidth(Region.USE_COMPUTED_SIZE);
         commentContent.getStyleClass().add("comment-content-box");
         commentContent.setStyle("-fx-background-color: #f0f2f5; -fx-background-radius: 10; -fx-padding: 8;");
-        
+
         Label authorLabel = new Label(comment.getUser().getUsername());
         authorLabel.getStyleClass().add("comment-author");
         authorLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
-        
+
         Label contentLabel = new Label(comment.getContenuCom());
         contentLabel.getStyleClass().add("comment-text");
         contentLabel.setWrapText(true);
-        
+
         commentContent.getChildren().addAll(authorLabel, contentLabel);
-        
+
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        
+
         VBox buttonsBox = new VBox(5);
         buttonsBox.setAlignment(Pos.CENTER_RIGHT);
         buttonsBox.getStyleClass().add("comment-buttons");
-        
+
         Button editButton = new Button("Edit");
         editButton.getStyleClass().add("comment-action-button");
         editButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #1a73e8;");
         editButton.setOnAction(e -> handleEditComment(comment));
-        
+
         Button deleteButton = new Button("Delete");
         deleteButton.getStyleClass().add("comment-action-button");
         deleteButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #e74c3c;");
         deleteButton.setOnAction(e -> handleDeleteComment(comment));
-        
+
         buttonsBox.getChildren().addAll(editButton, deleteButton);
-        
+
         commentBox.getChildren().addAll(avatarPlaceholder, commentContent, spacer, buttonsBox);
-        
+
         return commentBox;
     }
 
