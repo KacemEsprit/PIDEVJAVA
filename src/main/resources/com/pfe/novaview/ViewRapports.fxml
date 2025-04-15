@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #f0f2f5;"
+            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+
+    <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+        <!-- Top - Title and Search -->
+        <top>
+            <VBox spacing="20" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+                <padding>
+                    <Insets top="25" right="30" bottom="25" left="30"/>
+                </padding>
+
+                <Label text="Gestion des Rapports Médicaux">
+                    <font>
+                        <Font name="System Bold" size="28.0"/>
+                    </font>
+                    <style>
+                        -fx-text-fill: #1a237e;
+                    </style>
+                </Label>
+
+                <HBox spacing="15" alignment="CENTER">
+                    <TextField fx:id="searchField" promptText="Rechercher un patient..."
+                             HBox.hgrow="ALWAYS" style="-fx-background-radius: 30; -fx-font-size: 14; 
+                             -fx-background-color: #f5f5f5; -fx-padding: 12;">
+                    </TextField>
+                    <Button fx:id="searchButton" text="Rechercher"
+                            style="-fx-background-radius: 30; -fx-background-color: #3f51b5; 
+                            -fx-text-fill: white; -fx-font-size: 14; -fx-padding: 12 25;"/>
+                </HBox>
+            </VBox>
+        </top>
+
+        <!-- Center - Reports List -->
+        <center>
+            <VBox spacing="20" style="-fx-background-color: transparent;">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+
+                <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-background-color: white; 
+                      -fx-background-radius: 10; -fx-padding: 15;">
+                    <Label text="Liste des Rapports">
+                        <font>
+                            <Font name="System Bold" size="18.0"/>
+                        </font>
+                    </Label>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <ComboBox fx:id="filterComboBox" promptText="Trier par date" 
+                             style="-fx-background-radius: 5; -fx-padding: 5;"/>
+                </HBox>
+
+                <TableView fx:id="reportsTableView" VBox.vgrow="ALWAYS" 
+                          style="-fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+                    <columns>
+                        <TableColumn fx:id="dateColumn" text="Date" prefWidth="150"/>
+                        <TableColumn fx:id="patientColumn" text="Patient" prefWidth="200"/>
+                        <TableColumn fx:id="diagnosticColumn" text="Diagnostic" prefWidth="250"/>
+                        <TableColumn fx:id="statusColumn" text="Statut" prefWidth="100"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </center>
+
+        <!-- Right - Patients List -->
+        <right>
+            <VBox spacing="20" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, -2);" 
+                  prefWidth="300">
+                <padding>
+                    <Insets />
+                </padding>
+
+                <Label text="Liste des Patients">
+                    <font>
+                        <Font name="System Bold" size="18.0"/>
+                    </font>
+                </Label>
+
+                <ListView fx:id="patientListView" VBox.vgrow="ALWAYS"
+                         style="-fx-background-radius: 10; -fx-border-radius: 10; 
+                         -fx-background-color: #f8f9fa; -fx-border-color: transparent;"/>
+
+                <Button text="+ Nouveau Rapport"
+                        style="-fx-background-color: #4caf50; -fx-text-fill: white; 
+                        -fx-background-radius: 30; -fx-font-size: 14; -fx-padding: 12;"
+                        maxWidth="Infinity"/>
+            </VBox>
+        </right>
+
+        <!-- Bottom - Action Buttons -->
+        <bottom>
+            <HBox spacing="15" alignment="CENTER_RIGHT" 
+                  style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, -2);">
+                <padding>
+                    <Insets />
+                </padding>
+
+                <Button text="Imprimer" 
+                        style="-fx-background-color: #3f51b5; -fx-text-fill: white; 
+                        -fx-background-radius: 30; -fx-font-size: 14; -fx-padding: 12 25;"/>
+                <Button text="Exporter" 
+                        style="-fx-background-color: #5c6bc0; -fx-text-fill: white; 
+                        -fx-background-radius: 30; -fx-font-size: 14; -fx-padding: 12 25;"/>
+            </HBox>
+        </bottom>
+
+    </BorderPane>
+</AnchorPane>
