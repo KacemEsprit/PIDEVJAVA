@@ -12,7 +12,7 @@ public class UserDAO {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, user.getUsername());
+            stmt.setString(1, user.getNom());
             stmt.setString(2, user.getPassword()); // In production, hash this password
             stmt.setString(3, user.getEmail());
             stmt.executeUpdate();
@@ -32,7 +32,7 @@ public class UserDAO {
             if (rs.next()) {
                 user = new User();
                 user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("username"));
+                user.setNom(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
                 user.setEmail(rs.getString("email"));
             }
