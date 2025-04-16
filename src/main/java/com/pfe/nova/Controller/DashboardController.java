@@ -46,12 +46,24 @@ public class DashboardController {
     @FXML private TableColumn<Medecin, String> experienceColumn;
     @FXML private TableColumn<Medecin, String> contactColumn;
     
+    @FXML
+    private Tab createRapportTab;
+    
+    @FXML
+    private Tab viewRapportTab;
+
     private User currentUser;
 
     @FXML
     public void initialize() {
         try {
             setupTableColumns();
+            User currentUser = Session.getUtilisateurConnecte();
+            boolean isMedecin = currentUser instanceof Medecin;
+            
+            // Enable/disable rapport tabs based on user type
+            createRapportTab.setDisable(!isMedecin);
+            viewRapportTab.setDisable(!isMedecin);
             // Make sure all FXML elements are properly injected
             if (welcomeLabel == null || nameLabel == null || emailLabel == null || 
                 phoneLabel == null || addressLabel == null || roleSpecificContent == null) {
