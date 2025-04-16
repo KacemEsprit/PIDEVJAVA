@@ -108,3 +108,51 @@
 .scroll-pane > .viewport {
     -fx-background-color: transparent;
 }
+
+.patient-card {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 15;
+    -fx-border-width: 1;
+    -fx-padding: 15;
+}
+
+.patient-card-content {
+    -fx-spacing: 15;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.patient-avatar {
+    -fx-fill: #1a237e;
+}
+
+.patient-initials {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.patient-info {
+    -fx-spacing: 5;
+}
+
+.patient-name {
+    -fx-font-weight: bold;
+    -fx-font-size: 16;
+}
+
+.patient-id {
+    -fx-text-fill: #666;
+}
+
+.consult-button {
+    -fx-background-color: #3f51b5;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-padding: 8 20;
+}
+
+.consult-button:hover {
+    -fx-background-color: #303f9f;
+}
