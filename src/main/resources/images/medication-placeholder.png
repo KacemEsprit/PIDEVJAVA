@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" fill="#f0f0f0"/>
+  <text x="100" y="100" font-family="Arial" font-size="14" text-anchor="middle" fill="#666666">Placeholder</text>
+  <path d="M80,90 h40 v-10 h10 v40 h-10 v-10 h-40 v10 h-10 v-40 h10 z" fill="#3498db"/>
+</svg>

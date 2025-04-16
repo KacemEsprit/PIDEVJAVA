@@ -1,0 +1,86 @@
+.order-card {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-padding: 15;
+    -fx-spacing: 10;
+}
+
+.order-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 15, 0, 0, 0);
+}
+
+.order-card .separator {
+    -fx-padding: 5 0 5 0;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: #f5f5f5;
+}
+
+.orders-container {
+    -fx-spacing: 10;
+    -fx-padding: 10;
+}
+
+.order-header {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.order-items {
+    -fx-font-size: 13px;
+    -fx-wrap-text: true;
+}
+
+.order-footer {
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.refresh-button, .retry-button {
+    -fx-background-radius: 5;
+    -fx-padding: 8 15;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+
+.refresh-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+}
+
+.retry-button {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+}
+
+.refresh-button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.retry-button:hover {
+    -fx-background-color: #c0392b;
+}
+
+.empty-state-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.error-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #e74c3c;
+    -fx-font-weight: bold;
+}
+
+.error-details {
+    -fx-font-size: 14px;
+    -fx-text-fill: #95a5a6;
+    -fx-wrap-text: true;
+}
