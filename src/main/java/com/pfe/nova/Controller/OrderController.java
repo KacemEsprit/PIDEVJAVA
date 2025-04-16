@@ -52,9 +52,14 @@ public class OrderController {
     private int cartItemCount = 0;
     
     @FXML
+    private Button sortButton;
+    private boolean isAscendingOrder = true;
+
+    @FXML
     public void initialize() {
         setupCartButton();
         setupSearchField();
+        setupSortButton();
         medicationFlowPane.setAlignment(Pos.CENTER);
         medicationFlowPane.setHgap(20);
         medicationFlowPane.setVgap(20);
@@ -63,6 +68,24 @@ public class OrderController {
         initializeCartView();
         loadCartFromFile();
         updateCartCount();
+    }
+
+    private void setupSortButton() {
+        if (sortButton != null) {
+            sortButton.setOnAction(e -> sortMedications());
+        }
+    }
+
+    private void sortMedications() {
+        isAscendingOrder = !isAscendingOrder;
+        if (isAscendingOrder) {
+            allMedications.sort((m1, m2) -> m1.getNom().compareToIgnoreCase(m2.getNom()));
+            sortButton.setText("Trier par nom ↑");
+        } else {
+            allMedications.sort((m1, m2) -> m2.getNom().compareToIgnoreCase(m1.getNom()));
+            sortButton.setText("Trier par nom ↓");
+        }
+        displayMedications(allMedications);
     }
     
     private void setupCartButton() {

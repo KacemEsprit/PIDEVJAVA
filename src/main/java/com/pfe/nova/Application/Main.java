@@ -18,7 +18,7 @@ public class Main extends Application {
         testDatabaseConnection();
 
         // Load the order management view
-        Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/order_management.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/medication_management.fxml"));
 
         primaryStage.setTitle("Gestion des Commandes");
         primaryStage.setScene(new Scene(root, 900, 600));

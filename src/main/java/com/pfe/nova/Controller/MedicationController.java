@@ -28,15 +28,54 @@ import java.sql.SQLException;
 public class MedicationController {
     // Remplacer le TableView par un FlowPane pour les cartes
     @FXML private FlowPane medicationCardsPane;
-    
+    @FXML private TextField searchField;
+    @FXML private Button sortButton;
+    private boolean isAscendingOrder = true;
+
     private ObservableList<Medication> medicationList = FXCollections.observableArrayList();
+    private ObservableList<Medication> filteredList = FXCollections.observableArrayList();
     private Medication selectedMedication;
 
     @FXML
     public void initialize() {
         loadMedications();
+        setupSortButton();
+        
+        // Configurer la recherche en temps réel
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredList.clear();
+            String searchTerm = newValue.toLowerCase();
+            
+            for (Medication med : medicationList) {
+                if (med.getNom().toLowerCase().contains(searchTerm) ||
+                    med.getDescription().toLowerCase().contains(searchTerm)) {
+                    filteredList.add(med);
+                }
+            }
+            
+            updateMedicationCards();
+        });
     }
 
+    private void setupSortButton() {
+        if (sortButton != null) {
+            sortButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 8 15; -fx-cursor: hand;");
+            sortButton.setText("Trier par nom ↑");
+            sortButton.setOnAction(e -> sortMedications());
+        }
+    }
+
+    private void sortMedications() {
+        isAscendingOrder = !isAscendingOrder;
+        if (isAscendingOrder) {
+            filteredList.sort((m1, m2) -> m1.getNom().compareToIgnoreCase(m2.getNom()));
+            sortButton.setText("Trier par nom ↑");
+        } else {
+            filteredList.sort((m1, m2) -> m2.getNom().compareToIgnoreCase(m1.getNom()));
+            sortButton.setText("Trier par nom ↓");
+        }
+        updateMedicationCards();
+    }
     // Méthode pour créer une carte pour un médicament
     private VBox createMedicationCard(Medication medication) {
         VBox card = new VBox(10);
@@ -205,18 +244,11 @@ public class MedicationController {
     private void loadMedications() {
         try {
             medicationList.clear();
-            medicationCardsPane.getChildren().clear();
-            
             List<Medication> medications = MedicationDAO.getAllMedications();
             System.out.println("Nombre de médicaments chargés : " + medications.size());
-            
             medicationList.addAll(medications);
-            
-            // Créer et ajouter les cartes pour chaque médicament
-            for (Medication med : medicationList) {
-                VBox card = createMedicationCard(med);
-                medicationCardsPane.getChildren().add(card);
-            }
+            filteredList.setAll(medicationList);
+            updateMedicationCards();
         } catch (Exception e) {
             showErrorAlert("Erreur lors du chargement des médicaments: " + e.getMessage());
             e.printStackTrace();
@@ -237,5 +269,13 @@ public class MedicationController {
         alert.setTitle("Erreur");
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    
+    private void updateMedicationCards() {
+        medicationCardsPane.getChildren().clear();
+        for (Medication med : filteredList) {
+            VBox card = createMedicationCard(med);
+            medicationCardsPane.getChildren().add(card);
+        }
     }
 }

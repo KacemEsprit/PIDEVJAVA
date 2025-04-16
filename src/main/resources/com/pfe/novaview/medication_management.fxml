@@ -18,19 +18,25 @@
             <padding>
                 <Insets top="30" right="30" bottom="20" left="30"/>
             </padding>
-           <HBox alignment="CENTER" spacing="20">
-    <Region HBox.hgrow="ALWAYS" />
-    
-    <Label text="Gerer Médicaments" 
-           style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #212529;" />
+            <HBox alignment="CENTER" spacing="20">
+                <Region HBox.hgrow="ALWAYS" />
+                
+                <Label text="Gerer Médicaments" 
+                       style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #212529;" />
 
-    <Region HBox.hgrow="ALWAYS" />
+                <Region HBox.hgrow="ALWAYS" />
 
-    <Button fx:id="addButton" 
-            style="-fx-background-color:rgb(6, 241, 241); -fx-background-radius: 50%; -fx-min-width: 50; -fx-min-height: 50; -fx-text-fill: white; -fx-font-size: 24px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);" 
-            text="+" 
-            onAction="#handleAddButton" />
-</HBox>
+                <Button fx:id="addButton" 
+                        style="-fx-background-color:rgb(6, 241, 241); -fx-background-radius: 50%; -fx-min-width: 50; -fx-min-height: 50; -fx-text-fill: white; -fx-font-size: 24px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);" 
+                        text="+" 
+                        onAction="#handleAddButton" />
+            </HBox>
+            <HBox spacing="10" alignment="CENTER">
+                <TextField fx:id="searchField" promptText="Rechercher un médicament..." 
+                    style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 10 15; -fx-pref-width: 300; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);" />
+                <Button fx:id="sortButton" text="Trier par nom ↑" 
+                    style="-fx-background-color: rgb(6, 241, 241); -fx-text-fill: white; -fx-background-radius: 20; -fx-padding: 10 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);" />
+            </HBox>
 
             <Label text="Medications List" 
                    style="-fx-font-size: 20px; -fx-font-weight: normal; -fx-text-fill:rgb(7, 222, 251);"/>
