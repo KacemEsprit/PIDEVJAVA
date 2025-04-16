@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public class Main extends Application {
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.pfe.nova.Controller.EditUserController"
+      spacing="10" style="-fx-padding: 20;">
+    <Label text="Edit User" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    <TextField fx:id="nameField" promptText="Name"/>
+    <TextField fx:id="emailField" promptText="Email"/>
+    <ComboBox fx:id="roleComboBox" promptText="Role"/>
+    <Button text="Save" fx:id="saveButton" onAction="#handleSave"
+            style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
+</VBox>

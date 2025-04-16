@@ -10,7 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
-
+import com.pfe.nova.configuration.UserDAO;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -103,7 +103,7 @@ public class SignupController {
         if (!validateFields()) return;
 
         // Check if email already exists
-        if (isEmailExists(emailField.getText())) {
+        if (UserDAO.isEmailExists(emailField.getText())) {
             showError("Email already registered");
             return;
         }
@@ -119,7 +119,7 @@ public class SignupController {
             String hashedPassword = BCrypt.hashpw(passwordField.getText(), BCrypt.gensalt(12));
             User user = createUserBasedOnRole(hashedPassword);
 
-            if (user != null && registerUser(user)) {
+            if (user != null && UserDAO.registerUser(user)) {
                 showSuccess("Registration successful!");
                 navigateToLogin();
             }
@@ -129,21 +129,9 @@ public class SignupController {
         }
     }
 
-    private boolean isEmailExists(String email) {
-        String query = "SELECT COUNT(*) FROM user WHERE email = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, email);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) > 0;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+    // Remove these methods as they're now handled by UserDAO:
+    // - private boolean isEmailExists(String email)
+    // - private boolean registerUser(User user)
 
     private void showSuccess(String message) {
         errorLabel.setStyle("-fx-text-fill: green;");
