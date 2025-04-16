@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
-
+import com.pfe.nova.configuration.UserDAO;
 import java.io.IOException;
 import java.sql.*;
 
@@ -24,7 +24,6 @@ public class LoginController {
     public void initialize() {
         setupButtonHoverEffects();
     }
-
     @FXML
     private void handleLogin() {
         String email = emailField.getText();
@@ -37,16 +36,15 @@ public class LoginController {
 
         User user = authenticateUser(email, password);
         if (user != null) {
-            // Store the connected user in the session
+            System.out.println("Authenticated user: " + user.getEmail() + ", Role: " + user.getRole());
             Session.setUtilisateurConnecte(user);
-            System.out.println("User session set for: " + user.getEmail());
-
-            // Navigate to the dashboard
             navigateToDashboard(user);
         } else {
             showError("Invalid email or password");
+            System.out.println("Authentication failed for email: " + email);
         }
     }
+//    @FXML
 //    private void handleLogin() {
 //        String email = emailField.getText();
 //        String password = passwordField.getText();
@@ -58,6 +56,7 @@ public class LoginController {
 //
 //        User user = authenticateUser(email, password);
 //        if (user != null) {
+//            Session.setUtilisateurConnecte(user);  // Changed from setCurrentUser() to setUtilisateurConnecte()
 //            navigateToDashboard(user);
 //        } else {
 //            showError("Invalid email or password");
@@ -86,116 +85,78 @@ public class LoginController {
 
     private void navigateToDashboard(User user) {
         try {
-            System.out.println("Loading dashboard for user role: " + user.getRole());
-            String dashboardPath = "/com/pfe/novaview/dashboard.fxml";  // Fixed path to match project structure
-            
+            System.out.println("Navigating to dashboard for role: " + user.getRole());
+            String dashboardPath;
+
+            if ("ADMIN".equals(user.getRole())) {
+                dashboardPath = "/com/pfe/novaview/admin-dashboard.fxml";
+            } else {
+                dashboardPath = "/com/pfe/novaview/dashboard.fxml";
+            }
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource(dashboardPath));
-            if (loader.getLocation() == null) {
-                System.err.println("Dashboard FXML not found at: " + dashboardPath);
-                throw new IOException("Cannot find dashboard.fxml at " + dashboardPath);
-            }
-            
             Parent root = loader.load();
-            DashboardController dashboardController = loader.getController();
-            
-            if (dashboardController == null) {
-                throw new IOException("Failed to get DashboardController instance");
+
+            if ("ADMIN".equals(user.getRole())) {
+                AdminDashboardController adminController = loader.getController();
+                adminController.initData(user);
+            } else {
+                DashboardController dashboardController = loader.getController();
+                dashboardController.initData(user);
             }
-            
-            dashboardController.initData(user);
-            
+
             Stage stage = (Stage) loginButton.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+            stage.setScene(new Scene(root));
             stage.setTitle(user.getRole() + " Dashboard");
-            stage.setResizable(true);
             stage.centerOnScreen();
-            
         } catch (IOException e) {
             showError("Unable to load dashboard: " + e.getMessage());
-            System.err.println("Dashboard loading error: " + e.getMessage());
             e.printStackTrace();
         }
     }
+//    private void navigateToDashboard(User user) {
+//        try {
+//            System.out.println("Loading dashboard for user role: " + user.getRole());
+//            String dashboardPath;
+//
+//            // Choose dashboard based on role
+//            if ("ADMIN".equals(user.getRole())) {
+//                dashboardPath = "/com/pfe/novaview/admin-dashboard.fxml";
+//            } else {
+//                dashboardPath = "/com/pfe/novaview/dashboard.fxml";
+//            }
+//
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource(dashboardPath));
+//            if (loader.getLocation() == null) {
+//                System.err.println("Dashboard FXML not found at: " + dashboardPath);
+//                throw new IOException("Cannot find dashboard.fxml at " + dashboardPath);
+//            }
+//
+//            Parent root = loader.load();
+//            DashboardController dashboardController = loader.getController();
+//
+//            if (dashboardController == null) {
+//                throw new IOException("Failed to get DashboardController instance");
+//            }
+//
+//            dashboardController.initData(user);
+//
+//            Stage stage = (Stage) loginButton.getScene().getWindow();
+//            Scene scene = new Scene(root);
+//            stage.setScene(scene);
+//            stage.setTitle(user.getRole() + " Dashboard");
+//            stage.setResizable(true);
+//            stage.centerOnScreen();
+//
+//        } catch (IOException e) {
+//            showError("Unable to load dashboard: " + e.getMessage());
+//            System.err.println("Dashboard loading error: " + e.getMessage());
+//            e.printStackTrace();
+//        }
+//    }
 
     private User authenticateUser(String email, String password) {
-        String query = "SELECT * FROM user WHERE email = ?";
-        
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            
-            stmt.setString(1, email);
-            
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    String hashedPasswordFromDB = rs.getString("password");
-                    System.out.println("Attempting login for email: " + email);
-                    
-                    try {
-                        if (BCrypt.checkpw(password, hashedPasswordFromDB)) {
-                            String role = rs.getString("role");
-                            System.out.println("Password verified successfully for role: " + role);
-                            
-                            switch (role) {
-                                case "PATIENT":
-                                    return new Patient(
-                                        rs.getInt("id"),
-                                        rs.getString("nom"),
-                                        rs.getString("prenom"),
-                                        email,
-                                        rs.getString("tel"),
-                                        rs.getString("adresse"),
-                                        hashedPasswordFromDB,
-                                        rs.getString("picture"),
-                                        rs.getInt("age"),
-                                        rs.getString("gender"),
-                                        rs.getString("blood_type")
-                                    );
-                                    
-                                case "MEDECIN":
-                                    return new Medecin(
-                                        rs.getInt("id"),
-                                        rs.getString("nom"),
-                                        rs.getString("prenom"),
-                                        email,
-                                        rs.getString("tel"),
-                                        rs.getString("adresse"),
-                                        hashedPasswordFromDB,
-                                        rs.getString("picture"),
-                                        rs.getString("specialite"),
-                                        rs.getString("experience"),
-                                        rs.getString("diplome")
-                                    );
-                                    
-                                case "DONATEUR":
-                                    return new Donateur(
-                                        rs.getInt("id"),
-                                        rs.getString("nom"),
-                                        rs.getString("prenom"),
-                                        email,
-                                        rs.getString("tel"),
-                                        rs.getString("adresse"),
-                                        hashedPasswordFromDB,
-                                        rs.getString("picture"),
-                                        rs.getString("donateur_type")
-                                    );
-                            }
-                        } else {
-                            System.out.println("Password verification failed");
-                        }
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("BCrypt verification error: " + e.getMessage());
-                        e.printStackTrace();
-                    }
-                } else {
-                    System.out.println("No user found with email: " + email);
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Database error: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return null;
+        return UserDAO.authenticateUser(email, password);
     }
 
     private void setupButtonHoverEffects() {
@@ -206,6 +167,7 @@ public class LoginController {
                 loginButton.setStyle("-fx-background-color: #3498db; -fx-pref-width: 300px; -fx-pref-height: 40px; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 3;")
         );
     }
+
 
     private void showError(String message) {
         errorLabel.setText(message);
