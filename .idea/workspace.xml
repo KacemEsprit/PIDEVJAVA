@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc4d44b3-873d-422a-bea4-dd33ed12ab3c" name="Changes" comment="kacems">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/DashboardController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/DashboardController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/LoginController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/LoginController$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/LoginController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/configuration/DatabaseConnection.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/configuration/DatabaseConnection.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/models/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/models/User.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/LoginController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +16,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="FxmlFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
