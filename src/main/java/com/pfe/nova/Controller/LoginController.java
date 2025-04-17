@@ -69,7 +69,11 @@ public class LoginController {
     private void navigateToAdminDashboard(User user) {
         try {
             // Make sure the user is stored in the session
-            Session.setUtilisateurConnecte(user);
+            // Change from:
+            // Session.setUtilisateurConnecte(user);
+            
+            // To:
+            Session.getInstance().setUtilisateurConnecte(user);
             System.out.println("Setting admin user in session: " + user.getEmail() + ", role: " + user.getRole());
             
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/admin-posts-management.fxml"));

@@ -98,7 +98,7 @@ public class SignupController {
     }
 
     @FXML
-    private void handleSignup() {
+    private void handleSignup() throws SQLException {
         // Basic validation
         if (!validateFields()) return;
 
@@ -126,6 +126,8 @@ public class SignupController {
         } catch (IllegalArgumentException e) {
             showError("Error processing password");
             e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

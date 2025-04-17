@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import java.io.IOException;
+import java.sql.SQLException; 
 import java.util.List;
 
 public class AdminDashboardController {
@@ -63,8 +64,13 @@ public class AdminDashboardController {
                     deleteButton.setOnAction(event -> {
                         User user = getTableView().getItems().get(getIndex());
                         if (confirmDelete(user)) {
-                            UserDAO.deleteUser(user.getId());
-                            loadUsersData(); // Refresh the table
+                            try {
+                                UserDAO.deleteUser(user.getId());
+                                loadUsersData(); // Refresh the table
+                            } catch (SQLException e) {
+                                showError("Error deleting user: " + e.getMessage());
+                                e.printStackTrace();
+                            }
                         }
                     });
 
@@ -120,17 +126,19 @@ public class AdminDashboardController {
     
     @FXML
     private void handleLogout() {
+        // Change from Session.logout() to Session.getInstance().logout()
+        Session.getInstance().logout();
+        
+        // Navigate to login screen
         try {
-            Session.logout();  // Changed from clearSession() to logout()
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/login.fxml"));
             Parent root = loader.load();
+            
             Stage stage = (Stage) logoutButton.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+            stage.setScene(new Scene(root));
             stage.setTitle("Login");
-            stage.centerOnScreen();
         } catch (IOException e) {
-            showError("Error during logout: " + e.getMessage());
+            showError("Error navigating to login: " + e.getMessage());
         }
     }
     

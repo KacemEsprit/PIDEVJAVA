@@ -61,7 +61,8 @@ public class DashboardController {
     public void initialize() {
         try {
             setupTableColumns();
-            User currentUser = Session.getUtilisateurConnecte();
+            // Change this line to get the Session instance first
+            User currentUser = Session.getInstance().getUtilisateurConnecte();
             boolean isMedecin = currentUser instanceof Medecin;
             
             // Enable/disable rapport tabs based on user type
@@ -157,7 +158,7 @@ public class DashboardController {
         addressLabel.setText("Address: " + currentUser.getAdresse());
 
         // Test session and display connected user
-        User sessionUser = Session.getUtilisateurConnecte();
+        User sessionUser = Session.getInstance().getUtilisateurConnecte();
         if (sessionUser != null) {
             sessionTestLabel.setText("Session User: " + sessionUser.getEmail());
         } else {
@@ -289,7 +290,7 @@ public class DashboardController {
     @FXML
     public void navigateToAdminPostsManagement() {
         try {
-            User currentUser = Session.getUtilisateurConnecte();
+            User currentUser = Session.getInstance().getUtilisateurConnecte();
             if (currentUser == null || !currentUser.getRole().toUpperCase().contains("ADMIN")) {
                 showError("You don't have permission to access the admin area");
                 return;
@@ -316,7 +317,7 @@ public class DashboardController {
     @FXML
     public void navigateToPostsList() {
         try {
-            User currentUser = Session.getUtilisateurConnecte();
+            User currentUser = Session.getInstance().getUtilisateurConnecte();
             if (currentUser == null) {
                 showError("No user logged in");
                 return;
