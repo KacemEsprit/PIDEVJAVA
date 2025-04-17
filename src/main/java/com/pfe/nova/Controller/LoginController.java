@@ -44,24 +44,7 @@ public class LoginController {
             System.out.println("Authentication failed for email: " + email);
         }
     }
-//    @FXML
-//    private void handleLogin() {
-//        String email = emailField.getText();
-//        String password = passwordField.getText();
-//
-//        if (email.isEmpty() || password.isEmpty()) {
-//            showError("Please fill in all fields");
-//            return;
-//        }
-//
-//        User user = authenticateUser(email, password);
-//        if (user != null) {
-//            Session.setUtilisateurConnecte(user);  // Changed from setCurrentUser() to setUtilisateurConnecte()
-//            navigateToDashboard(user);
-//        } else {
-//            showError("Invalid email or password");
-//        }
-//    }
+
 
     @FXML
     private void navigateToSignup() {
@@ -114,46 +97,7 @@ public class LoginController {
             e.printStackTrace();
         }
     }
-//    private void navigateToDashboard(User user) {
-//        try {
-//            System.out.println("Loading dashboard for user role: " + user.getRole());
-//            String dashboardPath;
-//
-//            // Choose dashboard based on role
-//            if ("ADMIN".equals(user.getRole())) {
-//                dashboardPath = "/com/pfe/novaview/admin-dashboard.fxml";
-//            } else {
-//                dashboardPath = "/com/pfe/novaview/dashboard.fxml";
-//            }
-//
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource(dashboardPath));
-//            if (loader.getLocation() == null) {
-//                System.err.println("Dashboard FXML not found at: " + dashboardPath);
-//                throw new IOException("Cannot find dashboard.fxml at " + dashboardPath);
-//            }
-//
-//            Parent root = loader.load();
-//            DashboardController dashboardController = loader.getController();
-//
-//            if (dashboardController == null) {
-//                throw new IOException("Failed to get DashboardController instance");
-//            }
-//
-//            dashboardController.initData(user);
-//
-//            Stage stage = (Stage) loginButton.getScene().getWindow();
-//            Scene scene = new Scene(root);
-//            stage.setScene(scene);
-//            stage.setTitle(user.getRole() + " Dashboard");
-//            stage.setResizable(true);
-//            stage.centerOnScreen();
-//
-//        } catch (IOException e) {
-//            showError("Unable to load dashboard: " + e.getMessage());
-//            System.err.println("Dashboard loading error: " + e.getMessage());
-//            e.printStackTrace();
-//        }
-//    }
+
 
     private User authenticateUser(String email, String password) {
         return UserDAO.authenticateUser(email, password);

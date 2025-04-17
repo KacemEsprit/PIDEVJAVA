@@ -22,6 +22,11 @@
         <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: #34495e;" prefWidth="200">
             <Button text="Users Management" onAction="#showUsersManagement" 
                     style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-pref-width: 160;"/>
+            <Button text="Pending Posts" onAction="#showPendingPosts"
+                    style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-pref-width: 160;"/>
+            <Button text="Reported Comments" onAction="#showReportedComments"
+                    style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-pref-width: 160;"/>
+            <!-- Removed Posts Management button -->
             <Button text="Statistics" onAction="#showStatistics"
                     style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-pref-width: 160;"/>
             <Button text="Reports" onAction="#showReports"
@@ -44,7 +49,7 @@
                             <TextField fx:id="searchField" promptText="Search users..." prefWidth="200"/>
                             <ComboBox fx:id="filterRole" promptText="Filter by role"/>
                             <Button text="Search" onAction="#handleSearch"/>
-                            <Button text="Add New User" onAction="#handleAddUser"/>
+                            <Button text="Profile" onAction="#handleProfile"/>
                         </HBox>
                         <TableView fx:id="usersTable" VBox.vgrow="ALWAYS">
                             <columns>

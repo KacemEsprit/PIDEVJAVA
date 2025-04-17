@@ -22,7 +22,7 @@
 
 .back-button {
     -fx-background-color: transparent;
-    -fx-text-fill: #4e54c8;
+    -fx-text-fill: #95E1D3;
     -fx-font-weight: bold;
     -fx-cursor: hand;
     -fx-padding: 8 15;
@@ -30,7 +30,7 @@
 }
 
 .back-button:hover {
-    -fx-text-fill: #3f44a9;
+    -fx-text-fill: #95E1D3;
     -fx-underline: true;
 }
 
@@ -60,7 +60,7 @@
 .publication-category {
     -fx-font-size: 13px;
     -fx-text-fill: white;
-    -fx-background-color: linear-gradient(to right, #4e54c8, #8f94fb);
+    -fx-background-color: linear-gradient(to right, #95E1D3, #e0f3f8);
     -fx-background-radius: 20px;
     -fx-padding: 5px 12px;
     -fx-max-width: 150px;
@@ -182,11 +182,11 @@
 
 .comment-input-field:focused {
     -fx-background-color: white;
-    -fx-border-color: #4e54c8;
+    -fx-border-color: #95E1D3;
 }
 
 .comment-submit-button {
-    -fx-background-color: linear-gradient(to right, #4e54c8, #8f94fb);
+    -fx-background-color: linear-gradient(to right, #95E1D3, #e0f3f8);
     -fx-text-fill: white;
     -fx-background-radius: 20px;
     -fx-padding: 8px 20px;
@@ -195,7 +195,7 @@
 }
 
 .comment-submit-button:hover {
-    -fx-background-color: linear-gradient(to right, #3f44a9, #7a7fe6);
+    -fx-background-color: linear-gradient(to right, #95E1D3, #e0f3f8);
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);
 }
 
@@ -224,7 +224,7 @@
     -fx-max-width: 35px;
     -fx-max-height: 35px;
     -fx-background-radius: 50%;
-    -fx-background-color: linear-gradient(to bottom right, #4e54c8, #8f94fb);
+    -fx-background-color: linear-gradient(to bottom right, #95E1D3, #e0f3f8);
     -fx-alignment: center;
 }
 
@@ -261,7 +261,7 @@
 }
 
 .edit-button:hover {
-    -fx-text-fill: #4e54c8;
+    -fx-text-fill: #95E1D3;
 }
 
 .delete-button:hover {

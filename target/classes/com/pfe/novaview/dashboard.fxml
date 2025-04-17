@@ -33,6 +33,12 @@
                             <Label fx:id="addressLabel" style="-fx-font-size: 14px;"/>
                             <VBox fx:id="roleSpecificContent" spacing="10.0"/>
                             <Label fx:id="sessionTestLabel" style="-fx-font-size: 14px; -fx-text-fill: green;"/>
+                            
+                            <!-- New Post List Button for Patients -->
+                            <Button text="Community Posts" fx:id="communityPostsButton" onAction="#navigateToPostList"
+                                    style="-fx-background-color: #9b59b6; -fx-text-fill: white;"
+                                    visible="false"/>
+                                    
                             <Button text="Create Rapport" fx:id="createRapportButton" onAction="#handleCreateRapport"
                                     style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
                             <Button text="View Rapports" fx:id="viewRapportsButton" onAction="#handleViewRapports"
@@ -57,7 +63,18 @@
                         </children>
                     </VBox>
                 </Tab>
-
+                <!-- Community Posts Tab -->
+                <Tab text="Community Posts" fx:id="communityPostsTab" disable="false" onSelectionChanged="#handleCommunityPostsTab">
+                    <VBox spacing="10.0" style="-fx-padding: 20;">
+                        <children>
+                            <Label text="Community Posts" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                            <Label text="Connect with other patients and share your experiences."
+                                   style="-fx-font-size: 14px; -fx-text-fill: #636e72;"/>
+                            <Button text="View All Posts" onAction="#navigateToPostList"
+                                    style="-fx-background-color: #9b59b6; -fx-text-fill: white;"/>
+                        </children>
+                    </VBox>
+                </Tab>
                 <!-- Find Doctors -->
                 <Tab text="Find Doctors" fx:id="findDoctorsTab" disable="true">
                     <VBox spacing="10.0" style="-fx-padding: 20;">
