@@ -30,7 +30,7 @@
 }
 
 .back-button:hover {
-    -fx-text-fill: #3f44a9;
+    -fx-text-fill: #95E1D3;
     -fx-underline: true;
 }
 
@@ -195,7 +195,7 @@
 }
 
 .comment-submit-button:hover {
-    -fx-background-color: linear-gradient(to right, #3f44a9, #e0f3f8);
+    -fx-background-color: linear-gradient(to right, #95E1D3, #e0f3f8);
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);
 }
 

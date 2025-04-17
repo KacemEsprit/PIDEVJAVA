@@ -35,6 +35,7 @@ public class DashboardController {
     @FXML private Tab adminTab;
     @FXML private Tab appointmentsTab;
     @FXML private Tab donationsTab;
+    @FXML private Tab communityPostsTab; // Add this new tab field
     
     @FXML private TableView<Patient> patientsTable;
     @FXML private TableColumn<Patient, String> patientNameColumn;
@@ -56,7 +57,8 @@ public class DashboardController {
     private Tab viewRapportTab;
 
     private User currentUser;
-
+    @FXML private Button communityPostsButton; // Add this field
+    
     @FXML
     public void initialize() {
         try {
@@ -64,6 +66,20 @@ public class DashboardController {
             // Change this line to get the Session instance first
             User currentUser = Session.getInstance().getUtilisateurConnecte();
             boolean isMedecin = currentUser instanceof Medecin;
+            
+            // Show the community posts button only for patients
+            if (currentUser != null && "PATIENT".equals(currentUser.getRole())) {
+                communityPostsButton.setVisible(true);
+                // Enable the community posts tab for patients
+                if (communityPostsTab != null) {
+                    communityPostsTab.setDisable(false);
+                }
+            } else {
+                // Disable the tab for non-patients
+                if (communityPostsTab != null) {
+                    communityPostsTab.setDisable(true);
+                }
+            }
             
             // Enable/disable rapport tabs based on user type
             createRapportTab.setDisable(!isMedecin);
@@ -286,33 +302,6 @@ public class DashboardController {
         }
     }
 
-    // Add these methods to handle navigation to admin posts management and post list
-    @FXML
-    public void navigateToAdminPostsManagement() {
-        try {
-            User currentUser = Session.getInstance().getUtilisateurConnecte();
-            if (currentUser == null || !currentUser.getRole().toUpperCase().contains("ADMIN")) {
-                showError("You don't have permission to access the admin area");
-                return;
-            }
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/admin-posts-management.fxml"));
-            Parent root = loader.load();
-            
-            // Get the controller and pass the user
-            AdminPostsManagementController controller = loader.getController();
-            controller.setCurrentUser(currentUser);
-            
-            Stage stage = (Stage) contentTabPane.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("Admin Posts Management");
-            stage.centerOnScreen();
-        } catch (IOException e) {
-            showError("Error loading admin posts management: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     public void navigateToPostsList() {
@@ -349,5 +338,46 @@ public class DashboardController {
         alert.showAndWait();
 
 
+    }
+
+    /**
+     * Navigate to the post list view
+     */
+    @FXML
+    public void navigateToPostList() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/post-list.fxml"));
+            Parent root = loader.load();
+            
+            // Get the controller and set the current user
+            PostListController controller = loader.getController();
+            controller.setCurrentUser(Session.getCurrentUser());
+            
+            // Create a new scene and stage
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Community Posts");
+            stage.setScene(scene);
+            
+            // Show the new stage
+            stage.show();
+            
+            // Close the current window (optional)
+            // ((Stage) communityPostsButton.getScene().getWindow()).close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Show error alert
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Navigation Error");
+            alert.setHeaderText("Could not navigate to Posts");
+            alert.setContentText("An error occurred: " + e.getMessage());
+            alert.showAndWait();
+        }
+    }
+    
+    // Add a method to handle the tab selection
+    @FXML
+    public void handleCommunityPostsTab() {
+        navigateToPostList();
     }
 }
