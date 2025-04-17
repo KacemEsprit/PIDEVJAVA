@@ -5,21 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc4d44b3-873d-422a-bea4-dd33ed12ab3c" name="Changes" comment="kacems">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/EditUserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/edituser.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Application/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Application/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/SignupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/SignupController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/AdminDashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/AdminDashboardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/EditUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/EditUserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/admin-dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/admin-dashboard.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/edituser.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/edituser.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Application/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/Application/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/DashboardController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/DashboardController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/LoginController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/LoginController$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/LoginController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/SignupController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/SignupController$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/SignupController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/SignupController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/configuration/UserDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/configuration/UserDAO.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -213,6 +208,7 @@
       <workItem from="1744664482603" duration="2205000" />
       <workItem from="1744736368258" duration="6778000" />
       <workItem from="1744803474622" duration="3779000" />
+      <workItem from="1744843220785" duration="3998000" />
     </task>
     <task id="LOCAL-00001" summary="crud">
       <option name="closed" value="true" />

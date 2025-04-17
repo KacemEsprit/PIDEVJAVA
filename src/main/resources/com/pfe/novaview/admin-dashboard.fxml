@@ -43,7 +43,7 @@
                             <TextField fx:id="searchField" promptText="Search users..." prefWidth="200"/>
                             <ComboBox fx:id="filterRole" promptText="Filter by role"/>
                             <Button text="Search" onAction="#handleSearch"/>
-                            <Button text="Add New User" onAction="#handleAddUser"/>
+                            <Button text="profile" onAction="#handleProfile"/>
                         </HBox>
                         <TableView fx:id="usersTable" VBox.vgrow="ALWAYS">
                             <columns>

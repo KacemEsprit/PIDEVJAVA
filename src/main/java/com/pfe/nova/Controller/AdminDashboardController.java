@@ -1,5 +1,8 @@
 package com.pfe.nova.Controller;
 
+import com.pfe.nova.models.Donateur;
+import com.pfe.nova.models.Medecin;
+import com.pfe.nova.models.Patient;
 import com.pfe.nova.models.User;
 import com.pfe.nova.utils.Session;
 import com.pfe.nova.configuration.UserDAO;
@@ -39,27 +42,34 @@ public class AdminDashboardController {
         setupTableColumns();
         loadUsersData(); // Add this line to load data when initializing
     }
-    
+
     private void setupTableColumns() {
         try {
-            idColumn.setCellValueFactory(cellData -> 
-                new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
-            
-            nameColumn.setCellValueFactory(cellData -> 
-                new SimpleStringProperty(cellData.getValue().getNom() + " " + cellData.getValue().getPrenom()));
-            
-            emailColumn.setCellValueFactory(cellData -> 
-                new SimpleStringProperty(cellData.getValue().getEmail()));
-            
-            roleColumn.setCellValueFactory(cellData -> 
-                new SimpleStringProperty(cellData.getValue().getRole()));
-            
+            idColumn.setCellValueFactory(cellData ->
+                    new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
+
+            nameColumn.setCellValueFactory(cellData ->
+                    new SimpleStringProperty(cellData.getValue().getNom() + " " + cellData.getValue().getPrenom()));
+
+            emailColumn.setCellValueFactory(cellData ->
+                    new SimpleStringProperty(cellData.getValue().getEmail()));
+
+            roleColumn.setCellValueFactory(cellData ->
+                    new SimpleStringProperty(cellData.getValue().getRole()));
+
             actionsColumn.setCellFactory(column -> new TableCell<User, String>() {
-                private final Button deleteButton = new Button("Delete");
                 private final Button editButton = new Button("Edit");
+                private final Button deleteButton = new Button("Delete");
                 private final HBox buttons = new HBox(5, editButton, deleteButton);
-                
+
                 {
+                    // Set action for the Edit button
+                    editButton.setOnAction(event -> {
+                        User user = getTableView().getItems().get(getIndex());
+                        handleEditUser(user);
+                    });
+
+                    // Set action for the Delete button
                     deleteButton.setOnAction(event -> {
                         User user = getTableView().getItems().get(getIndex());
                         if (confirmDelete(user)) {
@@ -68,12 +78,11 @@ public class AdminDashboardController {
                         }
                     });
 
-                    editButton.setOnAction(event -> {
-                        User user = getTableView().getItems().get(getIndex());
-                        handleEditUser(user);
-                    });
+                    // Style buttons (optional)
+                    editButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white;");
+                    deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
                 }
-                
+
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
@@ -184,28 +193,74 @@ public class AdminDashboardController {
     @FXML
     private void handleEditUser(User user) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/edituser.fxml"));
-            Parent root = loader.load();
+            // Get the full user data with role-specific information
+            User fullUser = UserDAO.getUserById(user.getId());
+            if (fullUser == null) {
+                showError("Could not load user data");
+                return;
+            }
 
-            // Pass the selected user to the EditUserController
-            EditUserController editUserController = loader.getController();
-            editUserController.initData(user);
+            // Debug print to check user data
+            System.out.println("Opening edit window for user: " + fullUser.getRole());
+
+            // Use absolute path for FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/edituser.fxml"));
+            if (loader.getLocation() == null) {
+                System.err.println("Could not find edituser.fxml");
+                showError("Could not find edit user form");
+                return;
+            }
+
+            Parent root = loader.load();
+            EditUserController editController = loader.getController();
+            if (editController == null) {
+                System.err.println("Could not get EditUserController");
+                showError("Error initializing edit form");
+                return;
+            }
+
+            editController.initData(fullUser);
 
             Stage stage = new Stage();
-            stage.setTitle("Edit User");
+            stage.setTitle("Edit User - " + fullUser.getRole());
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            System.err.println("Error loading edit window: " + e.getMessage());
+            e.printStackTrace();
+            showError("Error opening edit window: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
+            showError("Unexpected error: " + e.getMessage());
+        }
+    }
+
+    private boolean confirmDelete(User user) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Delete");
+        alert.setHeaderText("Delete User");
+        alert.setContentText("Are you sure you want to delete user: " + user.getNom() + " " + user.getPrenom() + "?");
+
+        return alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK;
+    }
+    
+    @FXML
+    private void handleProfile() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/profile.fxml"));
+            Parent root = loader.load();
+            
+            ProfileController profileController = loader.getController();
+            profileController.initData(this.adminUser);
+            
+            Stage stage = new Stage();
+            stage.setTitle("My Profile");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
-            showError("Error loading Edit User page: " + e.getMessage());
-            e.printStackTrace();
+            showError("Error opening profile: " + e.getMessage());
         }
-    }
-    private boolean confirmDelete(User user) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Delete User");
-        alert.setHeaderText("Are you sure you want to delete this user?");
-        alert.setContentText("User: " + user.getNom() + " " + user.getPrenom());
-
-        return alert.showAndWait().filter(response -> response == ButtonType.OK).isPresent();
-    }
-}
+    }}

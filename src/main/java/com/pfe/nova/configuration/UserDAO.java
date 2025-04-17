@@ -274,19 +274,134 @@ public class UserDAO {
         }
     }
 
-    public static void updateUser(User user) {
+    public static boolean updateUser(User user) {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String query = "UPDATE user SET nom = ?, prenom = ?, email = ?, role = ? WHERE id = ?";
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, user.getNom());
-            stmt.setString(2, user.getPrenom());
-            stmt.setString(3, user.getEmail());
-            stmt.setString(4, user.getRole());
-            stmt.setInt(5, user.getId());
-            stmt.executeUpdate();
+            // Update base user information
+            String baseQuery = "UPDATE user SET nom = ?, prenom = ?, email = ?, tel = ?, adresse = ? WHERE id = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(baseQuery)) {
+                stmt.setString(1, user.getNom());
+                stmt.setString(2, user.getPrenom());
+                stmt.setString(3, user.getEmail());
+                stmt.setString(4, user.getTel());
+                stmt.setString(5, user.getAdresse());
+                stmt.setInt(6, user.getId());
+                stmt.executeUpdate();
+            }
+
+            // Update role-specific information
+            switch (user.getRole()) {
+                case "MEDECIN":
+                    Medecin medecin = (Medecin) user;
+                    String medecinQuery = "UPDATE user SET specialite = ?, experience = ?, diplome = ? WHERE id = ?";
+                    try (PreparedStatement stmt = conn.prepareStatement(medecinQuery)) {
+                        stmt.setString(1, medecin.getSpecialite());
+                        stmt.setString(2, medecin.getExperience());
+                        stmt.setString(3, medecin.getDiplome());
+                        stmt.setInt(4, user.getId());
+                        stmt.executeUpdate();
+                    }
+                    break;
+
+                case "PATIENT":
+                    Patient patient = (Patient) user;
+                    String patientQuery = "UPDATE user SET age = ?, gender = ?, blood_type = ? WHERE id = ?";
+                    try (PreparedStatement stmt = conn.prepareStatement(patientQuery)) {
+                        stmt.setInt(1, patient.getAge());
+                        stmt.setString(2, patient.getGender());
+                        stmt.setString(3, patient.getBloodType());
+                        stmt.setInt(4, user.getId());
+                        stmt.executeUpdate();
+                    }
+                    break;
+
+                case "DONATEUR":
+                    Donateur donateur = (Donateur) user;
+                    String donateurQuery = "UPDATE user SET donateur_type = ? WHERE id = ?";
+                    try (PreparedStatement stmt = conn.prepareStatement(donateurQuery)) {
+                        stmt.setString(1, donateur.getDonateurType());
+                        stmt.setInt(2, user.getId());
+                        stmt.executeUpdate();
+                    }
+                    break;
+            }
+            return true;
         } catch (SQLException e) {
+            System.err.println("Error updating user: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static User getUserById(int userId) {
+        String query = "SELECT * FROM user WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String role = rs.getString("role");
+                    switch (role) {
+                        case "ADMIN":
+                            return new User(
+                                rs.getInt("id"),
+                                rs.getString("nom"),
+                                rs.getString("prenom"),
+                                rs.getString("email"),
+                                rs.getString("tel"),
+                                rs.getString("adresse"),
+                                rs.getString("password"),
+                                rs.getString("picture"),
+                                "ADMIN"
+                            );
+                        case "MEDECIN":
+                            return new Medecin(
+                                rs.getInt("id"),
+                                rs.getString("nom"),
+                                rs.getString("prenom"),
+                                rs.getString("email"),
+                                rs.getString("tel"),
+                                rs.getString("adresse"),
+                                rs.getString("password"),
+                                rs.getString("picture"),
+                                rs.getString("specialite"),
+                                rs.getString("experience"),
+                                rs.getString("diplome")
+                            );
+                        case "PATIENT":
+                            return new Patient(
+                                rs.getInt("id"),
+                                rs.getString("nom"),
+                                rs.getString("prenom"),
+                                rs.getString("email"),
+                                rs.getString("tel"),
+                                rs.getString("adresse"),
+                                rs.getString("password"),
+                                rs.getString("picture"),
+                                rs.getInt("age"),
+                                rs.getString("gender"),
+                                rs.getString("blood_type")
+                            );
+                        case "DONATEUR":
+                            return new Donateur(
+                                rs.getInt("id"),
+                                rs.getString("nom"),
+                                rs.getString("prenom"),
+                                rs.getString("email"),
+                                rs.getString("tel"),
+                                rs.getString("adresse"),
+                                rs.getString("password"),
+                                rs.getString("picture"),
+                                rs.getString("donateur_type")
+                            );
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting user by ID: " + e.getMessage());
             e.printStackTrace();
         }
+        return null;
     }
 }
 
