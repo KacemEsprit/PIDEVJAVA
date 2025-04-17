@@ -6,21 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="cc4d44b3-873d-422a-bea4-dd33ed12ab3c" name="Changes" comment="kacems">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/AdminDashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/AdminDashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/AdminPostsManagementController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/DashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/DatabaseConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/DatabaseConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/admin-dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/admin-dashboard.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/admin-posts-management.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/dashboard.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/reported-comments.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/reported-comments.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/admin-styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/admin-styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/post-list.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/post-list.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/publication-details.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/publication-details.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/styles/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/styles/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/DashboardController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/DashboardController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/configuration/DatabaseConnection.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/configuration/DatabaseConnection.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/novaview/dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/novaview/dashboard.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +79,7 @@
     "Application.com.pfe.nova.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "rania",
+    "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/21693/Documents/PIDEVJAVA/PIDEVJAVA",
