@@ -23,14 +23,14 @@ public class Rapport {
     private int filtrationSang;
     private int creatinine;
     private int scoreGlasgow;
-    private boolean respirationAssistee;
+    private int respirationAssistee;
     private String complications;
 
 
     public Rapport() {
     }
 
-    public Rapport(int id, int patientId, int medecinId, int age, String dateRapport, String sexe, int tensionArterielle, int pouls, double temperature, int saturationOxygene, double imc, int niveauDouleur, String traitement, int doseMedicament, String frequenceTraitement, int perteDeSang, int tempsOperation, int dureeSeance, int filtrationSang, int creatinine, int scoreGlasgow, boolean respirationAssistee, String complications) {
+    public Rapport(int id, int patientId, int medecinId, int age, String dateRapport, String sexe, int tensionArterielle, int pouls, double temperature, int saturationOxygene, double imc, int niveauDouleur, String traitement, int doseMedicament, String frequenceTraitement, int perteDeSang, int tempsOperation, int dureeSeance, int filtrationSang, int creatinine, int scoreGlasgow,int respirationAssistee, String complications) {
         this.id = id;
         this.patientId = patientId;
         this.medecinId = medecinId;
@@ -225,11 +225,11 @@ public class Rapport {
         this.scoreGlasgow = scoreGlasgow;
     }
 
-    public boolean isRespirationAssistee() {
+    public int isRespirationAssistee() {
         return respirationAssistee;
     }
 
-    public void setRespirationAssistee(boolean respirationAssistee) {
+    public void setRespirationAssistee(int respirationAssistee) {
         this.respirationAssistee = respirationAssistee;
     }
 

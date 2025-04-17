@@ -5,112 +5,80 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #f0f2f5;"
-            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.pfe.nova.Controller.ViewRapportsController"
+            prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #f4f6f9;">
 
-    <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <SplitPane dividerPositions="0.35" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
-        <!-- Top - Title and Search -->
-        <top>
-            <VBox spacing="20" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);">
-                <padding>
-                    <Insets top="25" right="30" bottom="25" left="30"/>
-                </padding>
+        <!-- Left Side -->
+        <VBox spacing="20" style="-fx-background-color: #ffffff;">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
 
-                <Label text="Gestion des Rapports Médicaux">
-                    <font>
-                        <Font name="System Bold" size="28.0"/>
-                    </font>
-                    <style>
-                        -fx-text-fill: #1a237e;
-                    </style>
-                </Label>
-
-                <HBox spacing="15" alignment="CENTER">
-                    <TextField fx:id="searchField" promptText="Rechercher un patient..."
-                             HBox.hgrow="ALWAYS" style="-fx-background-radius: 30; -fx-font-size: 14; 
-                             -fx-background-color: #f5f5f5; -fx-padding: 12;">
-                    </TextField>
-                    <Button fx:id="searchButton" text="Rechercher"
-                            style="-fx-background-radius: 30; -fx-background-color: #3f51b5; 
-                            -fx-text-fill: white; -fx-font-size: 14; -fx-padding: 12 25;"/>
-                </HBox>
-            </VBox>
-        </top>
-
-        <!-- Center - Reports List -->
-        <center>
-            <VBox spacing="20" style="-fx-background-color: transparent;">
-                <padding>
-                    <Insets top="20" right="20" bottom="20" left="20"/>
-                </padding>
-
-                <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-background-color: white; 
-                      -fx-background-radius: 10; -fx-padding: 15;">
-                    <Label text="Liste des Rapports">
-                        <font>
-                            <Font name="System Bold" size="18.0"/>
-                        </font>
-                    </Label>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <ComboBox fx:id="filterComboBox" promptText="Trier par date" 
-                             style="-fx-background-radius: 5; -fx-padding: 5;"/>
-                </HBox>
-
-                <TableView fx:id="reportsTableView" VBox.vgrow="ALWAYS" 
-                          style="-fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);">
-                    <columns>
-                        <TableColumn fx:id="dateColumn" text="Date" prefWidth="150"/>
-                        <TableColumn fx:id="patientColumn" text="Patient" prefWidth="200"/>
-                        <TableColumn fx:id="diagnosticColumn" text="Diagnostic" prefWidth="250"/>
-                        <TableColumn fx:id="statusColumn" text="Statut" prefWidth="100"/>
-                    </columns>
-                </TableView>
-            </VBox>
-        </center>
-
-        <!-- Right - Patients List -->
-        <right>
-            <VBox spacing="20" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, -2);" 
-                  prefWidth="300">
-                <padding>
-                    <Insets />
-                </padding>
-
-                <Label text="Liste des Patients">
-                    <font>
-                        <Font name="System Bold" size="18.0"/>
-                    </font>
-                </Label>
-
-                <ListView fx:id="patientListView" VBox.vgrow="ALWAYS"
-                         style="-fx-background-radius: 10; -fx-border-radius: 10; 
-                         -fx-background-color: #f8f9fa; -fx-border-color: transparent;"/>
-
-                <Button text="+ Nouveau Rapport"
-                        style="-fx-background-color: #4caf50; -fx-text-fill: white; 
-                        -fx-background-radius: 30; -fx-font-size: 14; -fx-padding: 12;"
-                        maxWidth="Infinity"/>
-            </VBox>
-        </right>
-
-        <!-- Bottom - Action Buttons -->
-        <bottom>
-            <HBox spacing="15" alignment="CENTER_RIGHT" 
-                  style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, -2);">
-                <padding>
-                    <Insets />
-                </padding>
-
-                <Button text="Imprimer" 
-                        style="-fx-background-color: #3f51b5; -fx-text-fill: white; 
-                        -fx-background-radius: 30; -fx-font-size: 14; -fx-padding: 12 25;"/>
-                <Button text="Exporter" 
-                        style="-fx-background-color: #5c6bc0; -fx-text-fill: white; 
-                        -fx-background-radius: 30; -fx-font-size: 14; -fx-padding: 12 25;"/>
+            <!-- Search Section -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="searchPatientField" promptText="Rechercher un patient..." HBox.hgrow="ALWAYS"
+                           style="-fx-background-radius: 20; -fx-padding: 10 15; -fx-background-color: #f5f5f5;
+                                  -fx-prompt-text-fill: #757575;"/>
+                <Button text="🔍" style="-fx-background-radius: 20; -fx-background-color:#2980b9;
+                                          -fx-text-fill: white; -fx-font-size: 14;"
+                        />
             </HBox>
-        </bottom>
 
-    </BorderPane>
+            <!-- Title -->
+            <Label text="Liste des Patients" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+
+            <!-- Scrollable Patient Cards -->
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-padding: 0;">
+                <VBox fx:id="patientCardsContainer" spacing="15" style="-fx-padding: 10;">
+                    <!-- Patient Cards dynamically injected here -->
+                </VBox>
+            </ScrollPane>
+        </VBox>
+
+        <!-- Right Side -->
+        <VBox spacing="20" style="-fx-background-color: #ffffff;">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <!-- Selected Patient Info -->
+            <HBox spacing="15" alignment="CENTER_LEFT"
+                  style="-fx-background-color: #f8f9fa; -fx-background-radius: 15; -fx-padding: 20;">
+                <Label fx:id="selectedPatientName" text="Rapports du Patient"
+                       style="-fx-font-weight: bold; -fx-font-size: 24; -fx-text-fill: #333333;"/>
+            </HBox>
+
+            <!-- Table of Reports -->
+            <TableView fx:id="patientReportsTable" VBox.vgrow="ALWAYS"
+                       style="-fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">
+                <columns>
+                    <TableColumn fx:id="ageColumn" text="Âge" prefWidth="80"/>
+                    <TableColumn fx:id="dateRapportColumn" text="Date Rapport" prefWidth="120"/>
+                    <TableColumn fx:id="sexeColumn" text="Sexe" prefWidth="80"/>
+                    <TableColumn fx:id="tensionColumn" text="Tension Artérielle" prefWidth="120"/>
+                    <TableColumn fx:id="poulsColumn" text="Pouls" prefWidth="80"/>
+                    <TableColumn fx:id="temperatureColumn" text="Température" prefWidth="100"/>
+                    <TableColumn fx:id="saturationColumn" text="Saturation Oxygène" prefWidth="120"/>
+                    <TableColumn fx:id="imcColumn" text="IMC" prefWidth="80"/>
+                    <TableColumn fx:id="niveauDouleurColumn" text="Niveau Douleur" prefWidth="120"/>
+                    <TableColumn fx:id="traitementColumn" text="Traitement" prefWidth="150"/>
+                    <TableColumn fx:id="doseColumn" text="Dose Médicament" prefWidth="120"/>
+                    <TableColumn fx:id="frequenceColumn" text="Fréquence Traitement" prefWidth="150"/>
+                    <TableColumn fx:id="perteSangColumn" text="Perte de Sang" prefWidth="120"/>
+                    <TableColumn fx:id="tempsOperationColumn" text="Temps Opération" prefWidth="120"/>
+                    <TableColumn fx:id="dureeSeanceColumn" text="Durée Séance" prefWidth="120"/>
+                    <TableColumn fx:id="filtrationColumn" text="Filtration Sang" prefWidth="120"/>
+                    <TableColumn fx:id="creatinineColumn" text="Créatinine" prefWidth="100"/>
+                    <TableColumn fx:id="glasgowColumn" text="Score Glasgow" prefWidth="120"/>
+                    <TableColumn fx:id="respirationColumn" text="Respiration Assistée" prefWidth="150"/>
+                    <TableColumn fx:id="complicationsColumn" text="Complications" prefWidth="200"/>
+                </columns>
+            </TableView>
+        </VBox>
+
+    </SplitPane>
 </AnchorPane>
