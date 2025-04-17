@@ -76,6 +76,9 @@
                     <TableColumn fx:id="glasgowColumn" text="Score Glasgow" prefWidth="120"/>
                     <TableColumn fx:id="respirationColumn" text="Respiration Assistée" prefWidth="150"/>
                     <TableColumn fx:id="complicationsColumn" text="Complications" prefWidth="200"/>
+                    <TableColumn fx:id="action" text="Action" prefWidth="200">
+
+                    </TableColumn>
                 </columns>
             </TableView>
         </VBox>

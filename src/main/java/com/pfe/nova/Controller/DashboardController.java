@@ -51,6 +51,10 @@ public class DashboardController {
     
     @FXML
     private Tab viewRapportTab;
+    @FXML
+    private Tab createSession;
+    @FXML
+    private Tab viewSession;
 
     private User currentUser;
 
@@ -64,6 +68,8 @@ public class DashboardController {
             // Enable/disable rapport tabs based on user type
             createRapportTab.setDisable(!isMedecin);
             viewRapportTab.setDisable(!isMedecin);
+            createSession.setDisable(!isMedecin);
+            viewSession.setDisable(!isMedecin);
             // Make sure all FXML elements are properly injected
             if (welcomeLabel == null || nameLabel == null || emailLabel == null || 
                 phoneLabel == null || addressLabel == null || roleSpecificContent == null) {

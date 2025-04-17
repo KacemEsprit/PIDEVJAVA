@@ -8,11 +8,15 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.collections.FXCollections;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -23,7 +27,7 @@ public class ViewRapportsController {
     @FXML
     private VBox patientCardsContainer;
     @FXML
-    private TableView<Rapport> patientReportsTable;
+    private TableView<Rapport>  patientReportsTable;
 
     @FXML
     private TextField searchPatientField;
@@ -69,7 +73,8 @@ public class ViewRapportsController {
     private TableColumn<Rapport, String> respirationColumn;
     @FXML
     private TableColumn<Rapport, String> complicationsColumn;
-
+@FXML
+    private TableColumn<Rapport, Void> action;
     private PatientDAO patientDAO;
     private RapportDAO rapportDAO;
 
@@ -78,10 +83,10 @@ public class ViewRapportsController {
         try {
             patientDAO = new PatientDAO();
             rapportDAO = new RapportDAO();
-            
+
             // Initialize table columns
             setupTableColumns();
-            
+
             loadPatients();
             setupSearch();
             System.out.println("Initializing controller...");
@@ -90,31 +95,7 @@ public class ViewRapportsController {
         }
     }
 
-    private void showPatientReports(Patient patient) {
-        try {
-            // Clear existing items
-            patientReportsTable.getItems().clear();
-            
-            // Fetch reports for the selected patient
-            List<Rapport> rapports = rapportDAO.getRapportsByPatientID(patient.getId());
-            
-            // Debug log
-            System.out.println("Found " + rapports.size() + " reports for patient ID: " + patient.getId());
-            
-            // Bind the reports to the TableView
-            patientReportsTable.setItems(FXCollections.observableArrayList(rapports));
-            
-            // Update the selected patient name label
-            selectedPatientName.setText("Rapports de " + patient.getNom() + " " + patient.getPrenom());
-            
-            // Refresh the table
-            patientReportsTable.refresh();
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-            showError("Erreur", "Impossible de charger les rapports pour le patient: " + e.getMessage());
-        }
-    }
+
 
     private void loadPatients() {
         try {
@@ -200,6 +181,31 @@ public class ViewRapportsController {
             System.out.println("Erreur" + "Erreur lors de la recherche: " + e.getMessage());
         }
     }
+    private void showPatientReports(Patient patient) {
+        try {
+            // Clear existing items
+            patientReportsTable.getItems().clear();
+
+            // Fetch reports for the selected patient
+            List<Rapport> rapports = rapportDAO.getRapportsByPatientID(patient.getId());
+
+            // Debug log
+            showSuccess("Succès", "Nombre de rapports chargés: " + rapports.size());
+
+            // Bind the reports to the TableView
+            patientReportsTable.setItems(FXCollections.observableArrayList(rapports));
+
+            // Update the selected patient name label
+            selectedPatientName.setText("Rapports de " + patient.getNom() + " " + patient.getPrenom());
+
+            // Refresh the table
+            patientReportsTable.refresh();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showError("Erreur", "Impossible de charger les rapports pour le patient: " + e.getMessage());
+        }
+    }
     private void setupTableColumns() {
         ageColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getAge())));
         dateRapportColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDateRapport()));
@@ -221,10 +227,136 @@ public class ViewRapportsController {
         glasgowColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getScoreGlasgow())));
         respirationColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().isRespirationAssistee() == 1 ? "Oui" : "Non"));
         complicationsColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getComplications()));
+        // Setup Action column
+        action.setCellFactory(param -> new TableCell<>() {
+            private final Button deleteButton = new Button("Delete");
+            private final Button updateButton = new Button("Update");
+            private final HBox actionButtons = new HBox(10, updateButton, deleteButton);
+
+            {
+                deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5;");
+                updateButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5;");
+
+                deleteButton.setOnAction(event -> {
+                    Rapport rapport = getTableView().getItems().get(getIndex());
+                    deleteRapport(rapport);
+                });
+
+                updateButton.setOnAction(event -> {
+                    Rapport rapport = getTableView().getItems().get(getIndex());
+                    updateRapport(rapport);
+                });
+            }
+            private void updateRapport(Rapport rapport) {
+                try {
+                    Stage updateStage = new Stage();
+                    updateStage.initModality(Modality.APPLICATION_MODAL);
+                    updateStage.setTitle("Modifier le Rapport (Champs essentiels)");
+
+                    GridPane form = new GridPane();
+                    form.setPadding(new Insets(20));
+                    form.setHgap(10);
+                    form.setVgap(10);
+
+                    // Champs essentiels à modifier
+                    Label tensionLabel = new Label("Tension Artérielle:");
+                    TextField tensionField = new TextField(String.valueOf(rapport.getTensionArterielle()));
+
+                    Label poulsLabel = new Label("Pouls:");
+                    TextField poulsField = new TextField(String.valueOf(rapport.getPouls()));
+
+                    Label temperatureLabel = new Label("Température:");
+                    TextField temperatureField = new TextField(String.valueOf(rapport.getTemperature()));
+
+                    Label saturationLabel = new Label("Saturation Oxygène:");
+                    TextField saturationField = new TextField(String.valueOf(rapport.getSaturationOxygene()));
+
+                    Label traitementLabel = new Label("Traitement:");
+                    TextField traitementField = new TextField(rapport.getTraitement());
+
+                    Label complicationsLabel = new Label("Complications:");
+                    TextField complicationsField = new TextField(rapport.getComplications());
+
+                    // Ajout des champs au formulaire
+                    form.add(tensionLabel, 0, 0); form.add(tensionField, 1, 0);
+                    form.add(poulsLabel, 0, 1); form.add(poulsField, 1, 1);
+                    form.add(temperatureLabel, 0, 2); form.add(temperatureField, 1, 2);
+                    form.add(saturationLabel, 0, 3); form.add(saturationField, 1, 3);
+                    form.add(traitementLabel, 0, 4); form.add(traitementField, 1, 4);
+                    form.add(complicationsLabel, 0, 5); form.add(complicationsField, 1, 5);
+
+                    // Boutons
+                    Button saveButton = new Button("Enregistrer");
+                    saveButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white;");
+                    saveButton.setOnAction(e -> {
+                        try {
+                            // Mise à jour de l'objet
+                            rapport.setTensionArterielle(Integer.parseInt(tensionField.getText()));
+                            rapport.setPouls(Integer.parseInt(poulsField.getText()));
+                            rapport.setTemperature(Double.parseDouble(temperatureField.getText()));
+                            rapport.setSaturationOxygene(Integer.parseInt(saturationField.getText()));
+                            rapport.setTraitement(traitementField.getText());
+                            rapport.setComplications(complicationsField.getText());
+
+                            // Mise à jour base de données
+                            boolean success = rapportDAO.update(rapport);
+                            if (success) {
+                                showSuccess("Succès", "Rapport mis à jour avec succès !");
+                                patientReportsTable.refresh();
+                                updateStage.close();
+                            } else {
+                                showError("Erreur", "Échec de la mise à jour du rapport.");
+                            }
+                        } catch (Exception ex) {
+                            showError("Erreur", "Données invalides: " + ex.getMessage());
+                        }
+                    });
+
+                    Button cancelButton = new Button("Annuler");
+                    cancelButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
+                    cancelButton.setOnAction(e -> updateStage.close());
+
+                    HBox buttonBox = new HBox(10, saveButton, cancelButton);
+                    buttonBox.setAlignment(Pos.CENTER);
+                    form.add(buttonBox, 0, 6, 2, 1);
+
+                    Scene scene = new Scene(form, 500, 350);
+                    updateStage.setScene(scene);
+                    updateStage.showAndWait();
+                } catch (Exception e) {
+                    showError("Erreur", "Impossible d'afficher la fenêtre de modification: " + e.getMessage());
+                }
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(actionButtons);
+                }
+            }
+        });
     }
 
 
 
+    private void deleteRapport(Rapport rapport) {
+        boolean success = rapportDAO.delete(rapport.getId());
+        if (success) {
+            patientReportsTable.getItems().remove(rapport);
+            showSuccess("Succès", "Rapport supprimé avec succès !");
+        } else {
+            showError("Erreur", "Échec de la suppression du rapport.");
+        }
+    }
 
+    private void showSuccess(String succès, String s) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(succès);
+        alert.setContentText(s);
+        alert.showAndWait();
+    }
 
 }

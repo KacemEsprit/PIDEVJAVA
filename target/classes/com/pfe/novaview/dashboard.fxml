@@ -126,6 +126,14 @@
                 <Tab text="View Rapports" fx:id="viewRapportTab" disable="true">
                     <fx:include source="ViewRapports.fxml"/>
                 </Tab>
+                    <Tab text="Create Session" fx:id="createSession" disable="true">
+                    <fx:include source="CreateSessionDeTraitement.fxml"/>
+                </Tab>
+                <Tab text="View Session" fx:id="viewSession" disable="true">
+                    <fx:include source="viewSessions.fxml"/>
+                </Tab>
+
+
 
                 <!-- Admin -->
                 <Tab text="Administration" fx:id="adminTab" disable="true">

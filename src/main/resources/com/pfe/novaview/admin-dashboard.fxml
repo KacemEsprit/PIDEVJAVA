@@ -35,6 +35,7 @@
         <StackPane fx:id="contentArea">
             <TabPane fx:id="mainTabPane">
                 <Tab text="Users Management" closable="false">
+
                     <VBox spacing="10">
                         <padding>
                             <Insets top="10" right="10" bottom="10" left="10"/>
@@ -55,6 +56,13 @@
                             </columns>
                         </TableView>
                     </VBox>
+                </Tab>
+
+            <Tab text="Repports" closable="false">
+                <fx:include source="Rapports.fxml"/>
+            </Tab>
+                <Tab text="Sessions_De_Traitements" closable="false">
+                    <fx:include source="viewSessions.fxml"/>
                 </Tab>
             </TabPane>
         </StackPane>

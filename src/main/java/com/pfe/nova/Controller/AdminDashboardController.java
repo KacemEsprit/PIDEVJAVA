@@ -1,5 +1,7 @@
 package com.pfe.nova.Controller;
 
+import com.pfe.nova.configuration.RapportDAO;
+import com.pfe.nova.models.Rapport;
 import com.pfe.nova.models.User;
 import com.pfe.nova.utils.Session;
 import com.pfe.nova.configuration.UserDAO;
@@ -8,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -15,6 +18,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 public class AdminDashboardController {
     @FXML private Label welcomeLabel;
@@ -32,6 +36,8 @@ public class AdminDashboardController {
     @FXML private TableColumn<User, String> emailColumn;
     @FXML private TableColumn<User, String> roleColumn;
     @FXML private TableColumn<User, String> actionsColumn;
+    @FXML
+    private GridPane reportsGridPane;
     
     @FXML
     public void initialize() {
@@ -155,10 +161,75 @@ public class AdminDashboardController {
     private void showStatistics() {
         // TODO: Implement statistics view
     }
-    
+
     @FXML
     private void showReports() {
-        // TODO: Implement reports view
+        try {
+            // Clear existing content in the GridPane
+            reportsGridPane.getChildren().clear();
+
+            // Add header row
+            reportsGridPane.add(new Label("ID"), 0, 0);
+            reportsGridPane.add(new Label("Patient ID"), 1, 0);
+            reportsGridPane.add(new Label("Age"), 2, 0);
+            reportsGridPane.add(new Label("Date"), 3, 0);
+            reportsGridPane.add(new Label("Sexe"), 4, 0);
+            reportsGridPane.add(new Label("Tension"), 5, 0);
+            reportsGridPane.add(new Label("Pouls"), 6, 0);
+            reportsGridPane.add(new Label("Température"), 7, 0);
+            reportsGridPane.add(new Label("Saturation"), 8, 0);
+            reportsGridPane.add(new Label("IMC"), 9, 0);
+            reportsGridPane.add(new Label("Niveau Douleur"), 10, 0);
+            reportsGridPane.add(new Label("Traitement"), 11, 0);
+            reportsGridPane.add(new Label("Dose"), 12, 0);
+            reportsGridPane.add(new Label("Fréquence"), 13, 0);
+            reportsGridPane.add(new Label("Perte de Sang"), 14, 0);
+            reportsGridPane.add(new Label("Temps Opération"), 15, 0);
+            reportsGridPane.add(new Label("Durée Séance"), 16, 0);
+            reportsGridPane.add(new Label("Filtration"), 17, 0);
+            reportsGridPane.add(new Label("Créatinine"), 18, 0);
+            reportsGridPane.add(new Label("Glasgow"), 19, 0);
+            reportsGridPane.add(new Label("Respiration"), 20, 0);
+            reportsGridPane.add(new Label("Complications"), 21, 0);
+
+            // Fetch reports from the database
+            RapportDAO rapportDAO = new RapportDAO();
+            List<Rapport> rapports = rapportDAO.getAlls();
+
+            // Populate the GridPane with report data
+            for (int i = 0; i < rapports.size(); i++) {
+                Rapport rapport = rapports.get(i);
+                reportsGridPane.add(new Label(String.valueOf(rapport.getId())), 0, i + 1);
+                reportsGridPane.add(new Label(String.valueOf(rapport.getPatientId())), 1, i + 1);
+                reportsGridPane.add(new Label(String.valueOf(rapport.getAge())), 2, i + 1);
+                reportsGridPane.add(new Label(rapport.getDateRapport()), 3, i + 1);
+                reportsGridPane.add(new Label(rapport.getSexe()), 4, i + 1);
+                reportsGridPane.add(new Label(String.valueOf(rapport.getTensionArterielle())), 5, i + 1);
+                reportsGridPane.add(new Label(String.valueOf(rapport.getPouls())), 6, i + 1);
+                reportsGridPane.add(new Label(String.valueOf(rapport.getTemperature())), 7, i + 1);
+                reportsGridPane.add(new Label(String.valueOf(rapport.getSaturationOxygene())), 8, i + 1);
+                reportsGridPane.add(new Label(String.valueOf(rapport.getImc())), 9, i + 1);
+                reportsGridPane.add(new Label(String.valueOf(rapport.getNiveauDouleur())), 10, i + 1);
+                reportsGridPane.add(new Label(rapport.getTraitement()), 11, i + 1);
+                reportsGridPane.add(new Label(String.valueOf(rapport.getDoseMedicament())), 12, i + 1);
+                reportsGridPane.add(new Label(rapport.getFrequenceTraitement()), 13, i + 1);
+                reportsGridPane.add(new Label(String.valueOf(rapport.getPerteDeSang())), 14, i + 1);
+                reportsGridPane.add(new Label(String.valueOf(rapport.getTempsOperation())), 15, i + 1);
+                reportsGridPane.add(new Label(String.valueOf(rapport.getDureeSeance())), 16, i + 1);
+                reportsGridPane.add(new Label(String.valueOf(rapport.getFiltrationSang())), 17, i + 1);
+                reportsGridPane.add(new Label(String.valueOf(rapport.getCreatinine())), 18, i + 1);
+                reportsGridPane.add(new Label(String.valueOf(rapport.getScoreGlasgow())), 19, i + 1);
+                reportsGridPane.add(new Label(rapport.isRespirationAssistee() == 1 ? "Oui" : "Non"), 20, i + 1);
+                reportsGridPane.add(new Label(rapport.getComplications()), 21, i + 1);
+            }
+
+            // Show the GridPane and hide other content
+            reportsGridPane.setVisible(true);
+            mainTabPane.setVisible(false);
+        } catch (Exception e) {
+            showError( "Failed to load reports: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
     @FXML
