@@ -27,8 +27,21 @@ public class User {
     }
 
     // Add role getter and setter
+    // Make sure the getRole method is properly implemented
     public String getRole() {
         return role;
+    }
+    
+    // Add a debug method to print user details
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                '}';
     }
 
     public void setRole(String role) {
@@ -97,5 +110,10 @@ public class User {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    // Add a username getter that returns the name
+    public String getUsername() {
+        return nom;
     }
 }

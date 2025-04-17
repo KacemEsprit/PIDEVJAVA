@@ -9,6 +9,9 @@
     </option>
   </component>
   <component name="PWA">
+    <option name="wasEnabledAtLeastOnce" value="true" />
+  </component>
+  <component name="PWA">
     <option name="enabled" value="true" />
     <option name="wasEnabledAtLeastOnce" value="true" />
   </component>

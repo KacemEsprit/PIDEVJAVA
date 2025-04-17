@@ -276,6 +276,9 @@ public class UserDAO {
 
     public static boolean updateUser(User user) {
         try (Connection conn = DatabaseConnection.getConnection()) {
+            // Debug: Print user details
+            System.out.println("Updating user: " + user);
+
             // Update base user information
             String baseQuery = "UPDATE user SET nom = ?, prenom = ?, email = ?, tel = ?, adresse = ? WHERE id = ?";
             try (PreparedStatement stmt = conn.prepareStatement(baseQuery)) {
@@ -285,7 +288,14 @@ public class UserDAO {
                 stmt.setString(4, user.getTel());
                 stmt.setString(5, user.getAdresse());
                 stmt.setInt(6, user.getId());
-                stmt.executeUpdate();
+
+                int rowsAffected = stmt.executeUpdate();
+                System.out.println("Base user update rows affected: " + rowsAffected);
+
+                if (rowsAffected == 0) {
+                    System.err.println("No rows updated for base user information.");
+                    return false;
+                }
             }
 
             // Update role-specific information
@@ -298,7 +308,9 @@ public class UserDAO {
                         stmt.setString(2, medecin.getExperience());
                         stmt.setString(3, medecin.getDiplome());
                         stmt.setInt(4, user.getId());
-                        stmt.executeUpdate();
+
+                        int rowsAffected = stmt.executeUpdate();
+                        System.out.println("Medecin update rows affected: " + rowsAffected);
                     }
                     break;
 
@@ -310,7 +322,9 @@ public class UserDAO {
                         stmt.setString(2, patient.getGender());
                         stmt.setString(3, patient.getBloodType());
                         stmt.setInt(4, user.getId());
-                        stmt.executeUpdate();
+
+                        int rowsAffected = stmt.executeUpdate();
+                        System.out.println("Patient update rows affected: " + rowsAffected);
                     }
                     break;
 
@@ -320,7 +334,9 @@ public class UserDAO {
                     try (PreparedStatement stmt = conn.prepareStatement(donateurQuery)) {
                         stmt.setString(1, donateur.getDonateurType());
                         stmt.setInt(2, user.getId());
-                        stmt.executeUpdate();
+
+                        int rowsAffected = stmt.executeUpdate();
+                        System.out.println("Donateur update rows affected: " + rowsAffected);
                     }
                     break;
             }

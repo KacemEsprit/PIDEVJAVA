@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import java.io.IOException;
+import java.sql.SQLException; 
 import java.util.List;
 
 public class AdminDashboardController {
@@ -129,17 +130,19 @@ public class AdminDashboardController {
     
     @FXML
     private void handleLogout() {
+        // Change from Session.logout() to Session.getInstance().logout()
+        Session.getInstance().logout();
+        
+        // Navigate to login screen
         try {
-            Session.logout();  // Changed from clearSession() to logout()
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/login.fxml"));
             Parent root = loader.load();
+            
             Stage stage = (Stage) logoutButton.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+            stage.setScene(new Scene(root));
             stage.setTitle("Login");
-            stage.centerOnScreen();
         } catch (IOException e) {
-            showError("Error during logout: " + e.getMessage());
+            showError("Error navigating to login: " + e.getMessage());
         }
     }
     
@@ -189,7 +192,6 @@ public class AdminDashboardController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
     @FXML
     private void handleEditUser(User user) {
         try {
@@ -200,43 +202,47 @@ public class AdminDashboardController {
                 return;
             }
 
-            // Debug print to check user data
-            System.out.println("Opening edit window for user: " + fullUser.getRole());
-
-            // Use absolute path for FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/edituser.fxml"));
-            if (loader.getLocation() == null) {
-                System.err.println("Could not find edituser.fxml");
-                showError("Could not find edit user form");
-                return;
-            }
-
             Parent root = loader.load();
             EditUserController editController = loader.getController();
-            if (editController == null) {
-                System.err.println("Could not get EditUserController");
-                showError("Error initializing edit form");
-                return;
-            }
-
-            editController.initData(fullUser);
+            editController.initData(fullUser); // Pass the full user object
 
             Stage stage = new Stage();
             stage.setTitle("Edit User - " + fullUser.getRole());
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+            stage.setScene(new Scene(root));
             stage.show();
 
         } catch (IOException e) {
-            System.err.println("Error loading edit window: " + e.getMessage());
-            e.printStackTrace();
             showError("Error opening edit window: " + e.getMessage());
-        } catch (Exception e) {
-            System.err.println("Unexpected error: " + e.getMessage());
-            e.printStackTrace();
-            showError("Unexpected error: " + e.getMessage());
         }
     }
+//    @FXML
+//    private void handleEditUser(User user) {
+//        try {
+//            // Get the full user data with role-specific information
+//            User fullUser = UserDAO.getUserById(user.getId());
+//            if (fullUser == null) {
+//                showError("Could not load user data");
+//                return;
+//            }
+//
+//            // Debug: Print the user ID
+//            System.out.println("Editing user with ID: " + fullUser.getId());
+//
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/edituser.fxml"));
+//            Parent root = loader.load();
+//            EditUserController editController = loader.getController();
+//            editController.initData(fullUser);
+//
+//            Stage stage = new Stage();
+//            stage.setTitle("Edit User - " + fullUser.getRole());
+//            stage.setScene(new Scene(root));
+//            stage.show();
+//
+//        } catch (IOException e) {
+//            showError("Error opening edit window: " + e.getMessage());
+//        }
+//    }
 
     private boolean confirmDelete(User user) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

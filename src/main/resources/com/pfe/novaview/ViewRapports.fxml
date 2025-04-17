@@ -4,17 +4,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.shape.Circle?>
 
-<?import java.lang.String?>
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #f0f2f5;"
-            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pfe.nova.Controller.ViewRapportsController">
+<AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.pfe.nova.Controller.ViewRapportsController"
+            prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #f4f6f9;">
 
     <SplitPane dividerPositions="0.35" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        
-        <!-- Left Side - Patient List -->
-        <VBox spacing="20" style="-fx-background-color: white;">
+
+        <!-- Left Side -->
+        <VBox spacing="20" style="-fx-background-color: #ffffff;">
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
@@ -22,81 +21,64 @@
             <!-- Search Section -->
             <HBox spacing="10" alignment="CENTER_LEFT">
                 <TextField fx:id="searchPatientField" promptText="Rechercher un patient..." HBox.hgrow="ALWAYS"
-                          style="-fx-background-radius: 20; -fx-padding: 10 15; -fx-background-color: #f5f5f5;
-                                 -fx-prompt-text-fill: #757575;"/>
-                <Button text="🔍" style="-fx-background-radius: 20; -fx-background-color: #3f51b5;
-                                       -fx-text-fill: white; -fx-font-size: 14;"/>
+                           style="-fx-background-radius: 20; -fx-padding: 10 15; -fx-background-color: #f5f5f5;
+                                  -fx-prompt-text-fill: #757575;"/>
+                <Button text="🔍" style="-fx-background-radius: 20; -fx-background-color:#2980b9;
+                                          -fx-text-fill: white; -fx-font-size: 14;"
+                        />
             </HBox>
 
-            <!-- Patients Title -->
-            <Label text="Liste des Patients" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+            <!-- Title -->
+            <Label text="Liste des Patients" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
 
             <!-- Scrollable Patient Cards -->
-            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" 
-                       style="-fx-background-color: transparent; -fx-padding: 0;">
-                <VBox fx:id="patientCardsContainer" spacing="15">
-                    <!-- Patient Card Template -->
-                    <VBox styleClass="patient-card" style="-fx-background-color: white; -fx-background-radius: 15;
-                          -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);
-                          -fx-border-color: #e0e0e0; -fx-border-radius: 15; -fx-border-width: 1;">
-                        <padding>
-                            <Insets top="15" right="15" bottom="15" left="15"/>
-                        </padding>
-                        
-                        <HBox spacing="15" alignment="CENTER_LEFT">
-                            <!-- Patient Avatar -->
-                            <StackPane>
-                                <Circle fx:id="patientAvatar" radius="25" fill="#1a237e"/>
-                                <Label text="JP" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
-                            </StackPane>
-                            
-                            <!-- Patient Info -->
-                            <VBox spacing="5" HBox.hgrow="ALWAYS">
-                                <Label text="Nom Prénom" style="-fx-font-weight: bold; -fx-font-size: 16;"/>
-                                <Label text="ID: 12345" style="-fx-text-fill: #666;"/>
-                            </VBox>
-                            
-                            <!-- View Reports Button -->
-                            <Button text="Consulter Rapports "
-                                    style="-fx-background-color: #3f51b5; -fx-text-fill: white;
-                                           -fx-background-radius: 20; -fx-padding: 8 20;
-                                           -fx-effect: dropshadow(three-pass-box, rgba(63,81,181,0.2), 5, 0, 0, 2);"/>
-                        </HBox>
-                    </VBox>
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-padding: 0;">
+                <VBox fx:id="patientCardsContainer" spacing="15" style="-fx-padding: 10;">
+                    <!-- Patient Cards dynamically injected here -->
                 </VBox>
             </ScrollPane>
         </VBox>
 
-        <!-- Right Side - Reports Display -->
-        <VBox spacing="20" style="-fx-background-color: white;">
+        <!-- Right Side -->
+        <VBox spacing="20" style="-fx-background-color: #ffffff;">
             <padding>
-                <Insets />
+                <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
 
             <!-- Selected Patient Info -->
-            <HBox spacing="15" alignment="CENTER_LEFT" 
+            <HBox spacing="15" alignment="CENTER_LEFT"
                   style="-fx-background-color: #f8f9fa; -fx-background-radius: 15; -fx-padding: 20;">
-                <Label fx:id="selectedPatientName" text="Rapports du Patient" 
-                       style="-fx-font-weight: bold; -fx-font-size: 24;"/>
+                <Label fx:id="selectedPatientName" text="Rapports du Patient"
+                       style="-fx-font-weight: bold; -fx-font-size: 24; -fx-text-fill: #333333;"/>
             </HBox>
 
-            <!-- Reports List -->
-            <TableView fx:id="patientReportsTable" VBox.vgrow="ALWAYS" 
-                      style="-fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">
+            <!-- Table of Reports -->
+            <TableView fx:id="patientReportsTable" VBox.vgrow="ALWAYS"
+                       style="-fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">
                 <columns>
-                    <TableColumn fx:id="reportDateColumn" text="Date" prefWidth="100"/>
-                    <TableColumn fx:id="tensionColumn" text="Tension" prefWidth="100"/>
-                    <TableColumn fx:id="temperatureColumn" text="Temp." prefWidth="80"/>
-                    <TableColumn fx:id="saturationColumn" text="Sat. O2" prefWidth="80"/>
-                    <TableColumn fx:id="imcColumn" text="IMC" prefWidth="70"/>
+                    <TableColumn fx:id="ageColumn" text="Âge" prefWidth="80"/>
+                    <TableColumn fx:id="dateRapportColumn" text="Date Rapport" prefWidth="120"/>
+                    <TableColumn fx:id="sexeColumn" text="Sexe" prefWidth="80"/>
+                    <TableColumn fx:id="tensionColumn" text="Tension Artérielle" prefWidth="120"/>
+                    <TableColumn fx:id="poulsColumn" text="Pouls" prefWidth="80"/>
+                    <TableColumn fx:id="temperatureColumn" text="Température" prefWidth="100"/>
+                    <TableColumn fx:id="saturationColumn" text="Saturation Oxygène" prefWidth="120"/>
+                    <TableColumn fx:id="imcColumn" text="IMC" prefWidth="80"/>
+                    <TableColumn fx:id="niveauDouleurColumn" text="Niveau Douleur" prefWidth="120"/>
                     <TableColumn fx:id="traitementColumn" text="Traitement" prefWidth="150"/>
-                    <TableColumn fx:id="complicationsColumn" text="Complications" prefWidth="150"/>
-                    <TableColumn fx:id="reportActionsColumn" text="Actions" prefWidth="100"/>
+                    <TableColumn fx:id="doseColumn" text="Dose Médicament" prefWidth="120"/>
+                    <TableColumn fx:id="frequenceColumn" text="Fréquence Traitement" prefWidth="150"/>
+                    <TableColumn fx:id="perteSangColumn" text="Perte de Sang" prefWidth="120"/>
+                    <TableColumn fx:id="tempsOperationColumn" text="Temps Opération" prefWidth="120"/>
+                    <TableColumn fx:id="dureeSeanceColumn" text="Durée Séance" prefWidth="120"/>
+                    <TableColumn fx:id="filtrationColumn" text="Filtration Sang" prefWidth="120"/>
+                    <TableColumn fx:id="creatinineColumn" text="Créatinine" prefWidth="100"/>
+                    <TableColumn fx:id="glasgowColumn" text="Score Glasgow" prefWidth="120"/>
+                    <TableColumn fx:id="respirationColumn" text="Respiration Assistée" prefWidth="150"/>
+                    <TableColumn fx:id="complicationsColumn" text="Complications" prefWidth="200"/>
                 </columns>
-                <styleClass>
-                    <String fx:value="table-view"/>
-                </styleClass>
             </TableView>
         </VBox>
+
     </SplitPane>
 </AnchorPane>

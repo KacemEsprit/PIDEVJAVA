@@ -210,3 +210,62 @@
     -fx-padding: 10 0;
     -fx-opacity: 0.6;
 }
+
+/* Pending Post Styles */
+.pending-post-box {
+    -fx-background-color: #fff8e1;
+    -fx-border-color: #ffecb3;
+    -fx-border-width: 1px;
+    -fx-opacity: 0.9;
+}
+
+.pending-badge {
+    -fx-background-color: #ffa000;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 5px 10px;
+    -fx-background-radius: 10px;
+}
+
+/* Admin Controls */
+.admin-controls {
+    -fx-spacing: 10px;
+    -fx-padding: 10px 0;
+}
+
+.approve-button {
+    -fx-background-color: #4caf50;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 8px 15px;
+    -fx-background-radius: 5px;
+}
+
+.approve-button:hover {
+    -fx-background-color: #43a047;
+}
+
+.reject-button {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 8px 15px;
+    -fx-background-radius: 5px;
+}
+
+.reject-button:hover {
+    -fx-background-color: #e53935;
+}
+
+/* Admin Mode Toggle */
+.admin-mode-toggle {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: #424242;
+    -fx-background-radius: 20px;
+    -fx-padding: 8px 15px;
+}
+
+.admin-mode-toggle:selected {
+    -fx-background-color: #1a237e;
+    -fx-text-fill: white;
+}

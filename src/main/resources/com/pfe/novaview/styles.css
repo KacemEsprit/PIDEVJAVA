@@ -39,7 +39,7 @@
 }
 
 .post-edit-button:hover {
-    -fx-background-color: #1557b0 !important;
+    -fx-background-color: #95E1D3 !important;
 }
 
 .post-delete-button:hover {
@@ -71,40 +71,4 @@
 
 .new-post-button:hover {
     -fx-background-color: #218838;
-}
-
-.table-view {
-    -fx-background-color: transparent;
-}
-
-.table-view .column-header-background {
-    -fx-background-color: #f8f9fa;
-    -fx-background-radius: 5 5 0 0;
-}
-
-.table-view .column-header {
-    -fx-background-color: transparent;
-    -fx-padding: 15px;
-    -fx-font-weight: bold;
-}
-
-.table-view .table-cell {
-    -fx-padding: 12px;
-}
-
-.table-row-cell:hover {
-    -fx-background-color: #f1f3f4;
-}
-
-.button:hover {
-    -fx-opacity: 0.9;
-}
-
-.scroll-pane {
-    -fx-background-color: transparent;
-    -fx-background: transparent;
-}
-
-.scroll-pane > .viewport {
-    -fx-background-color: transparent;
 }
