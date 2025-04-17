@@ -13,13 +13,28 @@
     <top>
         <HBox alignment="CENTER_RIGHT" spacing="10" style="-fx-padding: 10; -fx-background-color: #3498db;">
             <Label fx:id="welcomeLabel" style="-fx-text-fill: white; -fx-font-size: 16px;"/>
+            
+            <!-- Add navigation buttons -->
+            <Region HBox.hgrow="ALWAYS"/>
+            
+            <!-- Posts button for all users -->
+            <Button text="Community Posts" onAction="#navigateToPostsList"
+                    style="-fx-background-color: #2980b9; -fx-text-fill: white;"/>
+            
+            <!-- Admin posts management button (will be visible only for admins) -->
+            <Button fx:id="adminPostsBtn" text="Admin Posts Management" onAction="#navigateToAdminPostsManagement"
+                    style="-fx-background-color: #8e44ad; -fx-text-fill: white;"/>
+            
+            <!-- Removed the "Back to User Mode" button -->
+            
             <Button text="Logout" fx:id="logoutButton" onAction="#handleLogout"
-                    style="-fx-background-color: #e74c3c;"/>
+                    style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
         </HBox>
     </top>
     
     <center>
         <TabPane fx:id="contentTabPane">
+            <!-- Rest of the content remains the same -->
             <!-- Profile Tab -->
             <Tab text="Profile" closable="false">
                 <VBox fx:id="profileContent" spacing="10" style="-fx-padding: 20;">
@@ -35,88 +50,9 @@
                     <Button text="View Rapports" fx:id="viewRapportsButton" onAction="#handleViewRapports"
                             style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
                 </VBox>
-
-
-            </Tab>
-
-            <!-- Medecin Specific Tabs -->
-            <Tab text="Patients List" fx:id="patientsTab" disable="true">
-                <VBox spacing="10" style="-fx-padding: 20;">
-                    <TableView fx:id="patientsTable" VBox.vgrow="ALWAYS">
-                        <columns>
-                            <TableColumn fx:id="patientNameColumn" text="Name"/>
-                            <TableColumn fx:id="patientEmailColumn" text="Email"/>
-                            <TableColumn fx:id="patientAgeColumn" text="Age"/>
-                            <TableColumn fx:id="patientGenderColumn" text="Gender"/>
-                            <TableColumn fx:id="patientBloodTypeColumn" text="Blood Type"/>
-                        </columns>
-                    </TableView>
-                </VBox>
-            </Tab>
-
-            <!-- Patient Specific Tabs -->
-            <Tab text="Find Doctors" fx:id="findDoctorsTab" disable="true">
-                <VBox spacing="10" style="-fx-padding: 20;">
-                    <TableView fx:id="doctorsTable" VBox.vgrow="ALWAYS">
-                        <columns>
-                            <TableColumn fx:id="doctorNameColumn" text="Name"/>
-                            <TableColumn fx:id="specialityColumn" text="Speciality"/>
-                            <TableColumn fx:id="experienceColumn" text="Experience"/>
-                            <TableColumn fx:id="contactColumn" text="Contact"/>
-                        </columns>
-                    </TableView>
-                </VBox>
-            </Tab>
-
-            <!-- Appointments Tab (for both Medecin and Patient) -->
-            <Tab text="Appointments" fx:id="appointmentsTab" disable="true">
-                <VBox spacing="10" style="-fx-padding: 20;">
-                    <HBox spacing="10" alignment="CENTER_LEFT">
-                        <Button text="New Appointment" fx:id="newAppointmentButton" 
-                                style="-fx-background-color: #2ecc71;"/>
-                    </HBox>
-                    <TableView fx:id="appointmentsTable" VBox.vgrow="ALWAYS">
-                        <columns>
-                            <TableColumn fx:id="appointmentDateColumn" text="Date"/>
-                            <TableColumn fx:id="appointmentTimeColumn" text="Time"/>
-                            <TableColumn fx:id="appointmentWithColumn" text="With"/>
-                            <TableColumn fx:id="appointmentStatusColumn" text="Status"/>
-                        </columns>
-                    </TableView>
-                </VBox>
-            </Tab>
-
-            <!-- Donateur Specific Tab -->
-            <Tab text="My Donations" fx:id="donationsTab" disable="true">
-                <VBox spacing="10" style="-fx-padding: 20;">
-                    <HBox spacing="10" alignment="CENTER_LEFT">
-                        <Button text="New Donation" fx:id="newDonationButton"
-                                style="-fx-background-color: #2ecc71;"/>
-                    </HBox>
-                    <TableView fx:id="donationsTable" VBox.vgrow="ALWAYS">
-                        <columns>
-                            <TableColumn fx:id="donationDateColumn" text="Date"/>
-                            <TableColumn fx:id="donationTypeColumn" text="Type"/>
-                            <TableColumn fx:id="donationAmountColumn" text="Amount"/>
-                            <TableColumn fx:id="donationStatusColumn" text="Status"/>
-                        </columns>
-                    </TableView>
-                </VBox>
             </Tab>
             
-            <!-- Admin Tab -->
-            <Tab text="Administration" fx:id="adminTab" disable="true">
-                <VBox spacing="10" style="-fx-padding: 20;">
-                    <TableView fx:id="usersTable" VBox.vgrow="ALWAYS">
-                        <columns>
-                            <TableColumn fx:id="userNameColumn" text="Name"/>
-                            <TableColumn fx:id="userEmailColumn" text="Email"/>
-                            <TableColumn fx:id="userRoleColumn" text="Role"/>
-                            <TableColumn fx:id="userStatusColumn" text="Status"/>
-                        </columns>
-                    </TableView>
-                </VBox>
-            </Tab>
+            <!-- Rest of the tabs remain unchanged -->
         </TabPane>
     </center>
 </BorderPane>

@@ -1,4 +1,4 @@
-package com.pfe.nova.utils;
+package com.pfe.nova.configuration;
 
 import com.pfe.nova.models.User;
 

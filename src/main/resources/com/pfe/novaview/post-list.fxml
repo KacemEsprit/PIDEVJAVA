@@ -18,7 +18,9 @@
     <HBox spacing="15" alignment="CENTER_LEFT" styleClass="filter-container">
         <Label text="Filter by:" styleClass="filter-label"/>
         <ComboBox fx:id="categoryFilter" prefWidth="250" styleClass="category-filter"/>
+        <CheckBox fx:id="showPendingPosts" text="Show My Pending Posts" styleClass="pending-filter"/>
         <Region HBox.hgrow="ALWAYS"/>
+        <!-- Removed the admin toggle button -->
         <Button text="✏️ Create New Post" onAction="#handleNewPost" styleClass="new-post-button"/>
     </HBox>
 

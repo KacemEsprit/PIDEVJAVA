@@ -2,44 +2,85 @@ package com.pfe.nova.configuration;
 import com.pfe.nova.configuration.DatabaseConnection;
 import com.pfe.nova.models.User;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+
 public class UserDAO {
 
-    public static void createUser(User user) throws SQLException {
-        String sql = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
-
+    /**
+     * Find a user by email
+     * @param email The email to search for
+     * @return The user if found, null otherwise
+     * @throws SQLException If a database error occurs
+     */
+    public static User findByEmail(String email) throws SQLException {
+        String query = "SELECT * FROM user WHERE email = ?";
+        
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, user.getNom());
-            stmt.setString(2, user.getPassword()); // In production, hash this password
-            stmt.setString(3, user.getEmail());
-            stmt.executeUpdate();
-        }
-    }
-
-    public static User getUserByUsername(String username) throws SQLException {
-        String sql = "SELECT * FROM users WHERE username = ?";
-        User user = null;
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                user = new User();
-                user.setId(rs.getInt("id"));
-                user.setNom(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setEmail(rs.getString("email"));
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setString(1, email);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User();
+                    user.setId(rs.getInt("id"));
+                    user.setNom(rs.getString("nom"));
+                    user.setPrenom(rs.getString("prenom"));
+                    user.setEmail(rs.getString("email"));
+                    user.setTel(rs.getString("tel"));
+                    user.setAdresse(rs.getString("adresse"));
+                    user.setRole(rs.getString("role"));
+                    user.setPassword(rs.getString("password"));
+                    
+                    // Optional fields
+                    if (rs.getObject("picture") != null) {
+                        user.setPicture(rs.getString("picture"));
+                    }
+                    
+                    return user;
+                }
             }
         }
-        return user;
+        
+        return null;
     }
-
-    // Add other methods as needed (update, delete, etc.)
+    
+    /**
+     * Find a user by ID
+     * @param id The user ID to search for
+     * @return The user if found, null otherwise
+     * @throws SQLException If a database error occurs
+     */
+    public static User findById(int id) throws SQLException {
+        String query = "SELECT * FROM user WHERE id = ?";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setInt(1, id);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User();
+                    user.setId(rs.getInt("id"));
+                    user.setNom(rs.getString("nom"));
+                    user.setPrenom(rs.getString("prenom"));
+                    user.setEmail(rs.getString("email"));
+                    user.setTel(rs.getString("tel"));
+                    user.setAdresse(rs.getString("adresse"));
+                    user.setRole(rs.getString("role"));
+                    user.setPassword(rs.getString("password"));
+                    
+                    // Optional fields
+                    if (rs.getObject("picture") != null) {
+                        user.setPicture(rs.getString("picture"));
+                    }
+                    
+                    return user;
+                }
+            }
+        }
+        
+        return null;
+    }
 }
 

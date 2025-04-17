@@ -27,9 +27,12 @@ public class DashboardController {
     @FXML private Label addressLabel;
     @FXML private VBox roleSpecificContent;
     
+    @FXML private TabPane contentTabPane; // Add this missing FXML field
+    @FXML private Button adminPostsBtn; // Add this for the admin button
+    
     @FXML private Tab patientsTab;
     @FXML private Tab findDoctorsTab;
-    @FXML private Tab adminTab;  // Add this FXML injection at the top with other tab declarations
+    @FXML private Tab adminTab;
     @FXML private Tab appointmentsTab;
     @FXML private Tab donationsTab;
     
@@ -91,6 +94,13 @@ public class DashboardController {
         this.currentUser = user;
         setupUserInterface();
         loadData();
+        
+        // Show/hide admin posts management button based on role
+        if (adminPostsBtn != null) {
+            boolean isAdmin = user.getRole() != null && user.getRole().toUpperCase().contains("ADMIN");
+            adminPostsBtn.setVisible(isAdmin);
+            adminPostsBtn.setManaged(isAdmin); // This removes the space when button is hidden
+        }
     }
 
     @FXML private Button createRapportButton;
@@ -263,11 +273,68 @@ public class DashboardController {
         }
     }
 
+    // Add these methods to handle navigation to admin posts management and post list
+    @FXML
+    public void navigateToAdminPostsManagement() {
+        try {
+            User currentUser = Session.getUtilisateurConnecte();
+            if (currentUser == null || !currentUser.getRole().toUpperCase().contains("ADMIN")) {
+                showError("You don't have permission to access the admin area");
+                return;
+            }
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/admin-posts-management.fxml"));
+            Parent root = loader.load();
+            
+            // Get the controller and pass the user
+            AdminPostsManagementController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+            
+            Stage stage = (Stage) contentTabPane.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Admin Posts Management");
+            stage.centerOnScreen();
+        } catch (IOException e) {
+            showError("Error loading admin posts management: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void navigateToPostsList() {
+        try {
+            User currentUser = Session.getUtilisateurConnecte();
+            if (currentUser == null) {
+                showError("No user logged in");
+                return;
+            }
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/post-list.fxml"));
+            Parent root = loader.load();
+            
+            // Get the controller and pass the user
+            PostListController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
+            
+            Stage stage = (Stage) contentTabPane.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("OncoKidsCare - Posts");
+            stage.centerOnScreen();
+        } catch (IOException e) {
+            showError("Error loading posts list: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+
+
     }
 }

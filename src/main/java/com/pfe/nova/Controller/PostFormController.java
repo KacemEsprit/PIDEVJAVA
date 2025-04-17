@@ -23,8 +23,19 @@ public class PostFormController {
     @FXML private FlowPane imagePreviewPane;
     @FXML private Label errorLabel;
 
+    // Remove the hardcoded user ID constant if it exists
+    // private static final int DEFAULT_USER_ID = 2;
+    
+    // Add a field for the current user
+    private User currentUser;
+
     private List<String> selectedImagePaths = new ArrayList<>();
     private Post editingPost = null;
+
+    // Add this method to set the current user
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
 
     @FXML
     public void initialize() {
@@ -92,17 +103,32 @@ public class PostFormController {
     // In your method where you save the post and its images
     private void savePost() {
         try {
+            // Validate that we have a current user
+            if (currentUser == null) {
+                errorLabel.setText("Error: No user logged in");
+                errorLabel.setVisible(true);
+                return;
+            }
+            
             // Create and set up the post object
             Post post = (editingPost != null) ? editingPost : new Post();
             post.setContent(contentArea.getText());
             post.setCategory(categoryComboBox.getValue());
             post.setAnonymous(anonymousCheckBox.isSelected());
             
+            // Use the current user instead of hardcoded ID
+            if (editingPost == null) {
+                post.setUser(currentUser);
+            }
+            
+            // Remove this block that uses DEFAULT_USER_ID
+            /*
             if (editingPost == null) {
                 User tempUser = new User();
-                tempUser.setId(4); // Replace with actual logged-in user ID
+                tempUser.setId(DEFAULT_USER_ID); // Use the constant defined above
                 post.setUser(tempUser);
             }
+            */
             
             // Upload images and get their URLs
             List<String> imageUrls = new ArrayList<>();
@@ -125,6 +151,4 @@ public class PostFormController {
             errorLabel.setVisible(true);
         }
     }
-    
-    // Delete all these duplicate declarations below
 }
