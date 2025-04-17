@@ -1,9 +1,10 @@
 package com.pfe.nova.Controller;
 
 import com.pfe.nova.configuration.RapportDAO;
+import com.pfe.nova.configuration.Session;
 import com.pfe.nova.models.Rapport;
 import com.pfe.nova.models.User;
-import com.pfe.nova.utils.Session;
+
 import com.pfe.nova.configuration.UserDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -127,7 +128,7 @@ public class AdminDashboardController {
     @FXML
     private void handleLogout() {
         try {
-            Session.logout();  // Changed from clearSession() to logout()
+            Session.clearSession();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/login.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) logoutButton.getScene().getWindow();
