@@ -99,13 +99,12 @@ public class PostDAO {
 
         User user = new User();
         user.setId(rs.getInt("user_id"));
-        // Remove username setting since we're not fetching it
+
         post.setUser(user);
 
-        return post; // Remove loadImages(post) call
+        return post;
     }
 
-    // Remove the loadImages method since we don't need it anymore
 
 
 
@@ -139,10 +138,9 @@ public class PostDAO {
         }
     }
 
-    // Add these methods to your PostDAO class
 
 
-    
+
     public static List<Post> findByUserId(int userId) throws SQLException {
         List<Post> posts = new ArrayList<>();
         String query = "SELECT * FROM publication WHERE user_id = ? ORDER BY date_pb DESC";
@@ -176,7 +174,7 @@ public class PostDAO {
         }
     }
     
-    // Add a method to find pending posts for a specific user
+
     public static List<Post> findPendingByUserId(int userId) throws SQLException {
         List<Post> posts = new ArrayList<>();
         String query = "SELECT * FROM publication WHERE user_id = ? AND status = 'pending' ORDER BY date_pb DESC";
@@ -197,7 +195,7 @@ public class PostDAO {
         return posts;
     }
 
-    // Add this method to find both approved posts and user's pending posts
+
     public static List<Post> findApprovedAndUserPending(int userId) throws SQLException {
         List<Post> posts = new ArrayList<>();
         
@@ -245,12 +243,7 @@ public class PostDAO {
         return posts;
     }
 
-    /**
-     * Counts the number of posts with a specific status
-     * @param status The status to count (e.g., "pending", "approved")
-     * @return The number of posts with the specified status
-     * @throws SQLException If a database error occurs
-     */
+
     public static int countByStatus(String status) throws SQLException {
         String sql = "SELECT COUNT(*) FROM publication WHERE status = ?";
         
@@ -268,9 +261,7 @@ public class PostDAO {
         }
     }
 
-    // Remove this duplicate findByUserId method - REMOVE THIS ENTIRE METHOD
-    
-    // Fix this method to use "publication" instead of "post"
+
     public static List<Post> findAll(boolean includePending) throws SQLException {
         List<Post> posts = new ArrayList<>();
         String query;
@@ -294,7 +285,7 @@ public class PostDAO {
         return posts;
     }
 
-    // Update the findById method to properly load user data
+
     public static Post findById(int id) throws SQLException {
         String sql = "SELECT p.*, u.id as user_id, u.nom, u.prenom, u.email, u.tel, u.adresse, u.picture, u.role " +
                      "FROM publication p " +
@@ -338,7 +329,7 @@ public class PostDAO {
         return null;
     }
 
-    // Instead of creating a new findAll() method, modify the existing one to properly load user data
+
     public static List<Post> findAll() throws SQLException {
         List<Post> posts = new ArrayList<>();
         
@@ -362,7 +353,7 @@ public class PostDAO {
                 post.setViewCount(rs.getInt("view_count"));
                 post.setStatus(rs.getString("status"));
                 
-                // Create and set the user object with all fields
+
                 User user = new User();
                 user.setId(rs.getInt("user_id"));
                 user.setNom(rs.getString("nom"));
@@ -382,7 +373,7 @@ public class PostDAO {
         return posts;
     }
 
-    // Update the findByStatus method to properly load user data
+
     public static List<Post> findByStatus(String status) throws SQLException {
         List<Post> posts = new ArrayList<>();
         
@@ -409,7 +400,7 @@ public class PostDAO {
                     post.setViewCount(rs.getInt("view_count"));
                     post.setStatus(rs.getString("status"));
                     
-                    // Create and set the user object with all fields
+
                     User user = new User();
                     user.setId(rs.getInt("user_id"));
                     user.setNom(rs.getString("nom"));

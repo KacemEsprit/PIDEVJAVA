@@ -38,14 +38,14 @@ public class CommentDAO {
         }
     }
 
-    // Add this method to your CommentDAO class
+
     public static void updateReportStatus(int commentId, boolean reported, String reason) throws SQLException {
         String sql = "UPDATE comment SET reported = ?, report_reason = ? WHERE id = ?";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            // Add debugging output
+
             System.out.println("Executing SQL: " + sql);
             System.out.println("Parameters: reported=" + reported + ", reason=" + reason + ", commentId=" + commentId);
             
@@ -62,7 +62,7 @@ public class CommentDAO {
         }
     }
 
-    // Update the findByPostId method to include reported status
+
     public static List<Comment> findByPostId(int postId) throws SQLException {
         List<Comment> comments = new ArrayList<>();
         String sql = "SELECT c.*, u.nom, u.prenom FROM comment c JOIN user u ON c.user_id = u.id WHERE c.publication_id = ? ORDER BY c.created_at DESC";
@@ -97,34 +97,30 @@ public class CommentDAO {
         return comments;
     }
 
-    /**
-     * Deletes a comment and all its related records
-     * @param commentId The ID of the comment to delete
-     * @throws SQLException If a database error occurs
-     */
+
     public static void delete(int commentId) throws SQLException {
         Connection conn = null;
         try {
             conn = DatabaseConnection.getConnection();
-            conn.setAutoCommit(false); // Start transaction
+            conn.setAutoCommit(false);
             
-            // First delete any reports for this comment - fixed table name
+
             String deleteReportsSQL = "DELETE FROM comment_report WHERE comment_id = ?";
             try (PreparedStatement stmt = conn.prepareStatement(deleteReportsSQL)) {
                 stmt.setInt(1, commentId);
                 stmt.executeUpdate();
             }
             
-            // Finally delete the comment itself - fixed table name
+
             String deleteCommentSQL = "DELETE FROM comment WHERE id = ?";
             try (PreparedStatement stmt = conn.prepareStatement(deleteCommentSQL)) {
                 stmt.setInt(1, commentId);
                 stmt.executeUpdate();
             }
             
-            conn.commit(); // Commit transaction
+            conn.commit();
         } catch (SQLException e) {
-            // Rollback transaction on error
+
             if (conn != null) {
                 try {
                     conn.rollback();

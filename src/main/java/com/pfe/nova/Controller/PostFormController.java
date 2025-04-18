@@ -6,6 +6,7 @@ import com.pfe.nova.configuration.PostDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import java.io.File;
 import java.util.ArrayList;
@@ -41,6 +42,47 @@ public class PostFormController {
     public void initialize() {
         setupCategoryComboBox();
         setupImageButton();
+        
+        // Add character limit to content area
+        setupContentAreaWithLimit();
+    }
+
+    private void setupContentAreaWithLimit() {
+      
+        final int MAX_CHARS = 500;
+        
+        // Add a label to show character count
+        Label charCountLabel = new Label("0/" + MAX_CHARS);
+        charCountLabel.setStyle("-fx-text-fill: #757575;");
+        
+        // Add the label below the content area
+        if (contentArea.getParent() instanceof VBox) {
+            VBox parent = (VBox) contentArea.getParent();
+            int index = parent.getChildren().indexOf(contentArea);
+            parent.getChildren().add(index + 1, charCountLabel);
+        }
+        
+        // Add listener to update character count and limit input
+        contentArea.textProperty().addListener((observable, oldValue, newValue) -> {
+            int currentLength = newValue.length();
+            
+            // Update the character count label
+            charCountLabel.setText(currentLength + "/" + MAX_CHARS);
+            
+            // Change color when approaching the limit
+            if (currentLength > MAX_CHARS * 0.8) {
+                charCountLabel.setStyle("-fx-text-fill: #e67e22;"); // Orange when approaching limit
+            } else {
+                charCountLabel.setStyle("-fx-text-fill: #757575;"); // Default color
+            }
+            
+            // Truncate text if it exceeds the limit
+            if (currentLength > MAX_CHARS) {
+                contentArea.setText(newValue.substring(0, MAX_CHARS));
+                charCountLabel.setText(MAX_CHARS + "/" + MAX_CHARS);
+                charCountLabel.setStyle("-fx-text-fill: #e74c3c;"); // Red when at limit
+            }
+        });
     }
 
     private void setupCategoryComboBox() {
