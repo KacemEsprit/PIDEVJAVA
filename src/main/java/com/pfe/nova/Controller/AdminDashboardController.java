@@ -36,13 +36,27 @@ public class AdminDashboardController {
     @FXML private TableColumn<User, String> emailColumn;
     @FXML private TableColumn<User, String> roleColumn;
     @FXML private TableColumn<User, String> actionsColumn;
-    
+    @FXML private Label sessionTestLabel;
+
     @FXML
     public void initialize() {
         setupUI();
         setupTableColumns();
-        loadUsersData(); // Add this line to load data when initializing
+        loadUsersData();
+
+        User sessionUser = Session.getInstance().getUtilisateurConnecte();
+        if (sessionUser != null) {
+            sessionTestLabel.setText("Session User: " + sessionUser.getEmail());
+        } else {
+            sessionTestLabel.setText("No user in session.");
+        }
     }
+//    @FXML
+//    public void initialize() {
+//        setupUI();
+//        setupTableColumns();
+//        loadUsersData(); // Add this line to load data when initializing
+//    }
 
     private void setupTableColumns() {
         try {
@@ -210,39 +224,17 @@ public class AdminDashboardController {
             Stage stage = new Stage();
             stage.setTitle("Edit User - " + fullUser.getRole());
             stage.setScene(new Scene(root));
+
+            // Add a listener to refresh the table when the edit window is closed
+            stage.setOnHiding(event -> loadUsersData());
+
             stage.show();
 
         } catch (IOException e) {
             showError("Error opening edit window: " + e.getMessage());
         }
     }
-//    @FXML
-//    private void handleEditUser(User user) {
-//        try {
-//            // Get the full user data with role-specific information
-//            User fullUser = UserDAO.getUserById(user.getId());
-//            if (fullUser == null) {
-//                showError("Could not load user data");
-//                return;
-//            }
-//
-//            // Debug: Print the user ID
-//            System.out.println("Editing user with ID: " + fullUser.getId());
-//
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/edituser.fxml"));
-//            Parent root = loader.load();
-//            EditUserController editController = loader.getController();
-//            editController.initData(fullUser);
-//
-//            Stage stage = new Stage();
-//            stage.setTitle("Edit User - " + fullUser.getRole());
-//            stage.setScene(new Scene(root));
-//            stage.show();
-//
-//        } catch (IOException e) {
-//            showError("Error opening edit window: " + e.getMessage());
-//        }
-//    }
+
 
     private boolean confirmDelete(User user) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -252,6 +244,7 @@ public class AdminDashboardController {
 
         return alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK;
     }
+
     
     @FXML
     private void handleProfile() {

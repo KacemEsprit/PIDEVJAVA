@@ -279,15 +279,17 @@ public class UserDAO {
             // Debug: Print user details
             System.out.println("Updating user: " + user);
 
-            // Update base user information
-            String baseQuery = "UPDATE user SET nom = ?, prenom = ?, email = ?, tel = ?, adresse = ? WHERE id = ?";
+            // Update base user information, including password if provided
+            String baseQuery = "UPDATE user SET nom = ?, prenom = ?, email = ?, tel = ?, adresse = ?, picture = ?, password = ? WHERE id = ?";
             try (PreparedStatement stmt = conn.prepareStatement(baseQuery)) {
                 stmt.setString(1, user.getNom());
                 stmt.setString(2, user.getPrenom());
                 stmt.setString(3, user.getEmail());
                 stmt.setString(4, user.getTel());
                 stmt.setString(5, user.getAdresse());
-                stmt.setInt(6, user.getId());
+                stmt.setString(6, user.getPicture());
+                stmt.setString(7, user.getPassword()); // Include password in the update
+                stmt.setInt(8, user.getId());
 
                 int rowsAffected = stmt.executeUpdate();
                 System.out.println("Base user update rows affected: " + rowsAffected);
@@ -298,7 +300,7 @@ public class UserDAO {
                 }
             }
 
-            // Update role-specific information
+            // Update role-specific information (if any)
             switch (user.getRole()) {
                 case "MEDECIN":
                     Medecin medecin = (Medecin) user;
@@ -347,6 +349,7 @@ public class UserDAO {
             return false;
         }
     }
+
 
     public static User getUserById(int userId) {
         String query = "SELECT * FROM user WHERE id = ?";
