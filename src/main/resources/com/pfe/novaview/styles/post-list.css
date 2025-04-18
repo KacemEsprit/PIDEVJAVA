@@ -27,7 +27,7 @@
 }
 
 .new-post-button {
-    -fx-background-color: linear-gradient(to right, #4e54c8, #8f94fb);
+    -fx-background-color: linear-gradient(to right, #95E1D3, #8f94fb);
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 6px;
@@ -84,7 +84,7 @@
 .post-category {
     -fx-font-size: 13px;
     -fx-text-fill: white;
-    -fx-background-color: linear-gradient(to right, #4e54c8, #8f94fb);
+    -fx-background-color: linear-gradient(to right, #95E1D3, #8f94fb);
     -fx-background-radius: 20px;
     -fx-padding: 8px 16px;
     -fx-effect: dropshadow(gaussian, rgba(78,84,200,0.2), 8, 0, 0, 0);
@@ -117,7 +117,7 @@
 
 .post-action-button:hover {
     -fx-background-color: #f0f2f5;
-    -fx-text-fill: #4e54c8;
+    -fx-text-fill: #95E1D3;
 }
 
 /* Heart Button Styles */
@@ -172,7 +172,7 @@
 }
 
 .comment-submit-button {
-    -fx-background-color: linear-gradient(to right, #4e54c8, #8f94fb);
+    -fx-background-color: linear-gradient(to right, #95E1D3, #8f94fb);
     -fx-text-fill: white;
     -fx-background-radius: 20px;
     -fx-padding: 10px 25px;

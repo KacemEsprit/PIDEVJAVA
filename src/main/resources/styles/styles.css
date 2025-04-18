@@ -39,7 +39,7 @@
 }
 
 .post-edit-button:hover {
-    -fx-background-color: #1557b0 !important;
+    -fx-background-color: #95E1D3 !important;
 }
 
 .post-delete-button:hover {
@@ -125,7 +125,7 @@
 }
 
 .patient-avatar {
-    -fx-fill: #1a237e;
+    -fx-fill: #95E1D3;
 }
 
 .patient-initials {
@@ -147,12 +147,12 @@
 }
 
 .consult-button {
-    -fx-background-color: #3f51b5;
+    -fx-background-color: #95E1D3;
     -fx-text-fill: white;
     -fx-background-radius: 20;
     -fx-padding: 8 20;
 }
 
 .consult-button:hover {
-    -fx-background-color: #303f9f;
+    -fx-background-color: #95E1D3;
 }

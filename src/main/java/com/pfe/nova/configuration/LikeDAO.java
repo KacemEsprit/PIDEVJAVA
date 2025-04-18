@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 public class LikeDAO {
     
-    // Add a like to a post
+
     public static void save(Like like) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -15,14 +15,14 @@ public class LikeDAO {
         try {
             conn = DatabaseConnection.getConnection();
             
-            // Check if the like already exists
+
             if (likeExists(like.getPublicationId(), like.getUserId(), like.getCommentId())) {
-                // If it exists, delete it (unlike)
+
                 delete(like.getPublicationId(), like.getUserId(), like.getCommentId());
                 return;
             }
             
-            // If it doesn't exist, insert it
+
             String sql = "INSERT INTO publication_like (publication_id, user_id, comment_id, created_at) VALUES (?, ?, ?, ?)";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, like.getPublicationId());
@@ -34,7 +34,7 @@ public class LikeDAO {
                 stmt.setNull(3, java.sql.Types.INTEGER);
             }
             
-            // Format the datetime for MySQL
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             stmt.setString(4, like.getCreatedAt().format(formatter));
             
@@ -45,7 +45,7 @@ public class LikeDAO {
         }
     }
     
-    // Delete a like
+
     public static void delete(int publicationId, int userId, Integer commentId) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -75,7 +75,7 @@ public class LikeDAO {
         }
     }
     
-    // Check if a like exists
+
     public static boolean likeExists(int publicationId, int userId, Integer commentId) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -113,7 +113,7 @@ public class LikeDAO {
         }
     }
     
-    // Count likes for a post
+
     public static int countLikes(int publicationId) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -140,7 +140,7 @@ public class LikeDAO {
         }
     }
     
-    // Check if a user has liked a post
+
     public static boolean hasUserLiked(int publicationId, int userId) throws SQLException {
         return likeExists(publicationId, userId, null);
     }
