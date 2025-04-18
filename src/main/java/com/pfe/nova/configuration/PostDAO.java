@@ -107,22 +107,7 @@ public class PostDAO {
 
     // Remove the loadImages method since we don't need it anymore
 
-    // Add the findAll method
-    public static List<Post> findAll() throws SQLException {
-        List<Post> posts = new ArrayList<>();
-        String sql = "SELECT p.* FROM publication p " +
-                "ORDER BY p.date_pb DESC";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            while (rs.next()) {
-                posts.add(mapResultSetToPost(rs));
-            }
-        }
-        return posts;
-    }
 
     public static void delete(int id) throws SQLException {
         String sql = "DELETE FROM publication WHERE id = ?";
@@ -156,26 +141,7 @@ public class PostDAO {
 
     // Add these methods to your PostDAO class
 
-    // Update SQL queries to use "publication" table instead of "post"
-    public static List<Post> findByStatus(String status) throws SQLException {
-        List<Post> posts = new ArrayList<>();
-        String query = "SELECT * FROM publication WHERE status = ? ORDER BY date_pb DESC";
-        
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            
-            stmt.setString(1, status);
-            
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Post post = mapResultSetToPost(rs);
-                    posts.add(post);
-                }
-            }
-        }
-        
-        return posts;
-    }
+
     
     public static List<Post> findByUserId(int userId) throws SQLException {
         List<Post> posts = new ArrayList<>();
@@ -234,16 +200,45 @@ public class PostDAO {
     // Add this method to find both approved posts and user's pending posts
     public static List<Post> findApprovedAndUserPending(int userId) throws SQLException {
         List<Post> posts = new ArrayList<>();
-        String query = "SELECT * FROM publication WHERE status = 'approved' OR (status = 'pending' AND user_id = ?)";
+        
+        String sql = "SELECT p.*, u.id as user_id, u.nom, u.prenom, u.email, u.tel, u.adresse, u.picture, u.role " +
+                     "FROM publication p " +
+                     "JOIN user u ON p.user_id = u.id " +
+                     "WHERE p.status = 'approved' OR (p.status = 'pending' AND p.user_id = ?) " +
+                     "ORDER BY p.date_pb DESC";
         
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, userId);
-            ResultSet rs = stmt.executeQuery();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             
-            while (rs.next()) {
-                Post post = mapResultSetToPost(rs);
-                posts.add(post);
+            stmt.setInt(1, userId);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Post post = new Post();
+                    post.setId(rs.getInt("id"));
+                    post.setContent(rs.getString("contenu"));
+                    post.setPublishDate(rs.getTimestamp("date_pb").toLocalDateTime());
+                    post.setAnonymous(rs.getBoolean("is_anonymous"));
+                    post.setImageUrls(parseImageUrlsFromJson(rs.getString("image_urls")));
+                    post.setCategory(rs.getString("category"));
+                    post.setViewCount(rs.getInt("view_count"));
+                    post.setStatus(rs.getString("status"));
+                    
+                    // Create and set the user object with all fields
+                    User user = new User();
+                    user.setId(rs.getInt("user_id"));
+                    user.setNom(rs.getString("nom"));
+                    user.setPrenom(rs.getString("prenom"));
+                    user.setEmail(rs.getString("email"));
+                    user.setTel(rs.getString("tel"));
+                    user.setAdresse(rs.getString("adresse"));
+                    user.setPicture(rs.getString("picture"));
+                    user.setRole(rs.getString("role"));
+                    
+                    post.setUser(user);
+                    
+                    posts.add(post);
+                }
             }
         }
         
@@ -293,6 +288,142 @@ public class PostDAO {
             while (rs.next()) {
                 Post post = mapResultSetToPost(rs);
                 posts.add(post);
+            }
+        }
+        
+        return posts;
+    }
+
+    // Update the findById method to properly load user data
+    public static Post findById(int id) throws SQLException {
+        String sql = "SELECT p.*, u.id as user_id, u.nom, u.prenom, u.email, u.tel, u.adresse, u.picture, u.role " +
+                     "FROM publication p " +
+                     "JOIN user u ON p.user_id = u.id " +
+                     "WHERE p.id = ?";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, id);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Post post = new Post();
+                    post.setId(rs.getInt("id"));
+                    post.setContent(rs.getString("contenu"));
+                    post.setPublishDate(rs.getTimestamp("date_pb").toLocalDateTime());
+                    post.setAnonymous(rs.getBoolean("is_anonymous"));
+                    post.setImageUrls(parseImageUrlsFromJson(rs.getString("image_urls")));
+                    post.setCategory(rs.getString("category"));
+                    post.setViewCount(rs.getInt("view_count"));
+                    post.setStatus(rs.getString("status"));
+                    
+                    // Create and set the user object with all fields
+                    User user = new User();
+                    user.setId(rs.getInt("user_id"));
+                    user.setNom(rs.getString("nom"));
+                    user.setPrenom(rs.getString("prenom"));
+                    user.setEmail(rs.getString("email"));
+                    user.setTel(rs.getString("tel"));
+                    user.setAdresse(rs.getString("adresse"));
+                    user.setPicture(rs.getString("picture"));
+                    user.setRole(rs.getString("role"));
+                    
+                    post.setUser(user);
+                    
+                    return post;
+                }
+            }
+        }
+        return null;
+    }
+
+    // Instead of creating a new findAll() method, modify the existing one to properly load user data
+    public static List<Post> findAll() throws SQLException {
+        List<Post> posts = new ArrayList<>();
+        
+        String sql = "SELECT p.*, u.id as user_id, u.nom, u.prenom, u.email, u.tel, u.adresse, u.picture, u.role " +
+                     "FROM publication p " +
+                     "JOIN user u ON p.user_id = u.id " +
+                     "ORDER BY p.date_pb DESC";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
+            while (rs.next()) {
+                Post post = new Post();
+                post.setId(rs.getInt("id"));
+                post.setContent(rs.getString("contenu"));
+                post.setPublishDate(rs.getTimestamp("date_pb").toLocalDateTime());
+                post.setAnonymous(rs.getBoolean("is_anonymous"));
+                post.setImageUrls(parseImageUrlsFromJson(rs.getString("image_urls")));
+                post.setCategory(rs.getString("category"));
+                post.setViewCount(rs.getInt("view_count"));
+                post.setStatus(rs.getString("status"));
+                
+                // Create and set the user object with all fields
+                User user = new User();
+                user.setId(rs.getInt("user_id"));
+                user.setNom(rs.getString("nom"));
+                user.setPrenom(rs.getString("prenom"));
+                user.setEmail(rs.getString("email"));
+                user.setTel(rs.getString("tel"));
+                user.setAdresse(rs.getString("adresse"));
+                user.setPicture(rs.getString("picture"));
+                user.setRole(rs.getString("role"));
+                
+                post.setUser(user);
+                
+                posts.add(post);
+            }
+        }
+        
+        return posts;
+    }
+
+    // Update the findByStatus method to properly load user data
+    public static List<Post> findByStatus(String status) throws SQLException {
+        List<Post> posts = new ArrayList<>();
+        
+        String sql = "SELECT p.*, u.id as user_id, u.nom, u.prenom, u.email, u.tel, u.adresse, u.picture, u.role " +
+                     "FROM publication p " +
+                     "JOIN user u ON p.user_id = u.id " +
+                     "WHERE p.status = ? " +
+                     "ORDER BY p.date_pb DESC";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, status);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Post post = new Post();
+                    post.setId(rs.getInt("id"));
+                    post.setContent(rs.getString("contenu"));
+                    post.setPublishDate(rs.getTimestamp("date_pb").toLocalDateTime());
+                    post.setAnonymous(rs.getBoolean("is_anonymous"));
+                    post.setImageUrls(parseImageUrlsFromJson(rs.getString("image_urls")));
+                    post.setCategory(rs.getString("category"));
+                    post.setViewCount(rs.getInt("view_count"));
+                    post.setStatus(rs.getString("status"));
+                    
+                    // Create and set the user object with all fields
+                    User user = new User();
+                    user.setId(rs.getInt("user_id"));
+                    user.setNom(rs.getString("nom"));
+                    user.setPrenom(rs.getString("prenom"));
+                    user.setEmail(rs.getString("email"));
+                    user.setTel(rs.getString("tel"));
+                    user.setAdresse(rs.getString("adresse"));
+                    user.setPicture(rs.getString("picture"));
+                    user.setRole(rs.getString("role"));
+                    
+                    post.setUser(user);
+                    
+                    posts.add(post);
+                }
             }
         }
         

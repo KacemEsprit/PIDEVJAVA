@@ -167,4 +167,27 @@ public class CommentDAO {
             if (conn != null) conn.close();
         }
     }
+
+    /**
+     * Checks if a comment is still reported in the database
+     * @param commentId The ID of the comment to check
+     * @return true if the comment is reported, false otherwise
+     * @throws SQLException If a database error occurs
+     */
+    public static boolean isCommentReported(int commentId) throws SQLException {
+        String sql = "SELECT is_reported FROM comment WHERE id = ?";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, commentId);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBoolean("is_reported");
+                }
+                return false;
+            }
+        }
+    }
 }
