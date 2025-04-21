@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc4d44b3-873d-422a-bea4-dd33ed12ab3c" name="Changes" comment="" />
+    <list default="true" id="cc4d44b3-873d-422a-bea4-dd33ed12ab3c" name="Changes" comment="kacems">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/AdminDashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/AdminDashboardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/ProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/ProfileController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/utils/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/utils/Session.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/admin-dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/admin-dashboard.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/configuration/UserDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/configuration/UserDAO.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,12 +26,49 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="kacem" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;history&quot;: [
+    {
+      &quot;state&quot;: &quot;OPEN&quot;,
+      &quot;assignee&quot;: &quot;KacemEsprit&quot;
+    }
+  ],
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;KacemEsprit&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/KacemEsprit/PIDEVJAVA.git&quot;,
+    &quot;accountId&quot;: &quot;1d8d4be7-cea8-4964-b17b-205df7f0b504&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/PostListController.class" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/target/classes/com/pfe/novaview/publication-details.fxml" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
         <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
       </MavenGeneralSettings>
     </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -35,21 +80,36 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.HelloApplication.executor&quot;: &quot;Debug&quot;,
     &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.com.pfe.nova.Main.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/21693/Documents/Esprit/Pidev/Nova/src/main/resources/com/pfe/novaview/login.fxml&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/21693/Documents/PIDEVJAVA/PIDEVJAVA&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.JavaFX&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ]
   }
 }</component>
+  <component name="ReadonlyStatusHandler">
+    <option name="SHOW_DIALOG" value="false" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\21693\Documents\Esprit\Pidev\Nova\src\main\resources\images" />
@@ -69,7 +129,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Main" type="Application" factoryName="Application" activateToolWindowBeforeRun="false" temporary="true">
       <option name="MAIN_CLASS_NAME" value="com.pfe.nova.Application.Main" />
       <module name="Nova" />
       <extension name="coverage">
@@ -82,9 +142,28 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="com.pfe.nova.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.pfe.nova.Main" />
+      <module name="Nova" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.pfe.nova.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.com.pfe.nova.Main" />
+      <item itemvalue="Application.HelloApplication" />
+      <item itemvalue="Application.Main" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.com.pfe.nova.Main" />
         <item itemvalue="Application.HelloApplication" />
       </list>
     </recent_temporary>
@@ -110,14 +189,89 @@
       <workItem from="1743693365272" duration="675000" />
       <workItem from="1743694496583" duration="3824000" />
       <workItem from="1743768481288" duration="2044000" />
+      <workItem from="1744231425638" duration="454000" />
+      <workItem from="1744283427721" duration="4205000" />
+      <workItem from="1744293529821" duration="1993000" />
+      <workItem from="1744311042236" duration="9195000" />
+      <workItem from="1744356749624" duration="1945000" />
+      <workItem from="1744359756174" duration="9319000" />
+      <workItem from="1744491169182" duration="2721000" />
+      <workItem from="1744493957162" duration="4089000" />
+      <workItem from="1744498095979" duration="1129000" />
+      <workItem from="1744499323176" duration="6464000" />
+      <workItem from="1744617123744" duration="8621000" />
+      <workItem from="1744658283567" duration="5340000" />
+      <workItem from="1744664482603" duration="2205000" />
+      <workItem from="1744736368258" duration="6778000" />
+      <workItem from="1744803474622" duration="3779000" />
+      <workItem from="1744843220785" duration="3998000" />
+      <workItem from="1744931358685" duration="2545000" />
     </task>
+    <task id="LOCAL-00001" summary="crud">
+      <option name="closed" value="true" />
+      <created>1744359322746</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1744359322746</updated>
+    </task>
+    <task id="LOCAL-00002" summary="rania 14/04">
+      <option name="closed" value="true" />
+      <created>1744628637555</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1744628637555</updated>
+    </task>
+    <task id="LOCAL-00003" summary="rania 14/04">
+      <option name="closed" value="true" />
+      <created>1744668085086</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1744668085086</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/rania" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="crud" />
+    <MESSAGE value="rania 14/04" />
+    <option name="LAST_COMMIT_MESSAGE" value="rania 14/04" />
+  </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/PIDEVJAVA$Main.ic" NAME="Main Coverage Results" MODIFIED="1744492730585" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>com.pfe.nova.Application.*</FILTER>
+    </SUITE>
   </component>
 </project>

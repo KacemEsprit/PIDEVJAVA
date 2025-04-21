@@ -1,31 +1,106 @@
 package com.pfe.nova.Controller;
 
 import com.pfe.nova.configuration.DatabaseConnection;
-import org.mindrot.jbcrypt.BCrypt;
+import com.pfe.nova.models.*;
+import com.pfe.nova.utils.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
+import org.mindrot.jbcrypt.BCrypt;
+import com.pfe.nova.configuration.UserDAO;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class LoginController {
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
-    @FXML private CheckBox rememberMeCheckbox;
-    @FXML private Label errorLabel;
     @FXML private Button loginButton;
+    @FXML private Label errorLabel;
 
     @FXML
     public void initialize() {
-        errorLabel.setVisible(false);
         setupButtonHoverEffects();
+    }
+    @FXML
+    private void handleLogin() {
+        String email = emailField.getText();
+        String password = passwordField.getText();
+
+        if (email.isEmpty() || password.isEmpty()) {
+            showError("Please fill in all fields");
+            return;
+        }
+
+        User user = authenticateUser(email, password);
+        if (user != null) {
+            System.out.println("Authenticated user: " + user.getEmail() + ", Role: " + user.getRole());
+            Session.setUtilisateurConnecte(user);
+            navigateToDashboard(user);
+        } else {
+            showError("Invalid email or password");
+            System.out.println("Authentication failed for email: " + email);
+        }
+    }
+
+
+    @FXML
+    private void navigateToSignup() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/signup.fxml"));
+            if (loader.getLocation() == null) {
+                throw new IOException("Cannot find signup.fxml");
+            }
+            Parent root = loader.load();
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Sign Up");
+            stage.centerOnScreen();
+        } catch (IOException e) {
+            showError("Unable to load signup page: " + e.getMessage());
+            System.err.println("Error loading signup page: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void navigateToDashboard(User user) {
+        try {
+            System.out.println("Navigating to dashboard for role: " + user.getRole());
+            String dashboardPath;
+
+            if ("ADMIN".equals(user.getRole())) {
+                dashboardPath = "/com/pfe/novaview/admin-dashboard.fxml";
+            } else {
+                dashboardPath = "/com/pfe/novaview/dashboard.fxml";
+            }
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(dashboardPath));
+            Parent root = loader.load();
+
+            if ("ADMIN".equals(user.getRole())) {
+                AdminDashboardController adminController = loader.getController();
+                adminController.initData(user);
+            } else {
+                DashboardController dashboardController = loader.getController();
+                dashboardController.initData(user);
+            }
+
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle(user.getRole() + " Dashboard");
+            stage.centerOnScreen();
+        } catch (IOException e) {
+            showError("Unable to load dashboard: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    private User authenticateUser(String email, String password) {
+        return UserDAO.authenticateUser(email, password);
     }
 
     private void setupButtonHoverEffects() {
@@ -37,98 +112,6 @@ public class LoginController {
         );
     }
 
-    @FXML
-    private void handleLogin() {
-        String email = emailField.getText().trim();
-        String password = passwordField.getText().trim();
-
-        System.out.println("Attempting to log in with email: " + email);
-
-        if (email.isEmpty() || password.isEmpty()) {
-            showError("Please enter both email and password");
-            return;
-        }
-
-        boolean loginSuccessful = authenticate(email, password);
-
-        if (loginSuccessful) {
-            System.out.println("Login successful");
-            if (rememberMeCheckbox.isSelected()) {
-                // Save login credentials (implement securely)
-            }
-            // Pass the username to navigateToDashboard
-            navigateToDashboard(authenticatedUsername);
-        } else {
-            showError("Invalid email or password");
-        }
-    }
-
-    private void navigateToDashboard(String username) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/dashboard.fxml"));
-            Parent root = loader.load();
-
-            DashboardController dashboardController = loader.getController();
-            dashboardController.setUsername(username);
-
-            Stage stage = (Stage) emailField.getScene().getWindow();
-            stage.setScene(new Scene(root, 600, 400));
-            stage.setTitle("Dashboard");
-        } catch (IOException e) {
-            showError("Unable to load dashboard");
-            e.printStackTrace();
-        }
-    }
-
-    private String authenticatedUsername;
-
-    private boolean authenticate(String email, String password) {
-        String query = "SELECT username, password FROM users WHERE email = ?";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, email);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                String storedHashedPassword = resultSet.getString("password");
-                if (BCrypt.checkpw(password, storedHashedPassword)) {
-                    authenticatedUsername = resultSet.getString("username");
-                    return true;
-                }
-            }
-            return false;
-        } catch (SQLException e) {
-            showError("Database error: " + e.getMessage());
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    @FXML
-    private void handleSignUp() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/signup.fxml"));
-            Stage stage = (Stage) emailField.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Sign Up");
-        } catch (IOException e) {
-            showError("Unable to load signup page");
-            e.printStackTrace();
-        }
-    }
-
-//    private void navigateToDashboard() {
-//        try {
-//            System.out.println("Navigating to dashboard...");
-//            Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/dashboard.fxml"));
-//            Stage stage = (Stage) emailField.getScene().getWindow();
-//            stage.setScene(new Scene(root));
-//            stage.setTitle("Dashboard");
-//            System.out.println("Dashboard loaded successfully");
-//        } catch (IOException e) {
-//            showError("Unable to load dashboard");
-//            e.printStackTrace();
-//        }
-//    }
 
     private void showError(String message) {
         errorLabel.setText(message);

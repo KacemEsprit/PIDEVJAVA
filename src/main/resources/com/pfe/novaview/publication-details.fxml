@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.pfe.nova.Controller.PublicationDetailsController"
+           styleClass="details-scroll-pane"
+           fitToWidth="true">
+    
+    <VBox spacing="25" styleClass="publication-details">
+        <padding>
+            <Insets top="30" right="40" bottom="30" left="40"/>
+        </padding>
+        
+        <!-- Header with back button -->
+        <HBox alignment="CENTER_LEFT" spacing="15" styleClass="details-header">
+            <Button fx:id="backButton" onAction="#handleBack" text="← Back" styleClass="back-button"/>
+        </HBox>
+        
+        <!-- Main content container -->
+        <VBox fx:id="publicationContent" spacing="20" styleClass="publication-content"/>
+        
+        <!-- Comments section -->
+        <VBox fx:id="commentsList" spacing="20" styleClass="comments-section">
+            <TextField fx:id="commentField" promptText="Write a comment..."/>
+        </VBox>
+    </VBox>
+    
+    <stylesheets>
+        <URL value="@styles/publication-details.css"/>
+    </stylesheets>
+</ScrollPane>

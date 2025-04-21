@@ -1,0 +1,158 @@
+.comments-section {
+    -fx-background-color: white;
+}
+
+.comment-box {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+.comment-author {
+    -fx-font-size: 14px;
+}
+
+.comment-content {
+    -fx-font-size: 13px;
+}
+
+.comment-buttons .button {
+    -fx-padding: 5 10;
+    -fx-cursor: hand;
+}
+
+.comment-buttons .button:hover {
+    -fx-opacity: 0.9;
+}
+
+.post-box {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-spacing: 15;
+}
+
+.post-buttons .button {
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
+
+.post-buttons .button:hover {
+    -fx-opacity: 0.9;
+}
+
+.post-edit-button:hover {
+    -fx-background-color: #95E1D3 !important;
+}
+
+.post-delete-button:hover {
+    -fx-background-color: #bb2d3b !important;
+}
+
+.comment-submit-button:hover {
+    -fx-background-color: #218838 !important;
+}
+
+.comment-field {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 20;
+}
+
+.category-filter {
+    -fx-background-radius: 5;
+    -fx-padding: 5 10;
+}
+
+.new-post-button {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-padding: 8 15;
+    -fx-cursor: hand;
+}
+
+.new-post-button:hover {
+    -fx-background-color: #218838;
+}
+
+.table-view {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 5 5 0 0;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-padding: 15px;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-cell {
+    -fx-padding: 12px;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #f1f3f4;
+}
+
+.button:hover {
+    -fx-opacity: 0.9;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.patient-card {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 15;
+    -fx-border-width: 1;
+    -fx-padding: 15;
+}
+
+.patient-card-content {
+    -fx-spacing: 15;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.patient-avatar {
+    -fx-fill: #95E1D3;
+}
+
+.patient-initials {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.patient-info {
+    -fx-spacing: 5;
+}
+
+.patient-name {
+    -fx-font-weight: bold;
+    -fx-font-size: 16;
+}
+
+.patient-id {
+    -fx-text-fill: #666;
+}
+
+.consult-button {
+    -fx-background-color: #95E1D3;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-padding: 8 20;
+}
+
+.consult-button:hover {
+    -fx-background-color: #95E1D3;
+}

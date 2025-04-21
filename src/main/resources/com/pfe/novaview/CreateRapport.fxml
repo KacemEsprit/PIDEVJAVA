@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pfe.nova.Controller.RapportControlleur">
+
+    <VBox alignment="TOP_CENTER" spacing="20" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+        <!-- Header -->
+        <Label style="-fx-text-fill:#2980b9;" text="Créer un Rapport d'État">
+            <font>
+                <Font name="Arial Bold" size="37.0" />
+            </font>0
+            <padding>
+                <Insets top="20" />
+            </padding>
+        </Label>
+
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+            <VBox spacing="20" style="-fx-padding: 20;">
+                <!-- Patient Information Section -->
+                <TitledPane expanded="true" text="Information Patient">
+                    <GridPane hgap="15.0" vgap="10.0">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
+
+                        <Label style="-fx-font-weight: bold;" text="Patient ID" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <ComboBox fx:id="patientIdChoiceBox" prefWidth="150.0" style="-fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label style="-fx-font-weight: bold;" text="Date Rapport" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <DatePicker fx:id="dateRapportField" prefWidth="150.0" style="-fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                        <Label style="-fx-font-weight: bold;" text="Âge" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="ageField" style="-fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label style="-fx-font-weight: bold;" text="Sexe" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <ChoiceBox fx:id="sexeChoiceBox" style="-fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Masculin" />
+                                    <String fx:value="Féminin" />
+                                </FXCollections>
+                            </items>
+                        </ChoiceBox>
+                    </GridPane>
+                </TitledPane>
+
+                <!-- Vital Signs Section -->
+                <TitledPane expanded="true" text="Signes Vitaux">
+                    <GridPane hgap="15.0" vgap="10.0">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
+
+                        <Label style="-fx-font-weight: bold;" text="Tension Artérielle" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="tensionField" style="-fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label style="-fx-font-weight: bold;" text="Pouls" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <TextField fx:id="poulsField" style="-fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                        <Label style="-fx-font-weight: bold;" text="Température" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="temperatureField" style="-fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label style="-fx-font-weight: bold;" text="Saturation Oxygène" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <TextField fx:id="saturationField" style="-fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                        <Label style="-fx-font-weight: bold;" text="IMC" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="imcField" style="-fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <Label style="-fx-font-weight: bold;" text="Niveau Douleur" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <TextField fx:id="douleurField" style="-fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                    </GridPane>
+                </TitledPane>
+
+                <!-- Treatment Section -->
+                <TitledPane expanded="true" text="Traitement et Mesures">
+                    <GridPane hgap="15.0" vgap="10.0">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
+
+                        <Label style="-fx-font-weight: bold;" text="Traitement" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <ChoiceBox fx:id="traitementField" style="-fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Chimiothérapie" />
+                                    <String fx:value="Chirurgie" />
+                                    <String fx:value="Dialyse" />
+                                    <String fx:value="Réanimation" />
+                                </FXCollections>
+                            </items>
+                        </ChoiceBox>
+
+                        <Label style="-fx-font-weight: bold;" text="Fréquence Traitement" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <ChoiceBox fx:id="frequenceField" style="-fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="hebdomadaire" />
+                                    <String fx:value="quotidien" />
+                                    <String fx:value="mensuel" />
+                                </FXCollections>
+                            </items>
+                        </ChoiceBox>
+
+                        <Label style="-fx-font-weight: bold;" text="Dose Médicament" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <TextField fx:id="doseField" style="-fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                        <Label style="-fx-font-weight: bold;" text="Durée Séance" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <TextField fx:id="dureeField" style="-fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                    </GridPane>
+                </TitledPane>
+
+                <!-- Operation Details Section -->
+                <TitledPane expanded="true" text="Détails Opératoires">
+                    <GridPane hgap="15.0" vgap="10.0">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
+
+                        <Label style="-fx-font-weight: bold;" text="Perte de Sang" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="perteSangField" style="-fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label style="-fx-font-weight: bold;" text="Temps Opération" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <TextField fx:id="tempsOperationField" style="-fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                        <Label style="-fx-font-weight: bold;" text="Filtration Sang" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="filtrationField" style="-fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label style="-fx-font-weight: bold;" text="Créatinine" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <TextField fx:id="creatinineField" style="-fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                        <Label style="-fx-font-weight: bold;" text="Score Glasgow" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="glasgowField" style="-fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <Label style="-fx-font-weight: bold;" text="Respiration Assistée" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <ChoiceBox fx:id="respirationField" style="-fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="False" />
+                                    <String fx:value="True" />
+                                </FXCollections>
+                            </items>
+                        </ChoiceBox>
+
+                        <Label style="-fx-font-weight: bold;" text="Complications" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <TextField fx:id="complicationsField" style="-fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
+                    </GridPane>
+                </TitledPane>
+            </VBox>
+        </ScrollPane>
+
+        <Button fx:id="creerRapportButton" onAction="#handleCreate" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;" text="Créer Rapport">
+            <VBox.margin>
+                <Insets bottom="20" />
+            </VBox.margin>
+        </Button>
+    </VBox>
+</AnchorPane>

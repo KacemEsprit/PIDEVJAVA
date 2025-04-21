@@ -1,0 +1,74 @@
+.comments-section {
+    -fx-background-color: white;
+}
+
+.comment-box {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+.comment-author {
+    -fx-font-size: 14px;
+}
+
+.comment-content {
+    -fx-font-size: 13px;
+}
+
+.comment-buttons .button {
+    -fx-padding: 5 10;
+    -fx-cursor: hand;
+}
+
+.comment-buttons .button:hover {
+    -fx-opacity: 0.9;
+}
+
+.post-box {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-spacing: 15;
+}
+
+.post-buttons .button {
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
+
+.post-buttons .button:hover {
+    -fx-opacity: 0.9;
+}
+
+.post-edit-button:hover {
+    -fx-background-color: #95E1D3 !important;
+}
+
+.post-delete-button:hover {
+    -fx-background-color: #bb2d3b !important;
+}
+
+.comment-submit-button:hover {
+    -fx-background-color: #218838 !important;
+}
+
+.comment-field {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 20;
+}
+
+.category-filter {
+    -fx-background-radius: 5;
+    -fx-padding: 5 10;
+}
+
+.new-post-button {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-padding: 8 15;
+    -fx-cursor: hand;
+}
+
+.new-post-button:hover {
+    -fx-background-color: #218838;
+}
