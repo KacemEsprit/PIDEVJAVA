@@ -9,7 +9,7 @@ module com.pfe.nova {
     opens com.pfe.nova.Application to javafx.graphics;
     opens com.pfe.nova.models to javafx.fxml;
     opens com.pfe.nova.Controller to javafx.fxml;
-    
+
     exports com.pfe.nova;
     exports com.pfe.nova.Application;
     exports com.pfe.nova.Controller;

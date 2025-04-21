@@ -46,6 +46,10 @@ public class DashboardController {
     
     @FXML private TableView<Medecin> doctorsTable;
     @FXML private TableColumn<Medecin, String> doctorNameColumn;
+    @FXML private TableColumn<Medecin, String> doctorEmailColumn;
+    @FXML private TableColumn<Medecin, String> doctorSpecialityColumn;
+    @FXML private TableColumn<Medecin, String> doctorExperienceColumn;
+    @FXML private TableColumn<Medecin, String> doctorDiplomeColumn;
     @FXML private TableColumn<Medecin, String> specialityColumn;
     @FXML private TableColumn<Medecin, String> experienceColumn;
     @FXML private TableColumn<Medecin, String> contactColumn;

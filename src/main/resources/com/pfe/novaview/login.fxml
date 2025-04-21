@@ -3,32 +3,48 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import java.net.URL?>
 
 <VBox xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.pfe.nova.Controller.LoginController"
       alignment="CENTER"
       spacing="20"
-      style="-fx-padding: 20;">
+      styleClass="login-container">
 
-    <TextField fx:id="emailField"
-               promptText="Email"
-               style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+    <stylesheets>
+        <URL value="@styles/admin-styles.css" />
+    </stylesheets>
 
-    <PasswordField fx:id="passwordField"
-                   promptText="Password"
-                   style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+    <VBox styleClass="login-card" spacing="20">
+        <Label text="Welcome Back" styleClass="login-title"/>
+        <Label text="Sign in to continue" styleClass="login-subtitle"/>
 
-    <Button text="Login"
-            fx:id="loginButton"
-            onAction="#handleLogin"
-            style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+        <TextField fx:id="emailField"
+                  promptText="Email"
+                  styleClass="login-field"
+                  prefWidth="300"
+                  prefHeight="40"/>
 
-    <Label fx:id="errorLabel"
-           style="-fx-text-fill: #e74c3c; -fx-font-size: 15px;"
-           visible="false"/>
+        <PasswordField fx:id="passwordField"
+                      promptText="Password"
+                      styleClass="login-field"
+                      prefWidth="300"
+                      prefHeight="40"/>
 
-    <Hyperlink text="Create an account"
-               onAction="#navigateToSignup"
-               style="-fx-font-size: 14px;"/>
+        <Button text="Login"
+                fx:id="loginButton"
+                onAction="#handleLogin"
+                styleClass="login-button"
+                prefWidth="300"
+                prefHeight="40"/>
+
+        <Label fx:id="errorLabel"
+               styleClass="error-label"
+               visible="false"/>
+
+        <Hyperlink text="Create an account"
+                   onAction="#navigateToSignup"
+                   styleClass="signup-link"/>
+    </VBox>
 </VBox>

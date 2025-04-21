@@ -1,55 +1,71 @@
 package com.pfe.nova.Controller;
 
 import com.pfe.nova.configuration.PostDAO;
-import com.pfe.nova.models.*;
-import com.pfe.nova.utils.Session;
 import com.pfe.nova.configuration.UserDAO;
+import com.pfe.nova.models.Post;
+import com.pfe.nova.models.User;
+import com.pfe.nova.utils.Session;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
+import java.nio.file.Paths;
 import java.io.IOException;
-import java.sql.SQLException; 
 import java.util.List;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import java.util.Optional;
-public class AdminDashboardController {
-    @FXML private Label welcomeLabel;
-    @FXML private Button logoutButton;
-    @FXML private StackPane contentArea;
-    @FXML private TabPane mainTabPane;
-    @FXML private TableView<User> usersTable;
-    @FXML private TextField searchField;
-    @FXML private ComboBox<String> filterRole;
-    
-    private User adminUser;
-    
-    @FXML private TableColumn<User, Integer> idColumn;
-    @FXML private TableColumn<User, String> nameColumn;
-    @FXML private TableColumn<User, String> emailColumn;
-    @FXML private TableColumn<User, String> roleColumn;
-    @FXML private TableColumn<User, String> actionsColumn;
-    @FXML private Label sessionTestLabel;
 
-    @FXML private Button postsManagementBtn; // Add this field for the posts management button
+public class AdminDashboardController {
+    @FXML
+    private Label welcomeLabel;
+    @FXML
+    private Button logoutButton;
+    @FXML
+    private StackPane contentArea;
+    @FXML
+    private TabPane mainTabPane;
+    // Replace TableView with GridPane
+    @FXML
+    private GridPane usersGrid;
+    @FXML
+    private Label sidebarProfileName;
+    @FXML 
+    private Label sidebarProfileEmail;
+    @FXML
+    private Label logoLabel;
+    @FXML
+    private ImageView sidebarProfileImage;  // Add this line
+    @FXML
+    private TableView<User> usersTable;
+    @FXML
+    private TableColumn<User, Integer> idColumn;
+    @FXML
+    private TableColumn<User, String> nameColumn;
+    @FXML
+    private TableColumn<User, String> emailColumn;
+    @FXML
+    private TableColumn<User, String> roleColumn;
+    @FXML
+    private TableColumn<User, String> actionsColumn;
+    @FXML
+    private Label sessionTestLabel;
+
+    @FXML
+    private Button postsManagementBtn; // Add this field for the posts management button
 
     @FXML
     public void initialize() {
         setupUI();
-        setupTableColumns();
-        loadUsersData();
+        loadUsersData();  // Keep only this line
 
         User sessionUser = Session.getInstance().getUtilisateurConnecte();
         if (sessionUser != null) {
@@ -58,12 +74,14 @@ public class AdminDashboardController {
             sessionTestLabel.setText("No user in session.");
         }
     }
-//    @FXML
-//    public void initialize() {
-//        setupUI();
-//        setupTableColumns();
-//        loadUsersData(); // Add this line to load data when initializing
-//    }
+
+
+    @FXML
+    private TextField searchField;
+    @FXML
+    private ComboBox<String> filterRole;
+    private User adminUser;
+
 
     private void setupTableColumns() {
         try {
@@ -120,7 +138,7 @@ public class AdminDashboardController {
             e.printStackTrace();
         }
     }
-    
+
     public void initData(User user) {
         if (!"ADMIN".equals(user.getRole())) {
             // Redirect non-admin users
@@ -128,37 +146,51 @@ public class AdminDashboardController {
             handleLogout();
             return;
         }
-        
+
         this.adminUser = user;
+        
         welcomeLabel.setText("Welcome, " + user.getNom() + " " + user.getPrenom());
+        sidebarProfileName.setText(user.getNom() + " " + user.getPrenom());
+        sidebarProfileEmail.setText(user.getEmail());
+        
+        // Load profile image if available
+        if (user.getPicture() != null && !user.getPicture().isEmpty()) {
+            try {
+                Image image = new Image(Paths.get(user.getPicture()).toUri().toString());
+                sidebarProfileImage.setImage(image);
+            } catch (Exception e) {
+                System.err.println("Error loading profile image: " + e.getMessage());
+            }
+        }
+
         loadUsersData();
     }
-    
+
     private void setupUI() {
         filterRole.getItems().addAll("ALL", "ADMIN", "MEDECIN", "PATIENT", "DONATEUR");
         filterRole.setValue("ALL");
-        
+
         // Add search listener
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             handleSearch();
         });
-        
+
         // Add role filter listener
         filterRole.valueProperty().addListener((observable, oldValue, newValue) -> {
             handleSearch();
         });
     }
-    
+
     @FXML
     private void handleLogout() {
         // Change from Session.logout() to Session.getInstance().logout()
         Session.getInstance().logout();
-        
+
         // Navigate to login screen
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/login.fxml"));
             Parent root = loader.load();
-            
+
             Stage stage = (Stage) logoutButton.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Login");
@@ -166,21 +198,47 @@ public class AdminDashboardController {
             showError("Error navigating to login: " + e.getMessage());
         }
     }
-    
+
     @FXML
     private void handleSearch() {
         String searchText = searchField.getText().toLowerCase();
         String selectedRole = filterRole.getValue();
 
-    }
-    
+        List<User> allUsers = UserDAO.getAllUsers();
+        List<User> filteredUsers = allUsers.stream()
+                .filter(user -> {
+                    boolean matchesSearch = searchText.isEmpty() ||
+                            user.getNom().toLowerCase().contains(searchText) ||
+                            user.getPrenom().toLowerCase().contains(searchText) ||
+                            user.getEmail().toLowerCase().contains(searchText);
 
-    
+                    boolean matchesRole = "ALL".equals(selectedRole) ||
+                            user.getRole().equals(selectedRole);
+
+                    return matchesSearch && matchesRole;
+                })
+                .collect(java.util.stream.Collectors.toList());
+
+        // Clear and reload the grid with filtered users
+        usersGrid.getChildren().clear();
+        int col = 0;
+        int row = 0;
+        for (User user : filteredUsers) {
+            createUserCard(user, row, col);
+            col++;
+            if (col == 3) {  // 3 cards per row
+                col = 0;
+                row++;
+            }
+        }
+    }
+
+
     @FXML
-    private void showUsersManagement() {
+    private void showDashboard() {
         mainTabPane.getSelectionModel().select(0);
     }
-    
+
 
     @FXML
     private void showPendingPosts() {
@@ -483,23 +541,112 @@ public class AdminDashboardController {
 
     @FXML
     private void showStatistics() {
-        // TODO: Implement statistics view
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/statistics.fxml"));
+            Parent statisticsView = loader.load();
+
+            Tab statisticsTab = null;
+            for (Tab tab : mainTabPane.getTabs()) {
+                if (tab.getText().equals("Statistics")) {
+                    statisticsTab = tab;
+                    break;
+                }
+            }
+
+            if (statisticsTab == null) {
+                statisticsTab = new Tab("Statistics");
+                statisticsTab.setContent(statisticsView);
+                statisticsTab.setClosable(true);
+                mainTabPane.getTabs().add(statisticsTab);
+            } else {
+                statisticsTab.setContent(statisticsView);
+            }
+
+            mainTabPane.getSelectionModel().select(statisticsTab);
+
+        } catch (IOException e) {
+            showError("Error loading statistics: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
-    
+
     @FXML
     private void showReports() {
     }
-    
+
     @FXML
     private void showSettings() {
     }
-    
+
+    private void createUserCard(User user, int row, int col) {
+        VBox card = new VBox(10);
+        card.getStyleClass().add("user-card");
+        card.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 8; " +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);");
+
+        // User Role Badge
+        Label roleLabel = new Label(user.getRole());
+        roleLabel.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; " +
+                "-fx-padding: 5 10; -fx-background-radius: 4; -fx-font-size: 12px;");
+
+        // User Name
+        Label nameLabel = new Label(user.getNom() + " " + user.getPrenom());
+        nameLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+        // User Email
+        Label emailLabel = new Label(user.getEmail());
+        emailLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #666;");
+
+        // Action Buttons
+        HBox actions = new HBox(10);
+        actions.setAlignment(Pos.CENTER);
+
+        Button editButton = new Button("Edit");
+        editButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; " +
+                "-fx-padding: 8 15; -fx-background-radius: 4;");
+        editButton.setOnAction(e -> handleEditUser(user));
+
+        Button deleteButton = new Button("Delete");
+        deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; " +
+                "-fx-padding: 8 15; -fx-background-radius: 4;");
+        deleteButton.setOnAction(e -> {
+            if (confirmDelete(user)) {
+                UserDAO.deleteUser(user.getId());
+                loadUsersData();
+            }
+        });
+
+        actions.getChildren().addAll(editButton, deleteButton);
+
+        // Add all elements to card
+        card.getChildren().addAll(roleLabel, nameLabel, emailLabel, actions);
+
+        // Add hover effect
+        card.setOnMouseEntered(e ->
+                card.setStyle(card.getStyle() + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 14, 0, 0, 0);"));
+        card.setOnMouseExited(e ->
+                card.setStyle(card.getStyle().replace("rgba(0,0,0,0.2), 14", "rgba(0,0,0,0.1), 10")));
+
+        // Add card to grid
+        usersGrid.add(card, col, row);
+    }
+
     private void loadUsersData() {
         List<User> users = UserDAO.getAllUsers();
-        usersTable.getItems().clear();
-        usersTable.getItems().addAll(users);
+        usersGrid.getChildren().clear();
+
+        int col = 0;
+        int row = 0;
+        for (User user : users) {
+            createUserCard(user, row, col);
+            col++;
+            if (col == 3) {  // 3 cards per row
+                col = 0;
+                row++;
+            }
+        }
     }
-    
+
     private void showInfo(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information");
@@ -529,14 +676,19 @@ public class AdminDashboardController {
                 return;
             }
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/edituser.fxml"));
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/com/pfe/novaview/edituser.fxml"));
             Parent root = loader.load();
-            EditUserController editController = loader.getController();
-            editController.initData(fullUser); // Pass the full user object
 
+            // Get the controller and initialize it with user data
+            EditUserController editController = loader.getController();
+            editController.initData(fullUser);
+
+            // Create and configure the stage
             Stage stage = new Stage();
-            stage.setTitle("Edit User - " + fullUser.getRole());
+            stage.setTitle("Edit User");
             stage.setScene(new Scene(root));
+            stage.setResizable(false);
 
             // Add a listener to refresh the table when the edit window is closed
             stage.setOnHiding(event -> loadUsersData());
@@ -544,7 +696,11 @@ public class AdminDashboardController {
             stage.show();
 
         } catch (IOException e) {
+            e.printStackTrace();
             showError("Error opening edit window: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Unexpected error: " + e.getMessage());
         }
     }
 
@@ -560,23 +716,117 @@ public class AdminDashboardController {
 
 
     @FXML
-    private void handleProfile() {
+    private void showProfile() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/profile.fxml"));
-            Parent root = loader.load();
-            
-            ProfileController profileController = loader.getController();
-            profileController.initData(this.adminUser);
-            
-            Stage stage = new Stage();
-            stage.setTitle("My Profile");
-            stage.setScene(new Scene(root));
-            stage.show();
+            // Check if the Profile tab already exists
+            Tab profileTab = null;
+            for (Tab tab : mainTabPane.getTabs()) {
+                if ("Profile".equals(tab.getText())) {
+                    profileTab = tab;
+                    break;
+                }
+            }
+
+            if (profileTab == null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/profile.fxml"));
+                Parent profileRoot = loader.load();
+
+                // Pass the current admin user to the ProfileController
+                ProfileController profileController = loader.getController();
+                // Use the session user if available, otherwise fallback to adminUser
+                User user = Session.getInstance().getUtilisateurConnecte();
+                if (user == null) user = adminUser;
+                profileController.initData(user);
+
+                profileTab = new Tab("Profile", profileRoot);
+                profileTab.setClosable(true);
+                mainTabPane.getTabs().add(profileTab);
+            }
+
+            mainTabPane.getSelectionModel().select(profileTab);
         } catch (IOException e) {
-            showError("Error opening profile: " + e.getMessage());
+            showError("Error loading profile: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
 
     // Make sure this is the last method in the class and the class has a proper closing brace
+    @FXML
+    private void handleAddUser(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/signup.fxml"));
+            Parent root = loader.load();
+            SignupController signupController = loader.getController();
+
+            // Create a new stage for the signup window
+            Stage stage = new Stage();
+            stage.setTitle("Add New User");
+            stage.setScene(new Scene(root));
+
+            // Add a listener to refresh the users table when the signup window is closed
+            stage.setOnHiding(e -> loadUsersData());
+
+            stage.show();
+        } catch (IOException e) {
+            showError("Error opening add user window: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void showUsersManagement() {
+        // Create a new tab for users management if it doesn't exist
+        Tab usersTab = null;
+        for (Tab tab : mainTabPane.getTabs()) {
+            if (tab.getText().equals("Users Management")) {
+                usersTab = tab;
+                break;
+            }
+        }
+    
+        if (usersTab == null) {
+            usersTab = new Tab("Users Management");
+            usersTab.setClosable(true);
+    
+            // Create content for users management
+            VBox content = new VBox(20);
+            content.setPadding(new Insets(20));
+            content.setStyle("-fx-background-color: white;");
+    
+            // Add search and filter controls
+            HBox controls = new HBox(15);
+            controls.setAlignment(Pos.CENTER_LEFT);
+            searchField = new TextField();
+            searchField.setPromptText("Search users...");
+            searchField.setPrefWidth(300);
+            filterRole = new ComboBox<>();
+            filterRole.getItems().addAll("ALL", "ADMIN", "MEDECIN", "PATIENT", "DONATEUR");
+            filterRole.setValue("ALL");
+            Button addUserBtn = new Button("Add User");
+            addUserBtn.setOnAction(this::handleAddUser);
+            controls.getChildren().addAll(searchField, filterRole, addUserBtn);
+    
+            // Add users grid
+            usersGrid = new GridPane();
+            usersGrid.setHgap(20);
+            usersGrid.setVgap(20);
+    
+            // Add all components to content
+            content.getChildren().addAll(controls, usersGrid);
+    
+            // Set the content and add the tab
+            usersTab.setContent(content);
+            mainTabPane.getTabs().add(usersTab);
+        }
+    
+        // Select the users management tab
+        mainTabPane.getSelectionModel().select(usersTab);
+
+        // Load users data
+        loadUsersData();
+    }
 }
+
+
+
