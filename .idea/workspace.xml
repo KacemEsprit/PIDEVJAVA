@@ -6,11 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="cc4d44b3-873d-422a-bea4-dd33ed12ab3c" name="Changes" comment="kacems">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PostFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PostFormController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/CommentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/CommentDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/LikeDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/LikeDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PostListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PostListController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PublicationDetailsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PublicationDetailsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/PostDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/PostDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/post-list.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/post-list.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/publication-details.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/publication-details.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/HelloApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/HelloApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/HelloController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/HelloController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,12 +48,12 @@
     &quot;assignee&quot;: &quot;KacemEsprit&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/KacemEsprit/PIDEVJAVA.git",
-    "accountId": "2778db2e-805b-4014-9871-3d7ad71ccf4e"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/KacemEsprit/PIDEVJAVA.git&quot;,
+    &quot;accountId&quot;: &quot;2778db2e-805b-4014-9871-3d7ad71ccf4e&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/PostListController.class" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/target/classes/com/pfe/novaview/publication-details.fxml" root0="FORCE_HIGHLIGHTING" />
@@ -75,6 +78,7 @@
     &quot;Application.HelloApplication.executor&quot;: &quot;Debug&quot;,
     &quot;Application.Main.executor&quot;: &quot;Run&quot;,
     &quot;Application.com.pfe.nova.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Nova [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;rania&quot;,
@@ -148,9 +152,9 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.com.pfe.nova.Main" />
       <item itemvalue="Application.HelloApplication" />
       <item itemvalue="Application.Main" />
+      <item itemvalue="Application.com.pfe.nova.Main" />
     </list>
     <recent_temporary>
       <list>
@@ -198,6 +202,11 @@
       <workItem from="1744803474622" duration="3779000" />
       <workItem from="1744843220785" duration="3998000" />
       <workItem from="1744968878350" duration="7813000" />
+      <workItem from="1744990806437" duration="482000" />
+      <workItem from="1745093745492" duration="572000" />
+      <workItem from="1745094328672" duration="76000" />
+      <workItem from="1745171343699" duration="1195000" />
+      <workItem from="1745228975460" duration="2000" />
     </task>
     <task id="LOCAL-00001" summary="crud">
       <option name="closed" value="true" />

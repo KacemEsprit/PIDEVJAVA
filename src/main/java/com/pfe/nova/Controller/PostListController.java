@@ -858,21 +858,28 @@ public class PostListController {
 
     // Add this method to handle creating a new post
     @FXML
-    // Update the handleNewPost method to pass the current user
     private void handleNewPost() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/post-form.fxml"));
             Parent root = loader.load();
-
+    
             // Get the controller and set the current user
             PostFormController controller = loader.getController();
             controller.setCurrentUser(currentUser);
-
+    
             Stage stage = new Stage();
             stage.setTitle("Create New Post");
-            stage.setScene(new Scene(root));
+            
+            // Set a reasonable size for the post form
+            Scene scene = new Scene(root, 700, 600);
+            stage.setScene(scene);
+            
+            // Set minimum size constraints
+            stage.setMinWidth(500);
+            stage.setMinHeight(400);
+            
             stage.showAndWait();
-
+    
             // Refresh the posts list after creating a new post
             loadPosts();
         } catch (IOException e) {
@@ -893,7 +900,15 @@ public class PostListController {
             controller.setEditMode(post);
             
             Stage stage = new Stage();
-            stage.setScene(new Scene(root));
+            
+            // Set a reasonable size for the edit form
+            Scene scene = new Scene(root, 700, 600);
+            stage.setScene(scene);
+            
+            // Set minimum size constraints
+            stage.setMinWidth(500);
+            stage.setMinHeight(400);
+            
             stage.setTitle("Edit Post");
             stage.showAndWait();
             
@@ -951,7 +966,15 @@ public class PostListController {
 
             Stage stage = new Stage();
             stage.setTitle("Publication Details");
-            stage.setScene(new Scene(root));
+            
+            // Set a reasonable size for the publication details window
+            Scene scene = new Scene(root, 800, 700);
+            stage.setScene(scene);
+            
+            // Set minimum size constraints
+            stage.setMinWidth(600);
+            stage.setMinHeight(500);
+            
             stage.show();
         } catch (IOException e) {
             showError("Error opening publication details: " + e.getMessage());

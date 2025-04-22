@@ -359,9 +359,8 @@ public class PublicationDetailsController {
 
     @FXML
     private void handleBack() {
-        // Get the current stage
+        // Close the current window
         Stage stage = (Stage) backButton.getScene().getWindow();
-        // Close the publication details window
         stage.close();
     }
 }

@@ -108,14 +108,58 @@ public class PostDAO {
 
 
 
-    public static void delete(int id) throws SQLException {
-        String sql = "DELETE FROM publication WHERE id = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
+    /**
+     * Deletes a post and all its related records (comments, likes, etc.)
+     * @param postId The ID of the post to delete
+     * @throws SQLException If a database error occurs
+     */
+    public static void delete(int postId) throws SQLException {
+        Connection conn = null;
+        try {
+            conn = DatabaseConnection.getConnection();
+            conn.setAutoCommit(false); // Start transaction
+            
+            // First delete all comments for this post
+            String deleteCommentsSQL = "DELETE FROM comment WHERE publication_id = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(deleteCommentsSQL)) {
+                stmt.setInt(1, postId);
+                stmt.executeUpdate();
+            }
+            
+            // Delete all likes for this post - fixed table name
+            String deleteLikesSQL = "DELETE FROM publication_like WHERE publication_id = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(deleteLikesSQL)) {
+                stmt.setInt(1, postId);
+                stmt.executeUpdate();
+            }
+            
+            // Finally delete the post itself
+            String deletePostSQL = "DELETE FROM publication WHERE id = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(deletePostSQL)) {
+                stmt.setInt(1, postId);
+                stmt.executeUpdate();
+            }
+            
+            conn.commit(); // Commit transaction
+        } catch (SQLException e) {
+            // Rollback transaction on error
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            throw e;
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
