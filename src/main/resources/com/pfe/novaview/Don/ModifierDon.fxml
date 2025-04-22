@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.pfe.nova.Controller.Don.ModifierDonController"
+            styleClass="don-container"
+            stylesheets="@../styles/don.css">
+
+    <top>
+        <VBox styleClass="don-header" alignment="CENTER">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label text="Modifier un Don" styleClass="don-title" alignment="CENTER"/>
+            <Text text="Modifiez les informations du don sélectionné"
+                  fill="white" style="-fx-font-size: 14px;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox styleClass="don-form" spacing="15">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="ID : " minWidth="150"/>
+                <TextField fx:id="txtId" promptText="ID du don" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <!-- Type de Don -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Type de Don : " minWidth="150"/>
+                <TextField fx:id="txtTypeDon" promptText="Type de don" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Montant : " minWidth="150"/>
+                <TextField fx:id="txtMontant" promptText="Montant du don" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Description : " minWidth="150"/>
+                <TextField fx:id="txtDescriptionMateriel" promptText="Description du matériel" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Date du Don : " minWidth="150"/>
+                <TextField fx:id="txtDateDon" promptText="Date du Don (yyyy-mm-dd)" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Mode de Paiement : " minWidth="150"/>
+                <TextField fx:id="txtModePaiement" promptText="Mode de paiement utilisé" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <!-- Upload file section -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Preuve de Don : " minWidth="150"/>
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <TextField fx:id="txtPreuveDon" promptText="Chemin du fichier" HBox.hgrow="ALWAYS"/>
+                    <Button text="Choisir un fichier" onAction="#choisirFichier" styleClass="don-button"/>
+                    <Label fx:id="lblPreuveDon" text="Aucun fichier sélectionné" style="-fx-text-fill: gray;"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="10" styleClass="don-toolbar">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            <Button text="Annuler" styleClass="don-button-delete"/>
+            <Button text="Enregistrer les modifications" onAction="#validerModification" styleClass="don-button-add"/>
+        </HBox>
+    </bottom>
+</BorderPane>
+

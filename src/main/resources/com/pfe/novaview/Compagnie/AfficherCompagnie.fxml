@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.FlowPane?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.pfe.nova.Controller.Compagnie.AfficherCompagnieController"
+            styleClass="compagnie-container"
+            stylesheets="@../styles/compagnie.css,@../styles/cards.css">
+
+
+    <top>
+        <VBox>
+            <VBox styleClass="compagnie-header">
+                <padding>
+                    <Insets top="15" right="20" bottom="15" left="20"/>
+                </padding>
+                <Label text="Gestion des Compagnies" styleClass="compagnie-title"/>
+                <Text text="Liste des compagnies enregistrées" fill="white" style="-fx-font-size: 14px;"/>
+            </VBox>
+
+
+            <HBox spacing="10" alignment="CENTER_LEFT" styleClass="compagnie-toolbar">
+                <padding>
+                    <Insets top="10" right="20" bottom="10" left="20"/>
+                </padding>
+
+                <HBox HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT" spacing="10">
+                    <TextField fx:id="searchField" promptText="Rechercher une compagnie..." prefWidth="250"/>
+                    <Button text="Rechercher" styleClass="compagnie-button" onAction="#rechercherCompagnies"/>
+                </HBox>
+            </HBox>
+        </VBox>
+    </top>
+
+
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="edge-to-edge">
+            <FlowPane fx:id="cardContainer" styleClass="card-grid" hgap="20" vgap="20">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+            </FlowPane>
+        </ScrollPane>
+    </center>
+
+
+    <bottom>
+        <HBox alignment="CENTER_LEFT" styleClass="compagnie-toolbar">
+            <padding>
+                <Insets top="5" right="20" bottom="5" left="20"/>
+            </padding>
+            <Label text="Total des compagnies: " style="-fx-font-weight: bold;"/>
+            <Label fx:id="lblTotalCompagnies" text="0"/>
+        </HBox>
+    </bottom>
+</BorderPane>
+

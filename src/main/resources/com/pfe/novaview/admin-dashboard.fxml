@@ -63,6 +63,20 @@
                         </TableView>
                     </VBox>
                 </Tab>
+
+                <!-- Tab for Gestion Compagnie -->
+                <Tab text="Gestion Compagnie" closable="false">
+                    <VBox spacing="10" alignment="CENTER">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </padding>
+                        <Label text="Chargement de l'interface de gestion des compagnies..." style="-fx-font-size: 14px;"/>
+                        <ProgressIndicator/>
+                    </VBox>
+                </Tab>
+                
+                <!-- Tab for Historique de dons -->
+
             </TabPane>
         </StackPane>
     </center>

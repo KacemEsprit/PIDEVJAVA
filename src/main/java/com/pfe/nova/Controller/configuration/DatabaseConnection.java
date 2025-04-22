@@ -1,4 +1,4 @@
-package com.pfe.nova.configuration;
+package com.pfe.nova.Controller.configuration;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
