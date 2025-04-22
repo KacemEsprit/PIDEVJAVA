@@ -52,7 +52,7 @@ public class PostListController {
     @FXML
     public void initialize() {
         setupCategoryFilter();
-        
+
         // Add listener for the pending posts checkbox
         if (showPendingPosts != null) {
             showPendingPosts.selectedProperty().addListener((obs, oldVal, newVal) -> {
@@ -298,7 +298,7 @@ public class PostListController {
             }
 
             List<Post> posts;
-            
+
             // Check if we should show pending posts for the current user
             if (showPendingPosts != null && showPendingPosts.isSelected() && currentUser != null) {
                 // Use the method that shows both approved posts and user's pending posts
@@ -375,9 +375,9 @@ public class PostListController {
             authorName = "Anonymous";
         } else if (post.getUser() != null) {
             // Debug output to check user data
-            System.out.println("Post user: " + post.getUser().getId() + ", " + 
-                              post.getUser().getNom() + ", " + post.getUser().getPrenom());
-            
+            System.out.println("Post user: " + post.getUser().getId() + ", " +
+                    post.getUser().getNom() + ", " + post.getUser().getPrenom());
+
             if (post.getUser().getNom() != null && post.getUser().getPrenom() != null) {
                 authorName = post.getUser().getNom() + " " + post.getUser().getPrenom();
             } else if (post.getUser().getNom() != null) {
@@ -388,7 +388,7 @@ public class PostListController {
         } else {
             authorName = "Unknown User";
         }
-        
+
         Label authorLabel = new Label("Posted by " + authorName);
         authorLabel.getStyleClass().add("post-author");
 
@@ -670,9 +670,9 @@ public class PostListController {
         // Check if current user has already reported this comment
         try {
             // Use currentUser.getId() instead of currentUserId
-            boolean hasReported = CommentReportDAO.hasUserReported(comment.getId(), 
-                currentUser != null ? currentUser.getId() : 0);
-            
+            boolean hasReported = CommentReportDAO.hasUserReported(comment.getId(),
+                    currentUser != null ? currentUser.getId() : 0);
+
             // Only show "Reported" if the report is still active
             if (hasReported && comment.isReported()) {
                 reportButton.setText("✓ Reported");
@@ -753,13 +753,13 @@ public class PostListController {
         result.ifPresent(reason -> {
             try {
                 // Add debugging output
-                System.out.println("Reporting comment ID: " + comment.getId() + 
-                    ", User ID: " + (currentUser != null ? currentUser.getId() : 0) + 
-                    ", Reason: " + reason);
+                System.out.println("Reporting comment ID: " + comment.getId() +
+                        ", User ID: " + (currentUser != null ? currentUser.getId() : 0) +
+                        ", Reason: " + reason);
 
                 // Create a new comment report - use currentUser.getId()
-                CommentReportDAO.reportComment(comment.getId(), 
-                    currentUser != null ? currentUser.getId() : 0, reason);
+                CommentReportDAO.reportComment(comment.getId(),
+                        currentUser != null ? currentUser.getId() : 0, reason);
 
                 // Update the comment's reported status
                 comment.setReported(true);
@@ -827,21 +827,21 @@ public class PostListController {
         confirmation.setTitle("Delete Comment");
         confirmation.setHeaderText("Delete Comment");
         confirmation.setContentText("Are you sure you want to delete this comment? This action cannot be undone.");
-        
+
         // Handle the user's choice
         Optional<ButtonType> result = confirmation.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
                 // User confirmed, proceed with deletion
                 CommentDAO.delete(comment.getId());
-                
+
                 // Show success message
                 Alert success = new Alert(Alert.AlertType.INFORMATION);
                 success.setTitle("Success");
                 success.setHeaderText(null);
                 success.setContentText("Comment deleted successfully!");
                 success.showAndWait();
-                
+
                 // Refresh comments list
                 loadPosts();
             } catch (SQLException e) {
@@ -862,24 +862,24 @@ public class PostListController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/post-form.fxml"));
             Parent root = loader.load();
-    
+
             // Get the controller and set the current user
             PostFormController controller = loader.getController();
             controller.setCurrentUser(currentUser);
-    
+
             Stage stage = new Stage();
             stage.setTitle("Create New Post");
-            
+
             // Set a reasonable size for the post form
             Scene scene = new Scene(root, 700, 600);
             stage.setScene(scene);
-            
+
             // Set minimum size constraints
             stage.setMinWidth(500);
             stage.setMinHeight(400);
-            
+
             stage.showAndWait();
-    
+
             // Refresh the posts list after creating a new post
             loadPosts();
         } catch (IOException e) {
@@ -892,26 +892,26 @@ public class PostListController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/post-form.fxml"));
             Parent root = loader.load();
-            
+
             PostFormController controller = loader.getController();
             controller.setCurrentUser(currentUser);
-            
+
             // Make sure to pass the complete post object with all image URLs
             controller.setEditMode(post);
-            
+
             Stage stage = new Stage();
-            
+
             // Set a reasonable size for the edit form
             Scene scene = new Scene(root, 700, 600);
             stage.setScene(scene);
-            
+
             // Set minimum size constraints
             stage.setMinWidth(500);
             stage.setMinHeight(400);
-            
+
             stage.setTitle("Edit Post");
             stage.showAndWait();
-            
+
             // Refresh posts after editing
             loadPosts();
         } catch (IOException e) {
@@ -966,15 +966,15 @@ public class PostListController {
 
             Stage stage = new Stage();
             stage.setTitle("Publication Details");
-            
+
             // Set a reasonable size for the publication details window
             Scene scene = new Scene(root, 800, 700);
             stage.setScene(scene);
-            
+
             // Set minimum size constraints
             stage.setMinWidth(600);
             stage.setMinHeight(500);
-            
+
             stage.show();
         } catch (IOException e) {
             showError("Error opening publication details: " + e.getMessage());

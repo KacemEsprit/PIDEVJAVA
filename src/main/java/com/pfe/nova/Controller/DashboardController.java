@@ -2,6 +2,7 @@ package com.pfe.nova.Controller;
 
 import com.pfe.nova.configuration.DatabaseConnection;
 import com.pfe.nova.models.*;
+import com.pfe.nova.services.CompagnieService;
 import com.pfe.nova.utils.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +27,7 @@ public class DashboardController {
     @FXML private Label phoneLabel;
     @FXML private Label addressLabel;
     @FXML private VBox roleSpecificContent;
-    
+
     @FXML private TabPane contentTabPane; // Add this missing FXML field
     @FXML private Button adminPostsBtn; // Add this for the admin button
     
@@ -36,29 +37,25 @@ public class DashboardController {
     @FXML private Tab appointmentsTab;
     @FXML private Tab donationsTab;
     @FXML private Tab communityPostsTab; // Add this new tab field
-    
+
     @FXML private TableView<Patient> patientsTable;
     @FXML private TableColumn<Patient, String> patientNameColumn;
     @FXML private TableColumn<Patient, String> patientEmailColumn;
     @FXML private TableColumn<Patient, Integer> patientAgeColumn;
     @FXML private TableColumn<Patient, String> patientGenderColumn;
     @FXML private TableColumn<Patient, String> patientBloodTypeColumn;
-    
+
     @FXML private TableView<Medecin> doctorsTable;
     @FXML private TableColumn<Medecin, String> doctorNameColumn;
     @FXML private TableColumn<Medecin, String> specialityColumn;
     @FXML private TableColumn<Medecin, String> experienceColumn;
     @FXML private TableColumn<Medecin, String> contactColumn;
-    
+
     @FXML
     private Tab createRapportTab;
-    
+
     @FXML
     private Tab viewRapportTab;
-    @FXML
-    private Tab createSession;
-    @FXML
-    private Tab viewSession;
 
     private User currentUser;
     @FXML private Button communityPostsButton; // Add this field
@@ -84,15 +81,13 @@ public class DashboardController {
                     communityPostsTab.setDisable(true);
                 }
             }
-            
-            // Enable/disable rapport tabs based on user type
+
+
             createRapportTab.setDisable(!isMedecin);
             viewRapportTab.setDisable(!isMedecin);
-            createSession.setDisable(!isMedecin);
-            viewSession.setDisable(!isMedecin);
-            // Make sure all FXML elements are properly injected
-            if (welcomeLabel == null || nameLabel == null || emailLabel == null || 
-                phoneLabel == null || addressLabel == null || roleSpecificContent == null) {
+
+            if (welcomeLabel == null || nameLabel == null || emailLabel == null ||
+                    phoneLabel == null || addressLabel == null || roleSpecificContent == null) {
                 throw new RuntimeException("Failed to inject FXML components");
             }
         } catch (Exception e) {
@@ -103,26 +98,26 @@ public class DashboardController {
 
     private void setupTableColumns() {
         // Setup Patient table columns
-        patientNameColumn.setCellValueFactory(data -> 
-            javafx.beans.binding.Bindings.concat(data.getValue().getNom(), " ", data.getValue().getPrenom()));
-        patientEmailColumn.setCellValueFactory(data -> 
-            new javafx.beans.property.SimpleStringProperty(data.getValue().getEmail()));
-        patientAgeColumn.setCellValueFactory(data -> 
-            new javafx.beans.property.SimpleObjectProperty<>(data.getValue().getAge()));
-        patientGenderColumn.setCellValueFactory(data -> 
-            new javafx.beans.property.SimpleStringProperty(data.getValue().getGender()));
-        patientBloodTypeColumn.setCellValueFactory(data -> 
-            new javafx.beans.property.SimpleStringProperty(data.getValue().getBloodType()));
+        patientNameColumn.setCellValueFactory(data ->
+                javafx.beans.binding.Bindings.concat(data.getValue().getNom(), " ", data.getValue().getPrenom()));
+        patientEmailColumn.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(data.getValue().getEmail()));
+        patientAgeColumn.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleObjectProperty<>(data.getValue().getAge()));
+        patientGenderColumn.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(data.getValue().getGender()));
+        patientBloodTypeColumn.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(data.getValue().getBloodType()));
 
         // Setup Doctor table columns
-        doctorNameColumn.setCellValueFactory(data -> 
-            javafx.beans.binding.Bindings.concat(data.getValue().getNom(), " ", data.getValue().getPrenom()));
-        specialityColumn.setCellValueFactory(data -> 
-            new javafx.beans.property.SimpleStringProperty(data.getValue().getSpecialite()));
-        experienceColumn.setCellValueFactory(data -> 
-            new javafx.beans.property.SimpleStringProperty(data.getValue().getExperience()));
-        contactColumn.setCellValueFactory(data -> 
-            new javafx.beans.property.SimpleStringProperty(data.getValue().getTel()));
+        doctorNameColumn.setCellValueFactory(data ->
+                javafx.beans.binding.Bindings.concat(data.getValue().getNom(), " ", data.getValue().getPrenom()));
+        specialityColumn.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(data.getValue().getSpecialite()));
+        experienceColumn.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(data.getValue().getExperience()));
+        contactColumn.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(data.getValue().getTel()));
     }
 
     public void initData(User user) {
@@ -140,6 +135,8 @@ public class DashboardController {
 
     @FXML private Button createRapportButton;
     @FXML private Button viewRapportsButton;
+    @FXML private Button faireDonButton;
+    @FXML private Button historiqueDonButton;
 
     @FXML
     private void handleCreateRapport() {
@@ -179,12 +176,20 @@ public class DashboardController {
         phoneLabel.setText("Phone: " + currentUser.getTel());
         addressLabel.setText("Address: " + currentUser.getAdresse());
 
-        // Test session and display connected user
+
         User sessionUser = Session.getInstance().getUtilisateurConnecte();
         if (sessionUser != null) {
             sessionTestLabel.setText("Session User: " + sessionUser.getEmail());
         } else {
             sessionTestLabel.setText("No user in session.");
+        }
+
+
+        if (patientsTab != null) patientsTab.setDisable(!(currentUser instanceof Medecin));
+        if (findDoctorsTab != null) findDoctorsTab.setDisable(!(currentUser instanceof Patient));
+        if (adminTab != null) adminTab.setDisable(!(currentUser.getRole().equals("ADMIN")));
+        if (donationsTab != null) {
+            donationsTab.setDisable(!(currentUser instanceof Donateur));
         }
 
         setupRoleSpecificContent();
@@ -207,22 +212,22 @@ public class DashboardController {
 
     private void setupRoleSpecificContent() {
         roleSpecificContent.getChildren().clear();
-        
+
         if (currentUser instanceof Medecin medecin) {
             roleSpecificContent.getChildren().addAll(
-                new Label("Speciality: " + medecin.getSpecialite()),
-                new Label("Experience: " + medecin.getExperience()),
-                new Label("Diploma: " + medecin.getDiplome())
+                    new Label("Speciality: " + medecin.getSpecialite()),
+                    new Label("Experience: " + medecin.getExperience()),
+                    new Label("Diploma: " + medecin.getDiplome())
             );
         } else if (currentUser instanceof Patient patient) {
             roleSpecificContent.getChildren().addAll(
-                new Label("Age: " + patient.getAge()),
-                new Label("Gender: " + patient.getGender()),
-                new Label("Blood Type: " + patient.getBloodType())
+                    new Label("Age: " + patient.getAge()),
+                    new Label("Gender: " + patient.getGender()),
+                    new Label("Blood Type: " + patient.getBloodType())
             );
         } else if (currentUser instanceof Donateur donateur) {
             roleSpecificContent.getChildren().add(
-                new Label("Donateur Type: " + donateur.getDonateurType())
+                    new Label("Donateur Type: " + donateur.getDonateurType())
             );
         }
     }
@@ -238,24 +243,24 @@ public class DashboardController {
     private ObservableList<Patient> loadPatients() {
         ObservableList<Patient> patients = FXCollections.observableArrayList();
         String query = "SELECT * FROM user WHERE role = 'PATIENT'";
-        
+
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
-            
+
             while (rs.next()) {
                 patients.add(new Patient(
-                    rs.getInt("id"),
-                    rs.getString("nom"),
-                    rs.getString("prenom"),
-                    rs.getString("email"),
-                    rs.getString("tel"),
-                    rs.getString("adresse"),
-                    rs.getString("password"),
-                    rs.getString("picture"),
-                    rs.getInt("age"),
-                    rs.getString("gender"),
-                    rs.getString("blood_type")
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getString("prenom"),
+                        rs.getString("email"),
+                        rs.getString("tel"),
+                        rs.getString("adresse"),
+                        rs.getString("password"),
+                        rs.getString("picture"),
+                        rs.getInt("age"),
+                        rs.getString("gender"),
+                        rs.getString("blood_type")
                 ));
             }
         } catch (SQLException e) {
@@ -268,24 +273,24 @@ public class DashboardController {
     private ObservableList<Medecin> loadMedecins() {
         ObservableList<Medecin> medecins = FXCollections.observableArrayList();
         String query = "SELECT * FROM user WHERE role = 'MEDECIN'";
-        
+
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
-            
+
             while (rs.next()) {
                 medecins.add(new Medecin(
-                    rs.getInt("id"),
-                    rs.getString("nom"),
-                    rs.getString("prenom"),
-                    rs.getString("email"),
-                    rs.getString("tel"),
-                    rs.getString("adresse"),
-                    rs.getString("password"),
-                    rs.getString("picture"),
-                    rs.getString("specialite"),
-                    rs.getString("experience"),
-                    rs.getString("diplome")
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getString("prenom"),
+                        rs.getString("email"),
+                        rs.getString("tel"),
+                        rs.getString("adresse"),
+                        rs.getString("password"),
+                        rs.getString("picture"),
+                        rs.getString("specialite"),
+                        rs.getString("experience"),
+                        rs.getString("diplome")
                 ));
             }
         } catch (SQLException e) {
@@ -293,6 +298,41 @@ public class DashboardController {
             showError("Error loading doctors: " + e.getMessage());
         }
         return medecins;
+    }
+
+    @FXML
+    private void handleFaireDon() {
+        try {
+            String fxmlPath;
+            String title;
+            if (currentUser instanceof Donateur donateur && "individuel".equalsIgnoreCase(donateur.getDonateurType())) {
+                fxmlPath = "/com/pfe/novaview/Don/AjouterDon.fxml";
+                title = "Faire un Don";
+            } else {
+                fxmlPath = "/com/pfe/novaview/Compagnie/AjouterCompagnie.fxml";
+                title = "Ajouter une Compagnie";
+            }
+            Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+            Stage stage = (Stage) faireDonButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle(title);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Erreur lors du chargement de l'interface: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleHistoriqueDon() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/Don/AfficherDon.fxml"));
+            Stage stage = (Stage) historiqueDonButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Historique des Dons");
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Erreur lors du chargement de l'historique des dons: " + e.getMessage());
+        }
     }
 
     @FXML

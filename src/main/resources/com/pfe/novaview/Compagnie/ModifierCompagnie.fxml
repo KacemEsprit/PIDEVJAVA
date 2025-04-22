@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.pfe.nova.Controller.Compagnie.ModifierCompagnieController"
+            styleClass="compagnie-container"
+            stylesheets="@../styles/compagnie.css">
+
+    <top>
+        <VBox styleClass="compagnie-header">
+            <Label text="Modifier une Compagnie" styleClass="compagnie-title"/>
+            <Text text="Modifiez les informations de la compagnie sélectionnée"
+                  fill="white" style="-fx-font-size: 14px;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox styleClass="compagnie-form" spacing="15">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Nom :" minWidth="100"/>
+                <TextField fx:id="txtNom" promptText="Nom de la compagnie" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Adresse :" minWidth="100"/>
+                <TextField fx:id="txtAdresse" promptText="Adresse complète" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Téléphone :" minWidth="100"/>
+                <TextField fx:id="txtTelephone" promptText="Numéro de téléphone" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Email :" minWidth="100"/>
+                <TextField fx:id="txtEmail" promptText="Adresse email" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Site Web :" minWidth="100"/>
+                <TextField fx:id="txtSiteWeb" promptText="URL du site web" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Description :" minWidth="100"/>
+                <TextField fx:id="txtDescription" promptText="Description de la compagnie" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Siret :" minWidth="100"/>
+                <TextField fx:id="txtSiret" promptText="N° Siret" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Logo :" minWidth="100"/>
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <TextField fx:id="txtLogo" promptText="Chemin du logo" HBox.hgrow="ALWAYS"/>
+                    <Button text="Choisir un fichier" onAction="#choisirFichier" styleClass="compagnie-button"/>
+                    <Label fx:id="lblLogo" text="Aucun fichier sélectionné" style="-fx-text-fill: gray;"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="10" styleClass="compagnie-toolbar">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            <Button text="Annuler" onAction="#annuler" styleClass="compagnie-button-delete"/>
+            <Button text="Enregistrer les modifications" onAction="#modifierCompagnie" styleClass="compagnie-button-add"/>
+        </HBox>
+    </bottom>
+</BorderPane>

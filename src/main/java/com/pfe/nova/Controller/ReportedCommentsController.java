@@ -2,7 +2,6 @@ package com.pfe.nova.Controller;
 
 import com.pfe.nova.configuration.CommentReportDAO;
 import com.pfe.nova.configuration.CommentDAO;
-import com.pfe.nova.models.CommentReport;
 import com.pfe.nova.models.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -328,46 +327,5 @@ public class ReportedCommentsController {
         dialogPane.getStylesheets().add(getClass().getResource("/com/pfe/novaview/styles/admin-styles.css").toExternalForm());
         
         alert.showAndWait();
-    }
-    
-    @FXML
-    private void handleRemoveReport(CommentReport report) {
-        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmation.setTitle("Remove Report");
-        confirmation.setHeaderText("Remove Report");
-        confirmation.setContentText("Are you sure you want to remove this report?");
-        
-        Optional<ButtonType> result = confirmation.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            try {
-                // Delete just this specific report
-                CommentReportDAO.deleteReport(report.getId());
-                
-                // Check if there are any remaining reports for this comment
-                boolean hasMoreReports = CommentReportDAO.hasReportsForComment(report.getCommentId());
-                
-                // Only update the comment's reported status if there are no more reports
-                if (!hasMoreReports) {
-                    CommentDAO.updateReportStatus(report.getCommentId(), false, null);
-                }
-                
-                // Show success message
-                Alert success = new Alert(Alert.AlertType.INFORMATION);
-                success.setTitle("Success");
-                success.setHeaderText(null);
-                success.setContentText("Report removed successfully!");
-                success.showAndWait();
-                
-                // Refresh the reports list
-                refreshReports();
-            } catch (SQLException e) {
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setTitle("Error");
-                error.setHeaderText("Error removing report");
-                error.setContentText("An error occurred: " + e.getMessage());
-                error.showAndWait();
-                e.printStackTrace();
-            }
-        }
     }
 }

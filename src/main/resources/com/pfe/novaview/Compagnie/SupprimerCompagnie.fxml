@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" 
+           fx:controller="com.pfe.nova.Controller.Compagnie.SupprimerCompagnieController"
+           styleClass="compagnie-container"
+           stylesheets="@../styles/compagnie.css">
+    
+    <top>
+        <VBox styleClass="compagnie-header">
+            <Label text="Supprimer une Compagnie" styleClass="compagnie-title"/>
+            <Text text="Veuillez entrer l'identifiant de la compagnie à supprimer" 
+                  fill="white" style="-fx-font-size: 14px;"/>
+        </VBox>
+    </top>
+    
+    <center>
+        <VBox styleClass="compagnie-form" spacing="15" alignment="CENTER">
+            <padding>
+                <Insets top="30" right="30" bottom="30" left="30"/>
+            </padding>
+            
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="ID de la Compagnie :" minWidth="150" styleClass="compagnie-label"/>
+                <TextField fx:id="txtId" promptText="Entrez l'ID de la compagnie à supprimer" prefWidth="250"/>
+            </HBox>
+            
+            <Text text="Attention: Cette action est irréversible!" 
+                  style="-fx-fill: #e74c3c; -fx-font-weight: bold; -fx-font-size: 14px;"/>
+        </VBox>
+    </center>
+    
+    <bottom>
+        <HBox alignment="CENTER" spacing="20" styleClass="compagnie-toolbar">
+            <padding>
+                <Insets top="15" right="20" bottom="15" left="20"/>
+            </padding>
+            <Button fx:id="btnCancel" text="Annuler" styleClass="compagnie-button-delete"/>
+            <Button fx:id="btnDelete" text="Confirmer la suppression" styleClass="compagnie-button-add"/>
+        </HBox>
+    </bottom>
+</BorderPane>
+

@@ -8,6 +8,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -75,7 +77,7 @@ public class ProfileController {
             }
         }
     }
-    
+
     @FXML
     private void handleSave() {
         try {
@@ -84,16 +86,17 @@ public class ProfileController {
             currentUser.setEmail(emailField.getText());
             currentUser.setTel(telField.getText());
             currentUser.setAdresse(addressField.getText());
-            
+
             if (newImagePath != null) {
                 currentUser.setPicture(newImagePath);
             }
-            
+
             if (!passwordField.getText().isEmpty()) {
-                // Update password if new one is provided
-                currentUser.setPassword(passwordField.getText());
+                // Hash the new password before saving
+                String hashedPassword = BCrypt.hashpw(passwordField.getText(), BCrypt.gensalt());
+                currentUser.setPassword(hashedPassword);
             }
-            
+
             if (UserDAO.updateUser(currentUser)) {
                 showInfo("Profile updated successfully!");
                 Stage stage = (Stage) nomField.getScene().getWindow();

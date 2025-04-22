@@ -108,22 +108,6 @@ public class CommentReportDAO {
         }
     }
     
-    /**
-     * Clears all reports for a specific comment
-     * @param commentId The ID of the comment
-     * @throws SQLException If a database error occurs
-     */
-    public static void clearReportsForComment(int commentId) throws SQLException {
-        String sql = "DELETE FROM comment_report WHERE comment_id = ?";
-        
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
-            stmt.setInt(1, commentId);
-            stmt.executeUpdate();
-        }
-    }
-    
     public static void deleteAllForComment(int commentId) throws SQLException {
         String sql = "DELETE FROM comment_report WHERE comment_id = ?";
         
@@ -132,29 +116,6 @@ public class CommentReportDAO {
             
             pstmt.setInt(1, commentId);
             pstmt.executeUpdate();
-        }
-    }
-    
-    /**
-     * Checks if a comment has any remaining reports
-     * @param commentId The ID of the comment to check
-     * @return true if the comment has any reports, false otherwise
-     * @throws SQLException If a database error occurs
-     */
-    public static boolean hasReportsForComment(int commentId) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM comment_report WHERE comment_id = ?";
-        
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
-            stmt.setInt(1, commentId);
-            
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) > 0;
-                }
-                return false;
-            }
         }
     }
 }

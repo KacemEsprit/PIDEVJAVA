@@ -119,9 +119,8 @@ public class PostFormController {
             for (File file : files) {
                 if (selectedImagePaths.size() >= 5) break;
                 selectedImagePaths.add(file.getAbsolutePath());
+                updateImageCount();
             }
-            updateImageCount();
-            updateImagePreviews(); // Update the previews after selection
         }
     }
 
@@ -138,92 +137,12 @@ public class PostFormController {
         contentArea.setText(post.getContent());
         categoryComboBox.setValue(post.getCategory());
         anonymousCheckBox.setSelected(post.isAnonymous());
-        
-        // Clear any previously selected images
         selectedImagePaths.clear();
-        
-        // Add all existing image URLs from the post
-        if (post.getImageUrls() != null) {
-            selectedImagePaths.addAll(post.getImageUrls());
-        }
-        
-        // Update the image count display
+        selectedImagePaths.addAll(post.getImageUrls());
         updateImageCount();
-        
-        // Display image previews
-        updateImagePreviews();
     }
-    
-    // Add this new method to display image previews with remove buttons
-    private void updateImagePreviews() {
-        // Clear existing previews
-        imagePreviewPane.getChildren().clear();
-        
-        // Add preview for each image
-        for (int i = 0; i < selectedImagePaths.size(); i++) {
-            final int index = i;
-            String imagePath = selectedImagePaths.get(i);
-            
-            try {
-                // Create a container for each image and its remove button
-                javafx.scene.layout.VBox imageContainer = new javafx.scene.layout.VBox(5);
-                imageContainer.setAlignment(javafx.geometry.Pos.CENTER);
-                
-                // Load the image
-                javafx.scene.image.Image image;
-                if (imagePath.startsWith("http")) {
-                    image = new javafx.scene.image.Image(imagePath, 100, 100, true, true);
-                } else {
-                    image = new javafx.scene.image.Image(new File(imagePath).toURI().toString(), 100, 100, true, true);
-                }
-                
-                javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView(image);
-                imageView.setFitHeight(80);
-                imageView.setFitWidth(80);
-                imageView.setPreserveRatio(true);
-                
-                // Create remove button
-                Button removeButton = new Button("Remove");
-                removeButton.getStyleClass().add("remove-image-button");
-                removeButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 10px;");
-                removeButton.setOnAction(e -> {
-                    selectedImagePaths.remove(index);
-                    updateImageCount();
-                    updateImagePreviews();
-                });
-                
-                // Add image and button to container
-                imageContainer.getChildren().addAll(imageView, removeButton);
-                
-                // Add the container to the preview pane
-                imagePreviewPane.getChildren().add(imageContainer);
-            } catch (Exception e) {
-                System.err.println("Error loading image preview: " + e.getMessage());
-            }
-        }
-        
-        // Add a "Remove All" button if there are images
-        if (!selectedImagePaths.isEmpty()) {
-            Button removeAllButton = new Button("Remove All Images");
-            removeAllButton.getStyleClass().add("remove-all-button");
-            removeAllButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
-            removeAllButton.setOnAction(e -> {
-                selectedImagePaths.clear();
-                updateImageCount();
-                updateImagePreviews();
-            });
-            
-            // Create a container for the remove all button
-            javafx.scene.layout.HBox buttonContainer = new javafx.scene.layout.HBox();
-            buttonContainer.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
-            buttonContainer.setPadding(new javafx.geometry.Insets(10, 0, 0, 0));
-            buttonContainer.getChildren().add(removeAllButton);
-            
-            // Add the button container to the preview pane
-            imagePreviewPane.getChildren().add(buttonContainer);
-        }
-    }
-    
+
+    // In your method where you save the post and its images
     private void savePost() {
         try {
             // Validate that we have a current user
@@ -244,19 +163,22 @@ public class PostFormController {
                 post.setUser(currentUser);
             }
             
-            // Only upload new images if they're not already URLs
+            // Remove this block that uses DEFAULT_USER_ID
+            /*
+            if (editingPost == null) {
+                User tempUser = new User();
+                tempUser.setId(DEFAULT_USER_ID); // Use the constant defined above
+                post.setUser(tempUser);
+            }
+            */
+            
+            // Upload images and get their URLs
             List<String> imageUrls = new ArrayList<>();
             for (String imagePath : selectedImagePaths) {
-                // If it's already a URL (from previous upload), keep it as is
-                if (imagePath.startsWith("http")) {
-                    imageUrls.add(imagePath);
-                } else {
-                    // Otherwise, upload the new image
-                    File imageFile = new File(imagePath);
-                    if (imageFile.exists()) {
-                        String imageUrl = ImageUploader.uploadImage(imageFile);
-                        imageUrls.add(imageUrl);
-                    }
+                File imageFile = new File(imagePath);
+                if (imageFile.exists()) {
+                    String imageUrl = ImageUploader.uploadImage(imageFile);
+                    imageUrls.add(imageUrl);
                 }
             }
             post.setImageUrls(imageUrls);
