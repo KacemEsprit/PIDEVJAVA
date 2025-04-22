@@ -10,12 +10,12 @@ import java.util.List;
 public class CommentDAO {
     public static void save(Comment comment) throws SQLException {
         String sql = comment.getId() == 0
-            ? "INSERT INTO comment (user_id, publication_id, created_at, contenu_com, type) VALUES (?, ?, ?, ?, ?)"
-            : "UPDATE comment SET contenu_com = ? WHERE id = ?";
-            
+                ? "INSERT INTO comment (user_id, publication_id, created_at, contenu_com, type) VALUES (?, ?, ?, ?, ?)"
+                : "UPDATE comment SET contenu_com = ? WHERE id = ?";
+
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            
+
             if (comment.getId() == 0) {
                 stmt.setInt(1, comment.getUserId());
                 stmt.setInt(2, comment.getPublicationId());
@@ -26,9 +26,9 @@ public class CommentDAO {
                 stmt.setString(1, comment.getContenuCom());
                 stmt.setInt(2, comment.getId());
             }
-            
+
             stmt.executeUpdate();
-            
+
             if (comment.getId() == 0) {
                 ResultSet rs = stmt.getGeneratedKeys();
                 if (rs.next()) {
@@ -41,18 +41,18 @@ public class CommentDAO {
 
     public static void updateReportStatus(int commentId, boolean reported, String reason) throws SQLException {
         String sql = "UPDATE comment SET reported = ?, report_reason = ? WHERE id = ?";
-        
+
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
+
 
             System.out.println("Executing SQL: " + sql);
             System.out.println("Parameters: reported=" + reported + ", reason=" + reason + ", commentId=" + commentId);
-            
+
             pstmt.setBoolean(1, reported);
             pstmt.setString(2, reason);
             pstmt.setInt(3, commentId);
-            
+
             int rowsAffected = pstmt.executeUpdate();
             System.out.println("Rows affected: " + rowsAffected);
         } catch (SQLException e) {
@@ -66,12 +66,12 @@ public class CommentDAO {
     public static List<Comment> findByPostId(int postId) throws SQLException {
         List<Comment> comments = new ArrayList<>();
         String sql = "SELECT c.*, u.nom, u.prenom FROM comment c JOIN user u ON c.user_id = u.id WHERE c.publication_id = ? ORDER BY c.created_at DESC";
-        
+
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
+
             pstmt.setInt(1, postId);
-            
+
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     Comment comment = new Comment();
@@ -82,18 +82,18 @@ public class CommentDAO {
                     comment.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
                     comment.setReported(rs.getBoolean("reported"));
                     comment.setReportReason(rs.getString("report_reason"));
-                    
+
                     User user = new User();
                     user.setId(rs.getInt("user_id"));
                     user.setNom(rs.getString("nom"));
                     user.setPrenom(rs.getString("prenom"));
                     comment.setUser(user);
-                    
+
                     comments.add(comment);
                 }
             }
         }
-        
+
         return comments;
     }
 
@@ -103,21 +103,21 @@ public class CommentDAO {
         try {
             conn = DatabaseConnection.getConnection();
             conn.setAutoCommit(false);
-            
+
 
             String deleteReportsSQL = "DELETE FROM comment_report WHERE comment_id = ?";
             try (PreparedStatement stmt = conn.prepareStatement(deleteReportsSQL)) {
                 stmt.setInt(1, commentId);
                 stmt.executeUpdate();
             }
-            
+
 
             String deleteCommentSQL = "DELETE FROM comment WHERE id = ?";
             try (PreparedStatement stmt = conn.prepareStatement(deleteCommentSQL)) {
                 stmt.setInt(1, commentId);
                 stmt.executeUpdate();
             }
-            
+
             conn.commit();
         } catch (SQLException e) {
 
@@ -145,22 +145,45 @@ public class CommentDAO {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        
+
         try {
             conn = DatabaseConnection.getConnection();
             String sql = "SELECT COUNT(*) FROM comment";
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
-            
+
             if (rs.next()) {
                 return rs.getInt(1);
             }
-            
+
             return 0;
         } finally {
             if (rs != null) rs.close();
             if (stmt != null) stmt.close();
             if (conn != null) conn.close();
+        }
+    }
+
+    /**
+     * Checks if a comment is still reported in the database
+     * @param commentId The ID of the comment to check
+     * @return true if the comment is reported, false otherwise
+     * @throws SQLException If a database error occurs
+     */
+    public static boolean isCommentReported(int commentId) throws SQLException {
+        String sql = "SELECT is_reported FROM comment WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, commentId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBoolean("is_reported");
+                }
+                return false;
+            }
         }
     }
 }

@@ -52,7 +52,7 @@ public class PostListController {
     @FXML
     public void initialize() {
         setupCategoryFilter();
-        
+
         // Add listener for the pending posts checkbox
         if (showPendingPosts != null) {
             showPendingPosts.selectedProperty().addListener((obs, oldVal, newVal) -> {
@@ -298,7 +298,7 @@ public class PostListController {
             }
 
             List<Post> posts;
-            
+
             // Check if we should show pending posts for the current user
             if (showPendingPosts != null && showPendingPosts.isSelected() && currentUser != null) {
                 // Use the method that shows both approved posts and user's pending posts
@@ -369,8 +369,27 @@ public class PostListController {
         Label categoryLabel = new Label(post.getCategory());
         categoryLabel.getStyleClass().add("post-category");
 
-        Label authorLabel = new Label("Posted by " +
-                (post.isAnonymous() ? "Anonymous" : post.getUser().getNom()));
+        // Fix the author display logic
+        String authorName;
+        if (post.isAnonymous()) {
+            authorName = "Anonymous";
+        } else if (post.getUser() != null) {
+            // Debug output to check user data
+            System.out.println("Post user: " + post.getUser().getId() + ", " +
+                    post.getUser().getNom() + ", " + post.getUser().getPrenom());
+
+            if (post.getUser().getNom() != null && post.getUser().getPrenom() != null) {
+                authorName = post.getUser().getNom() + " " + post.getUser().getPrenom();
+            } else if (post.getUser().getNom() != null) {
+                authorName = post.getUser().getNom();
+            } else {
+                authorName = "Unknown User";
+            }
+        } else {
+            authorName = "Unknown User";
+        }
+
+        Label authorLabel = new Label("Posted by " + authorName);
         authorLabel.getStyleClass().add("post-author");
 
         Region headerSpacer = new Region();
@@ -605,10 +624,23 @@ public class PostListController {
 
         // Add reported badge if comment is reported
         if (comment.isReported()) {
-            Label reportedBadge = new Label("⚠ Reported");
-            reportedBadge.getStyleClass().add("reported-badge");
-            reportedBadge.setStyle("-fx-background-color: #ff9800; -fx-text-fill: white; -fx-padding: 2 5; -fx-background-radius: 3;");
-            commentContent.getChildren().addAll(authorLabel, contentLabel, reportedBadge);
+            // Only show the reported badge if the comment is actually reported in the database
+            try {
+                boolean isStillReported = CommentDAO.isCommentReported(comment.getId());
+                if (isStillReported) {
+                    Label reportedBadge = new Label("⚠ Reported");
+                    reportedBadge.getStyleClass().add("reported-badge");
+                    reportedBadge.setStyle("-fx-background-color: #ff9800; -fx-text-fill: white; -fx-padding: 2 5; -fx-background-radius: 3;");
+                    commentContent.getChildren().addAll(authorLabel, contentLabel, reportedBadge);
+                } else {
+                    // Update the comment's reported status in memory
+                    comment.setReported(false);
+                    commentContent.getChildren().addAll(authorLabel, contentLabel);
+                }
+            } catch (SQLException e) {
+                System.err.println("Error checking comment report status: " + e.getMessage());
+                commentContent.getChildren().addAll(authorLabel, contentLabel);
+            }
         } else {
             commentContent.getChildren().addAll(authorLabel, contentLabel);
         }
@@ -638,11 +670,17 @@ public class PostListController {
         // Check if current user has already reported this comment
         try {
             // Use currentUser.getId() instead of currentUserId
-            boolean hasReported = CommentReportDAO.hasUserReported(comment.getId(), 
-                currentUser != null ? currentUser.getId() : 0);
-            if (hasReported) {
+            boolean hasReported = CommentReportDAO.hasUserReported(comment.getId(),
+                    currentUser != null ? currentUser.getId() : 0);
+
+            // Only show "Reported" if the report is still active
+            if (hasReported && comment.isReported()) {
                 reportButton.setText("✓ Reported");
                 reportButton.setDisable(true);
+            } else if (hasReported && !comment.isReported()) {
+                // If user reported but admin removed the report, reset the button
+                reportButton.setText("⚠ Report");
+                reportButton.setDisable(false);
             }
         } catch (SQLException ex) {
             System.err.println("Error checking report status: " + ex.getMessage());
@@ -715,13 +753,13 @@ public class PostListController {
         result.ifPresent(reason -> {
             try {
                 // Add debugging output
-                System.out.println("Reporting comment ID: " + comment.getId() + 
-                    ", User ID: " + (currentUser != null ? currentUser.getId() : 0) + 
-                    ", Reason: " + reason);
+                System.out.println("Reporting comment ID: " + comment.getId() +
+                        ", User ID: " + (currentUser != null ? currentUser.getId() : 0) +
+                        ", Reason: " + reason);
 
                 // Create a new comment report - use currentUser.getId()
-                CommentReportDAO.reportComment(comment.getId(), 
-                    currentUser != null ? currentUser.getId() : 0, reason);
+                CommentReportDAO.reportComment(comment.getId(),
+                        currentUser != null ? currentUser.getId() : 0, reason);
 
                 // Update the comment's reported status
                 comment.setReported(true);
@@ -784,17 +822,42 @@ public class PostListController {
     }
 
     private void handleDeleteComment(Comment comment) {
-        try {
-            CommentDAO.delete(comment.getId());
-            loadPosts(); // Refresh to remove deleted comment
-        } catch (SQLException ex) {
-            showError("Error deleting comment: " + ex.getMessage());
+        // Show confirmation dialog
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Delete Comment");
+        confirmation.setHeaderText("Delete Comment");
+        confirmation.setContentText("Are you sure you want to delete this comment? This action cannot be undone.");
+
+        // Handle the user's choice
+        Optional<ButtonType> result = confirmation.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                // User confirmed, proceed with deletion
+                CommentDAO.delete(comment.getId());
+
+                // Show success message
+                Alert success = new Alert(Alert.AlertType.INFORMATION);
+                success.setTitle("Success");
+                success.setHeaderText(null);
+                success.setContentText("Comment deleted successfully!");
+                success.showAndWait();
+
+                // Refresh comments list
+                loadPosts();
+            } catch (SQLException e) {
+                // Show error message
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setHeaderText("Error deleting comment");
+                error.setContentText("An error occurred: " + e.getMessage());
+                error.showAndWait();
+                e.printStackTrace();
+            }
         }
     }
 
     // Add this method to handle creating a new post
     @FXML
-    // Update the handleNewPost method to pass the current user
     private void handleNewPost() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/post-form.fxml"));
@@ -806,7 +869,15 @@ public class PostListController {
 
             Stage stage = new Stage();
             stage.setTitle("Create New Post");
-            stage.setScene(new Scene(root));
+
+            // Set a reasonable size for the post form
+            Scene scene = new Scene(root, 700, 600);
+            stage.setScene(scene);
+
+            // Set minimum size constraints
+            stage.setMinWidth(500);
+            stage.setMinHeight(400);
+
             stage.showAndWait();
 
             // Refresh the posts list after creating a new post
@@ -824,14 +895,25 @@ public class PostListController {
 
             PostFormController controller = loader.getController();
             controller.setCurrentUser(currentUser);
+
+            // Make sure to pass the complete post object with all image URLs
             controller.setEditMode(post);
 
             Stage stage = new Stage();
+
+            // Set a reasonable size for the edit form
+            Scene scene = new Scene(root, 700, 600);
+            stage.setScene(scene);
+
+            // Set minimum size constraints
+            stage.setMinWidth(500);
+            stage.setMinHeight(400);
+
             stage.setTitle("Edit Post");
-            stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            loadPosts(); // Refresh the list after editing
+            // Refresh posts after editing
+            loadPosts();
         } catch (IOException e) {
             showError("Error opening edit form: " + e.getMessage());
         }
@@ -884,7 +966,15 @@ public class PostListController {
 
             Stage stage = new Stage();
             stage.setTitle("Publication Details");
-            stage.setScene(new Scene(root));
+
+            // Set a reasonable size for the publication details window
+            Scene scene = new Scene(root, 800, 700);
+            stage.setScene(scene);
+
+            // Set minimum size constraints
+            stage.setMinWidth(600);
+            stage.setMinHeight(500);
+
             stage.show();
         } catch (IOException e) {
             showError("Error opening publication details: " + e.getMessage());
