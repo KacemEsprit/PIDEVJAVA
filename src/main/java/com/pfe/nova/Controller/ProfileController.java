@@ -1,5 +1,5 @@
 package com.pfe.nova.Controller;
-
+import javafx.scene.input.MouseEvent;
 import com.pfe.nova.models.User;
 import com.pfe.nova.configuration.UserDAO;
 import javafx.fxml.FXML;
@@ -60,7 +60,7 @@ public class ProfileController {
         if (selectedFile != null) {
             try {
                 // Create directory if it doesn't exist
-                Path uploadDir = Paths.get("src/main/resources/uploads/profiles");
+                Path uploadDir = Paths.get("PIDEVJAVA/src/main/resources/uploads/profiles");
                 Files.createDirectories(uploadDir);
                 
                 // Copy file to uploads directory
@@ -123,5 +123,17 @@ public class ProfileController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    
+    @FXML
+    private void handleButtonHover(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        button.setStyle(button.getStyle() + "-fx-opacity: 0.9;");
+    }
+
+    @FXML
+    private void handleButtonExit(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        button.setStyle(button.getStyle().replace("-fx-opacity: 0.9;", ""));
     }
 }

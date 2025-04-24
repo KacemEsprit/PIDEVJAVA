@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.input.MouseEvent;
 
 public class EditUserController {
     @FXML private TextField nameField;
@@ -30,28 +31,38 @@ public class EditUserController {
     public void initialize() {
         roleComboBox.getItems().addAll("ADMIN", "MEDECIN", "PATIENT", "DONATEUR");
 
-        // Initialize role-specific fields
+        String fieldStyle = "-fx-padding: 10; -fx-background-radius: 5; -fx-border-color: #e0e0e0; " +
+                           "-fx-border-radius: 5; -fx-background-color: #f8f9fa;";
+
+        // Initialize role-specific fields with styling
         specialityField = new TextField();
         specialityField.setPromptText("Speciality");
+        specialityField.setStyle(fieldStyle);
 
         experienceField = new TextField();
         experienceField.setPromptText("Experience");
+        experienceField.setStyle(fieldStyle);
 
         diplomaField = new TextField();
         diplomaField.setPromptText("Diploma");
+        diplomaField.setStyle(fieldStyle);
 
         ageField = new TextField();
         ageField.setPromptText("Age");
+        ageField.setStyle(fieldStyle);
 
         genderComboBox = new ComboBox<>();
         genderComboBox.getItems().addAll("Male", "Female");
         genderComboBox.setPromptText("Gender");
+        genderComboBox.setStyle(fieldStyle);
 
         bloodTypeField = new TextField();
         bloodTypeField.setPromptText("Blood Type");
+        bloodTypeField.setStyle(fieldStyle);
 
         donateurTypeField = new TextField();
         donateurTypeField.setPromptText("Donateur Type");
+        donateurTypeField.setStyle(fieldStyle);
     }
 
     public void initData(User user) {
@@ -169,5 +180,22 @@ public class EditUserController {
     private void closeWindow() {
         Stage stage = (Stage) nameField.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    private void handleButtonHover(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        button.setStyle(button.getStyle() + "-fx-opacity: 0.9;");
+    }
+
+    @FXML
+    private void handleButtonExit(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        button.setStyle(button.getStyle().replace("-fx-opacity: 0.9;", ""));
+    }
+
+    @FXML
+    private void handleCancel() {
+        closeWindow();
     }
 }

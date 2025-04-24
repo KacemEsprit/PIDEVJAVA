@@ -1,5 +1,6 @@
 package com.pfe.nova.Controller;
-
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import com.pfe.nova.configuration.DatabaseConnection;
 import com.pfe.nova.models.*;
 import javafx.fxml.FXML;
@@ -121,7 +122,7 @@ public class SignupController {
 
             if (user != null && UserDAO.registerUser(user)) {
                 showSuccess("Registration successful!");
-                navigateToLogin();
+                navigateToLogin(new ActionEvent());
             }
         } catch (IllegalArgumentException e) {
             showError("Error processing password");
@@ -332,22 +333,18 @@ public class SignupController {
         );
     }
 
-    private void navigateToLogin() {
+    @FXML
+    private void navigateToLogin(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/login.fxml"));
-            if (loader.getLocation() == null) {
-                throw new IOException("Cannot find login.fxml");
-            }
             Parent root = loader.load();
-            Stage stage = (Stage) signupButton.getScene().getWindow();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.setTitle("Login");
-            stage.centerOnScreen();
+            stage.show();
         } catch (IOException e) {
-            showError("Unable to load login page: " + e.getMessage());
-            System.err.println("Error loading login page: " + e.getMessage());
             e.printStackTrace();
+            showError("Error loading login page");
         }
     }
 
