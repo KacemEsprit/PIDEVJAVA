@@ -2,7 +2,7 @@ package com.pfe.nova.Controller;
 
 import com.pfe.nova.configuration.DatabaseConnection;
 import com.pfe.nova.models.*;
-import com.pfe.nova.utils.Session;
+import com.pfe.nova.utils.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,8 +11,8 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 import com.pfe.nova.configuration.UserDAO;
+
 import java.io.IOException;
-import java.sql.*;
 
 public class LoginController {
     @FXML private TextField emailField;
@@ -24,6 +24,7 @@ public class LoginController {
     public void initialize() {
         setupButtonHoverEffects();
     }
+
     @FXML
     private void handleLogin() {
         String email = emailField.getText();
@@ -37,14 +38,13 @@ public class LoginController {
         User user = authenticateUser(email, password);
         if (user != null) {
             System.out.println("Authenticated user: " + user.getEmail() + ", Role: " + user.getRole());
-            Session.setUtilisateurConnecte(user);
+            SessionManager.setCurrentUser(user);
             navigateToDashboard(user);
         } else {
             showError("Invalid email or password");
             System.out.println("Authentication failed for email: " + email);
         }
     }
-
 
     @FXML
     private void navigateToSignup() {
@@ -98,7 +98,6 @@ public class LoginController {
         }
     }
 
-
     private User authenticateUser(String email, String password) {
         return UserDAO.authenticateUser(email, password);
     }
@@ -111,7 +110,6 @@ public class LoginController {
                 loginButton.setStyle("-fx-background-color: #3498db; -fx-pref-width: 300px; -fx-pref-height: 40px; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 3;")
         );
     }
-
 
     private void showError(String message) {
         errorLabel.setText(message);

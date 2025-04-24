@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc4d44b3-873d-422a-bea4-dd33ed12ab3c" name="Changes" comment="kacems">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PostFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PostFormController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/DonController/AjouterDonController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/DonController/AjouterDonController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/services/DonService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/services/DonService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/Don/AjouterDon.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/Don/AjouterDon.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/models/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/models/User.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,12 +45,12 @@
     &quot;assignee&quot;: &quot;KacemEsprit&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/KacemEsprit/PIDEVJAVA.git&quot;,
-    &quot;accountId&quot;: &quot;1d8d4be7-cea8-4964-b17b-205df7f0b504&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/KacemEsprit/PIDEVJAVA.git",
+    "accountId": "a659ee11-96fd-4ff5-9f0d-55de3b8c5b0a"
   }
-}</component>
+}]]></component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/PostListController.class" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/target/classes/com/pfe/novaview/publication-details.fxml" root0="FORCE_HIGHLIGHTING" />
@@ -78,8 +83,9 @@
     "Application.Main.executor": "Run",
     "Application.com.pfe.nova.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "amal2",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/21693/Documents/PIDEVJAVA/PIDEVJAVA",
@@ -165,8 +171,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.24807.4" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.24807.4" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
       </set>
     </attachedChunks>
   </component>
@@ -199,6 +205,7 @@
       <workItem from="1744736368258" duration="6778000" />
       <workItem from="1744803474622" duration="3779000" />
       <workItem from="1744843220785" duration="3998000" />
+      <workItem from="1745488628254" duration="1714000" />
     </task>
     <task id="LOCAL-00001" summary="crud">
       <option name="closed" value="true" />

@@ -3,6 +3,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.ScrollPane?>
@@ -18,12 +19,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.effect.DropShadow?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" 
-           fx:controller="com.pfe.nova.Controller.DonController.AjouterDonController"
-           styleClass="don-container"
-           stylesheets="@../styles/don.css"
-           prefWidth="1000" prefHeight="700">
-    
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.pfe.nova.Controller.DonController.AjouterDonController"
+            styleClass="don-container"
+            stylesheets="@../styles/don.css"
+            prefWidth="1000" prefHeight="700">
+
     <top>
         <StackPane>
             <Rectangle width="1000" height="120" styleClass="don-header-background" arcWidth="10" arcHeight="10">
@@ -40,12 +41,12 @@
                         <Font name="System Bold" size="26"/>
                     </font>
                 </Label>
-                <Text text="Remplissez les informations pour enregistrer un nouveau don" 
+                <Text text="Remplissez les informations pour enregistrer un nouveau don"
                       fill="white" style="-fx-font-size: 14px;"/>
             </VBox>
         </StackPane>
     </top>
-    
+
     <center>
         <ScrollPane fitToWidth="true" styleClass="don-form-scroll">
             <GridPane styleClass="don-form" hgap="20" vgap="15">
@@ -57,7 +58,7 @@
                 </effect>
 
                 <!-- Titre Section 1 -->
-                <Label text="Informations du Don" styleClass="subtitle" 
+                <Label text="Informations du Don" styleClass="subtitle"
                        style="-fx-font-size: 18px; -fx-font-weight: bold;"
                        GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="4"/>
                 <Separator styleClass="separator" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="4"/>
@@ -87,27 +88,27 @@
                     <DatePicker fx:id="dpDateDon" promptText="Sélectionnez une date" HBox.hgrow="ALWAYS" styleClass="field-input"/>
                 </HBox>
 
-                <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2">
+                <VBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2">
                     <Region styleClass="field-icon-description" minWidth="24" minHeight="24"/>
                     <Label text="Description :" styleClass="field-label"/>
-                    <TextField fx:id="txtDescriptionMateriel" promptText="Description du matériel" HBox.hgrow="ALWAYS" styleClass="field-input"/>
-                </HBox>
+                    <TextArea fx:id="txtDescriptionMateriel" promptText="Description du matériel" styleClass="field-input" prefRowCount="5" prefColumnCount="30"/>
+                </VBox>
 
                 <!-- Titre Section 2 -->
-                <Label text="Informations Complémentaires" styleClass="subtitle" 
+                <Label text="Informations Complémentaires" styleClass="subtitle"
                        style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 10 0 0 0;"
                        GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="4"/>
                 <Separator styleClass="separator" GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.columnSpan="4"/>
 
                 <!-- Les champs ID Donateur et ID Campagne ont été supprimés -->
 
-                <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="0" GridPane.rowIndex="8">
+                <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="0" GridPane.rowIndex="7">
                     <Region styleClass="field-icon-payment" minWidth="24" minHeight="24"/>
                     <Label text="Mode de Paiement :" styleClass="field-label"/>
                     <TextField fx:id="txtModePaiement" promptText="Mode de paiement utilisé" HBox.hgrow="ALWAYS" styleClass="field-input"/>
                 </HBox>
 
-                <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="7">
                     <Region styleClass="field-icon-upload" minWidth="24" minHeight="24"/>
                     <Label text="Preuve de Don :" styleClass="field-label"/>
                     <VBox spacing="5" HBox.hgrow="ALWAYS">
@@ -118,7 +119,7 @@
             </GridPane>
         </ScrollPane>
     </center>
-    
+
     <bottom>
         <HBox alignment="CENTER_RIGHT" spacing="15" styleClass="don-toolbar">
             <padding>

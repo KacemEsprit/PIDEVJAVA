@@ -2,15 +2,17 @@ package com.pfe.nova.Controller.DonController;
 
 import com.pfe.nova.models.Compagnie;
 import com.pfe.nova.models.Don;
+import com.pfe.nova.models.Donateur;
+import com.pfe.nova.models.User;
 import com.pfe.nova.services.CompagnieService;
 import com.pfe.nova.services.DonService;
+import com.pfe.nova.utils.SessionManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
-
 import java.io.File;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -18,16 +20,16 @@ import java.sql.SQLException;
 public class AjouterDonController {
 
     @FXML
-    private ComboBox<String> cbTypeDon; // ComboBox for Type de Don
+    private ComboBox<String> cbTypeDon;
 
     @FXML
-    private ComboBox<Compagnie> cbCompagnie; // ComboBox for Compagnie
+    private ComboBox<Compagnie> cbCompagnie;
 
     @FXML
     private TextField txtMontant;
 
     @FXML
-    private TextField txtDescriptionMateriel;
+    private TextArea txtDescriptionMateriel;
 
     @FXML
     private DatePicker dpDateDon;
@@ -38,48 +40,69 @@ public class AjouterDonController {
     @FXML
     private Label lblPreuveDon;
 
-    private File fichierPreuve; // Stocke le fichier sélectionné
+    private File fichierPreuve;
+    private boolean isIndividualDonor;
 
     @FXML
     public void initialize() {
-        // Initialiser les options du ComboBox pour le type de don
+        // Initialiser les types de don
         ObservableList<String> typesDon = FXCollections.observableArrayList("Matériel", "Financier");
         cbTypeDon.setItems(typesDon);
 
-        // Initialiser les options du ComboBox pour les compagnies
+        // Vérifier le type de donateur
+        User currentUser = SessionManager.getCurrentUser();
+        System.out.println("Current user: " + currentUser);
+
+        if (currentUser instanceof Donateur) {
+            Donateur donateur = (Donateur) currentUser;
+            String donateurType = donateur.getDonateurType();
+            System.out.println("Donateur type: " + donateurType);
+
+            isIndividualDonor = "INDIVIDUEL".equalsIgnoreCase(donateurType);
+            System.out.println("Is individual donor: " + isIndividualDonor);
+
+            if (isIndividualDonor) {
+                System.out.println("Hiding company selection for individual donor");
+                // Cacher le choix de compagnie pour les donateurs individuels
+                cbCompagnie.setVisible(false);
+                cbCompagnie.setManaged(false); // Pour ne pas laisser d'espace vide
+                // Cacher aussi le label et l'icône
+                cbCompagnie.getParent().setVisible(false);
+                cbCompagnie.getParent().setManaged(false);
+            } else {
+                System.out.println("Initializing companies for company donor");
+                // Initialiser les compagnies pour les donateurs non-individuels
+                initializeCompagnies();
+            }
+        } else {
+            System.out.println("User is not a Donateur");
+        }
+    }
+
+    private void initializeCompagnies() {
         try {
             CompagnieService compagnieService = new CompagnieService();
             ObservableList<Compagnie> compagnies = FXCollections.observableArrayList(compagnieService.getAll());
             cbCompagnie.setItems(compagnies);
-            
-            // Configurer l'affichage des compagnies dans le ComboBox
-            cbCompagnie.setCellFactory(param -> new javafx.scene.control.ListCell<Compagnie>() {
+
+            // Configuration de l'affichage des compagnies
+            cbCompagnie.setCellFactory(param -> new ListCell<Compagnie>() {
                 @Override
                 protected void updateItem(Compagnie item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item.getNom());
-                    }
+                    setText(empty || item == null ? null : item.getNom());
                 }
             });
-            
-            // Configurer l'affichage de la compagnie sélectionnée
-            cbCompagnie.setButtonCell(new javafx.scene.control.ListCell<Compagnie>() {
+
+            cbCompagnie.setButtonCell(new ListCell<Compagnie>() {
                 @Override
                 protected void updateItem(Compagnie item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item.getNom());
-                    }
+                    setText(empty || item == null ? null : item.getNom());
                 }
             });
         } catch (SQLException e) {
-            e.printStackTrace();
-            showErrorAlert("Erreur", "Impossible de charger la liste des compagnies.");
+            showErrorAlert("Erreur", "Impossible de charger les compagnies: " + e.getMessage());
         }
     }
 
@@ -93,98 +116,88 @@ public class AjouterDonController {
                 new FileChooser.ExtensionFilter("PDF", "*.pdf")
         );
 
-        // Ouvrir le sélecteur de fichiers
         File fichier = fileChooser.showOpenDialog(null);
         if (fichier != null) {
             fichierPreuve = fichier;
-            lblPreuveDon.setText(fichier.getName()); // Affiche le nom du fichier sélectionné
-        } else {
-            lblPreuveDon.setText("Aucun fichier sélectionné");
+            lblPreuveDon.setText(fichier.getName());
         }
     }
 
     @FXML
     void ajouterDon(ActionEvent event) {
         try {
-            // Vérifications des champs obligatoires
-            if (cbTypeDon.getValue() == null || txtMontant.getText().isEmpty() || fichierPreuve == null || cbCompagnie.getValue() == null) {
+            // Validation des champs obligatoires
+            if (cbTypeDon.getValue() == null ||
+                    txtMontant.getText().isEmpty() ||
+                    fichierPreuve == null ||
+                    (!isIndividualDonor && cbCompagnie.getValue() == null)) {
+
                 showErrorAlert("Champs obligatoires", "Veuillez remplir tous les champs obligatoires et sélectionner un fichier de preuve.");
                 return;
             }
 
-            // Capture des données
-            String typeDon = cbTypeDon.getValue(); // Récupérer la valeur sélectionnée
+            // Récupération des données
+            String typeDon = cbTypeDon.getValue();
             double montant = Double.parseDouble(txtMontant.getText());
             String descriptionMateriel = txtDescriptionMateriel.getText();
-            Date dateDon = Date.valueOf(dpDateDon.getValue());
+            Date dateDon = dpDateDon.getValue() != null ? Date.valueOf(dpDateDon.getValue()) : null;
             String modePaiement = txtModePaiement.getText();
-            String preuveDon = fichierPreuve.getAbsolutePath(); // Chemin complet du fichier
+            String preuveDon = fichierPreuve.getName();
 
-            // Debug statements
-            System.out.println("Type de Don: " + typeDon);
-            System.out.println("Montant: " + montant);
-            System.out.println("Description du Matériel: " + descriptionMateriel);
-            System.out.println("Date du Don: " + dateDon);
-            System.out.println("ID Compagnie: " + cbCompagnie.getValue().getId());
-            System.out.println("Mode de Paiement: " + modePaiement);
-            System.out.println("Preuve de Don: " + preuveDon);
+            // Création du don
+            Don don;
+            if (!isIndividualDonor && cbCompagnie.getValue() != null) {
+                // Don avec ID de compagnie pour les donateurs non-individuels
+                don = new Don(typeDon, montant, descriptionMateriel, dateDon, 0, 0, cbCompagnie.getValue().getId(), modePaiement, preuveDon);
+            } else {
+                // Don sans ID de compagnie pour les donateurs individuels
+                don = new Don(typeDon, montant, descriptionMateriel, dateDon, 0, 0, modePaiement, preuveDon);
+            }
 
-            // Créer un objet Don
-            Compagnie compagnieSelectionnee = cbCompagnie.getValue();
-            Don don = new Don(typeDon, montant, descriptionMateriel, dateDon, 0, 0, modePaiement, preuveDon);
-
-            // Ajouter le Don à la base de données
+            // Sauvegarde du don
             DonService donService = new DonService();
             donService.ajouter(don);
 
-            // Afficher un message de succès
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Succès");
-            alert.setHeaderText(null);
-            alert.setContentText("Le don a été ajouté avec succès !");
-            alert.showAndWait();
+            showSuccessAlert("Succès", "Don ajouté avec succès!");
+            clearFields();
 
-        } catch (SQLException e) {
-            System.out.println("Erreur SQL : " + e.getMessage());
-            showErrorAlert("Erreur SQL", e.getMessage());
         } catch (NumberFormatException e) {
-            System.out.println("Erreur de format : " + e.getMessage());
-            showErrorAlert("Erreur de format", "Veuillez vérifier les champs numériques.");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Erreur de date : " + e.getMessage());
-            showErrorAlert("Erreur de date", "Veuillez vérifier le format de la date (yyyy-mm-dd).");
+            showErrorAlert("Erreur de format", "Le montant doit être un nombre valide.");
+        } catch (SQLException e) {
+            showErrorAlert("Erreur", "Erreur lors de l'ajout du don: " + e.getMessage());
         }
     }
 
-    private Date validateAndParseDate(String dateString) {
-        try {
-            return Date.valueOf(dateString);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Format de date invalide. Utilisez 'yyyy-mm-dd'.");
+    private void clearFields() {
+        cbTypeDon.setValue(null);
+        txtMontant.clear();
+        txtDescriptionMateriel.clear();
+        dpDateDon.setValue(null);
+        txtModePaiement.clear();
+        lblPreuveDon.setText("");
+        fichierPreuve = null;
+        if (!isIndividualDonor) {
+            cbCompagnie.setValue(null);
         }
     }
 
-    private void showErrorAlert(String title, String message) {
+    private void showErrorAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void showSuccessAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(content);
         alert.showAndWait();
     }
 
     @FXML
     void annuler(ActionEvent event) {
-        // Réinitialiser tous les champs
-        cbTypeDon.setValue(null);
-        cbCompagnie.setValue(null);
-        txtMontant.clear();
-        dpDateDon.setValue(null);
-        txtDescriptionMateriel.clear();
-        txtModePaiement.clear();
-        lblPreuveDon.setText("Aucun fichier sélectionné");
-        fichierPreuve = null;
-
-        // Fermer la fenêtre
+        clearFields();
         txtMontant.getScene().getWindow().hide();
     }
 }
