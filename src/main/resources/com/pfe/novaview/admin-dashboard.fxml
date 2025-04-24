@@ -3,81 +3,103 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
+<?import java.net.URL?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17"
-            xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.pfe.nova.Controller.AdminDashboardController"
-            prefWidth="1000"
-            prefHeight="700">
-    
-    <top>
-        <HBox alignment="CENTER_RIGHT" spacing="10" style="-fx-padding: 10; -fx-background-color: #2c3e50;">
-            <Label fx:id="sessionTestLabel" style="-fx-font-size: 14px; -fx-text-fill: green;"/>
-            <Label fx:id="welcomeLabel" style="-fx-text-fill: white; -fx-font-size: 16px;"/>
-
-            <Button text="Logout" fx:id="logoutButton" onAction="#handleLogout"
-                    style="-fx-background-color: #c0392b; -fx-text-fill: white;"/>
-        </HBox>
-    </top>
-    
+            stylesheets="@styles/admin-styles.css">
+    <!-- Left Sidebar Navigation -->
     <left>
-        <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: #34495e;" prefWidth="200">
-            <Button text="Users Management" onAction="#showUsersManagement" 
-                    style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-pref-width: 160;"/>
-            <Button text="Pending Posts" onAction="#showPendingPosts"
-                    style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-pref-width: 160;"/>
-            <Button text="Reported Comments" onAction="#showReportedComments"
-                    style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-pref-width: 160;"/>
-            <!-- Removed Posts Management button -->
-            <Button text="Statistics" onAction="#showStatistics"
-                    style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-pref-width: 160;"/>
-            <Button text="Reports" onAction="#showReports"
-                    style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-pref-width: 160;"/>
-            <Button text="Settings" onAction="#showSettings"
-                    style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-pref-width: 160;"/>
+        <VBox styleClass="sidebar">
+            <!-- Profile Section -->
+            <VBox alignment="CENTER" spacing="10" style="-fx-padding: 10 0 20 0;">
+                <ImageView fx:id="sidebarProfileImage" fitHeight="64" fitWidth="64" style="-fx-background-radius: 32;"/>
+                <Label fx:id="sidebarProfileName" styleClass="logo-text" style="-fx-font-size: 16;"/>
+                <Label fx:id="sidebarProfileEmail" style="-fx-text-fill: #bdc3c7; -fx-font-size: 12;"/>
+            </VBox>
+            <!-- <VBox alignment="CENTER" styleClass="sidebar-header">
+                <Label fx:id="logoLabel" text="NOVA Admin" styleClass="logo-text"/>
+            </VBox> -->
+            <VBox spacing="10" styleClass="nav-buttons">
+                <Button fx:id="dashboardBtn" styleClass="nav-button" onAction="#showDashboard">
+                    <graphic>
+                        <Label text="🏠" styleClass="icon-label"/>
+                    </graphic>
+                    <text>Dashboard</text>
+                </Button>
+                <Button fx:id="usersBtn" styleClass="nav-button" onAction="#showUsersManagement">
+                    <graphic>
+                        <Label text="👥" styleClass="icon-label"/>
+                    </graphic>
+                    <text>Users</text>
+                </Button>
+                <Button fx:id="pendingPostsBtn" styleClass="nav-button" onAction="#showPendingPosts">
+                    <graphic>
+                        <Label text="🕒" styleClass="icon-label"/>
+                    </graphic>
+                    
+                    <text>Pending Posts</text>
+                </Button>
+                <Button fx:id="reportedCommentsBtn" styleClass="nav-button" onAction="#showReportedComments">
+                    <graphic>
+                        <Label text="🚩" styleClass="icon-label"/>
+                    </graphic>
+                    <text>ReportedComments</text>
+                </Button>
+                <Button fx:id="statsBtn" styleClass="nav-button" onAction="#showStatistics">
+                    <graphic>
+                        <Label text="📊" styleClass="icon-label"/>
+                    </graphic>
+                    <text>Statistics</text>
+                </Button>
+                <Button fx:id="reportsBtn" styleClass="nav-button" onAction="#showReports">
+                    <graphic>
+                        <Label text="📄" styleClass="icon-label"/>
+                    </graphic>
+                    <text>Reports</text>
+                </Button>
+                <Button fx:id="settingsBtn" styleClass="nav-button" onAction="#showProfile">
+                    <graphic>
+                        <Label text="👤" styleClass="icon-label"/>
+                    </graphic>
+                    <text>Profile</text>
+                </Button>
+                <Region VBox.vgrow="ALWAYS"/>
+                <Button fx:id="logoutButton" styleClass="nav-button, logout-button" onAction="#handleLogout">
+                    <graphic>
+                        <Label text="🚪" styleClass="icon-label"/>
+                    </graphic>
+                    <text>Logout</text>
+                </Button>
+            </VBox>
         </VBox>
     </left>
-    
+
+    <!-- Main Content Area -->
     <center>
-        <StackPane fx:id="contentArea">
-            <TabPane fx:id="mainTabPane">
+        <VBox>
+            <!-- Top Header -->
+            <HBox styleClass="header">
+                <Label fx:id="welcomeLabel" styleClass="welcome-text"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="sessionTestLabel" styleClass="session-label"/>
+            </HBox>
+            <!-- Main Content Tabs -->
+            <TabPane fx:id="mainTabPane" styleClass="main-content">
                 <Tab text="Users Management" closable="false">
-                    <VBox spacing="10">
-                        <padding>
-                            <Insets top="10" right="10" bottom="10" left="10"/>
-                        </padding>
+                    <VBox spacing="10" style="-fx-padding: 20;">
                         <HBox spacing="10" alignment="CENTER_LEFT">
-                            <TextField fx:id="searchField" promptText="Search users..." prefWidth="200"/>
-                            <ComboBox fx:id="filterRole" promptText="Filter by role"/>
-                            <Button text="Search" onAction="#handleSearch"/>
-                            <Button text="Profile" onAction="#handleProfile"/>
+                            <TextField fx:id="searchField" promptText="Search users..."/>
+                            <ComboBox fx:id="filterRole" promptText="All Roles"/>
+                            <!-- Add other controls like Add User button if needed -->
                         </HBox>
-                        <TableView fx:id="usersTable" VBox.vgrow="ALWAYS">
-                            <columns>
-                                <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
-                                <TableColumn fx:id="nameColumn" text="Name" prefWidth="150"/>
-                                <TableColumn fx:id="emailColumn" text="Email" prefWidth="200"/>
-                                <TableColumn fx:id="roleColumn" text="Role" prefWidth="100"/>
-                                <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="150"/>
-                            </columns>
-                        </TableView>
+                        <GridPane fx:id="usersGrid" hgap="20" vgap="20" styleClass="users-grid"/>
                     </VBox>
                 </Tab>
-
-                <!-- Tab for Gestion Compagnie -->
-                <Tab text="Gestion Compagnie" closable="false">
-                    <VBox spacing="10" alignment="CENTER">
-                        <padding>
-                            <Insets top="10" right="10" bottom="10" left="10"/>
-                        </padding>
-                        <Label text="Chargement de l'interface de gestion des compagnies..." style="-fx-font-size: 14px;"/>
-                        <ProgressIndicator/>
-                    </VBox>
-                </Tab>
-                
-                <!-- Tab for Historique de dons -->
-
+                <!-- Other tabs will be added dynamically or as needed -->
             </TabPane>
-        </StackPane>
+        </VBox>
     </center>
 </BorderPane>

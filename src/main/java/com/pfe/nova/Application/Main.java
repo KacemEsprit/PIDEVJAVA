@@ -17,8 +17,8 @@ public class Main extends Application {
         testDatabaseConnection();
 
         Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/login.fxml"));
-        primaryStage.setTitle("Posts");
-        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.setTitle("Login ");
+        primaryStage.setScene(new Scene(root, 1200, 800));
         primaryStage.show();
     }
     private void testDatabaseConnection() {

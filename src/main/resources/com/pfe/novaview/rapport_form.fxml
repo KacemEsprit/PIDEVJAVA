@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.pfe.nova.Controller.RapportController"
+      alignment="CENTER"
+      spacing="15"
+      style="-fx-background-color: #2c3e50; -fx-padding: 25; -fx-font-size: 14px; -fx-font-family: 'Arial'; -fx-border-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.2, 0, 5);">
+
+    <TextField fx:id="patientIdField" promptText="Patient ID" style="-fx-background-color: #ecf0f1; -fx-text-fill: #34495e; -fx-border-radius: 5px; -fx-padding: 10px;"/>
+    <DatePicker fx:id="dateRapportPicker" promptText="Date Rapport" style="-fx-background-color: #ecf0f1; -fx-text-fill: #34495e; -fx-border-radius: 5px; -fx-padding: 10px;"/>
+    <TextField fx:id="sexeField" promptText="Sexe" style="-fx-background-color: #ecf0f1; -fx-text-fill: #34495e; -fx-border-radius: 5px; -fx-padding: 10px;"/>
+    <TextField fx:id="ageField" promptText="Age" style="-fx-background-color: #ecf0f1; -fx-text-fill: #34495e; -fx-border-radius: 5px; -fx-padding: 10px;"/>
+    <TextField fx:id="traitementField" promptText="Traitement" style="-fx-background-color: #ecf0f1; -fx-text-fill: #34495e; -fx-border-radius: 5px; -fx-padding: 10px;"/>
+    <TextField fx:id="doseMedicamentField" promptText="Dose Medicament" style="-fx-background-color: #ecf0f1; -fx-text-fill: #34495e; -fx-border-radius: 5px; -fx-padding: 10px;"/>
+    <TextField fx:id="frequenceTraitementField" promptText="Frequence Traitement" style="-fx-background-color: #ecf0f1; -fx-text-fill: #34495e; -fx-border-radius: 5px; -fx-padding: 10px;"/>
+    <TextField fx:id="perteDeSangField" promptText="Perte de Sang" style="-fx-background-color: #ecf0f1; -fx-text-fill: #34495e; -fx-border-radius: 5px; -fx-padding: 10px;"/>
+    <TextField fx:id="tempsOperationField" promptText="Temps Operation" style="-fx-background-color: #ecf0f1; -fx-text-fill: #34495e; -fx-border-radius: 5px; -fx-padding: 10px;"/>
+    <TextField fx:id="filtrationSangField" promptText="Filtration Sang" style="-fx-background-color: #ecf0f1; -fx-text-fill: #34495e; -fx-border-radius: 5px; -fx-padding: 10px;"/>
+    <TextField fx:id="creatinineField" promptText="Creatinine" style="-fx-background-color: #ecf0f1; -fx-text-fill: #34495e; -fx-border-radius: 5px; -fx-padding: 10px;"/>
+    <TextField fx:id="scoreGlasgowField" promptText="Score Glasgow" style="-fx-background-color: #ecf0f1; -fx-text-fill: #34495e; -fx-border-radius: 5px; -fx-padding: 10px;"/>
+    <TextField fx:id="respirationAssisteeField" promptText="Respiration Assistee" style="-fx-background-color: #ecf0f1; -fx-text-fill: #34495e; -fx-border-radius: 5px; -fx-padding: 10px;"/>
+    <TextField fx:id="complicationsField" promptText="Complications" style="-fx-background-color: #ecf0f1; -fx-text-fill: #34495e; -fx-border-radius: 5px; -fx-padding: 10px;"/>
+
+    <Button text="Create Rapport" onAction="#handleCreateRapport"
+            style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-border-radius: 5px; -fx-padding: 10px 20px; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+</VBox>

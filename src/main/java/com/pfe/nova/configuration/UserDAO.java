@@ -276,10 +276,23 @@ public class UserDAO {
 
     public static boolean updateUser(User user) {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            // Debug: Print user details
-            System.out.println("Updating user: " + user);
+            // Retrieve the current password if it's null
+            if (user.getPassword() == null || user.getPassword().isEmpty()) {
+                String getPasswordQuery = "SELECT password FROM user WHERE id = ?";
+                try (PreparedStatement stmt = conn.prepareStatement(getPasswordQuery)) {
+                    stmt.setInt(1, user.getId());
+                    try (ResultSet rs = stmt.executeQuery()) {
+                        if (rs.next()) {
+                            user.setPassword(rs.getString("password"));
+                        } else {
+                            System.err.println("User not found with ID: " + user.getId());
+                            return false;
+                        }
+                    }
+                }
+            }
 
-            // Update base user information, including password if provided
+            // Update base user information
             String baseQuery = "UPDATE user SET nom = ?, prenom = ?, email = ?, tel = ?, adresse = ?, picture = ?, password = ? WHERE id = ?";
             try (PreparedStatement stmt = conn.prepareStatement(baseQuery)) {
                 stmt.setString(1, user.getNom());
@@ -288,12 +301,10 @@ public class UserDAO {
                 stmt.setString(4, user.getTel());
                 stmt.setString(5, user.getAdresse());
                 stmt.setString(6, user.getPicture());
-                stmt.setString(7, user.getPassword()); // Include password in the update
+                stmt.setString(7, user.getPassword());
                 stmt.setInt(8, user.getId());
 
                 int rowsAffected = stmt.executeUpdate();
-                System.out.println("Base user update rows affected: " + rowsAffected);
-
                 if (rowsAffected == 0) {
                     System.err.println("No rows updated for base user information.");
                     return false;
@@ -310,9 +321,7 @@ public class UserDAO {
                         stmt.setString(2, medecin.getExperience());
                         stmt.setString(3, medecin.getDiplome());
                         stmt.setInt(4, user.getId());
-
-                        int rowsAffected = stmt.executeUpdate();
-                        System.out.println("Medecin update rows affected: " + rowsAffected);
+                        stmt.executeUpdate();
                     }
                     break;
 
@@ -324,9 +333,7 @@ public class UserDAO {
                         stmt.setString(2, patient.getGender());
                         stmt.setString(3, patient.getBloodType());
                         stmt.setInt(4, user.getId());
-
-                        int rowsAffected = stmt.executeUpdate();
-                        System.out.println("Patient update rows affected: " + rowsAffected);
+                        stmt.executeUpdate();
                     }
                     break;
 
@@ -336,9 +343,7 @@ public class UserDAO {
                     try (PreparedStatement stmt = conn.prepareStatement(donateurQuery)) {
                         stmt.setString(1, donateur.getDonateurType());
                         stmt.setInt(2, user.getId());
-
-                        int rowsAffected = stmt.executeUpdate();
-                        System.out.println("Donateur update rows affected: " + rowsAffected);
+                        stmt.executeUpdate();
                     }
                     break;
             }

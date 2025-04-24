@@ -89,7 +89,7 @@ public class LoginController {
             }
 
             Stage stage = (Stage) loginButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root,1200,800));
             stage.setTitle(user.getRole() + " Dashboard");
             stage.centerOnScreen();
         } catch (IOException e) {
