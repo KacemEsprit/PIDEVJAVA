@@ -25,26 +25,26 @@ import java.util.HashMap;
 import java.util.Optional;
 
 public class ReportedCommentsController {
-    
+
     @FXML private VBox reportsContainer;
     @FXML private Label statusLabel;
     @FXML private Label reportCountLabel;
     @FXML private ProgressBar progressBar;
-    
+
     @FXML
     public void initialize() {
         // Show loading indicator
         statusLabel.setText("Loading reported comments...");
         progressBar.setVisible(true);
-        
+
         // Use a separate thread to load data
         Thread loadThread = new Thread(() -> {
             try {
                 List<Map<String, Object>> reports = CommentReportDAO.findAllReports();
-                
+
                 // Update UI on JavaFX thread
                 javafx.application.Platform.runLater(() -> {
-                    displayReports(reports);
+                    displayReportsAsCards(reports);
                     progressBar.setVisible(false);
                 });
             } catch (SQLException e) {
@@ -55,251 +55,232 @@ public class ReportedCommentsController {
                 });
             }
         });
-        
+
         loadThread.setDaemon(true);
         loadThread.start();
     }
-    
-    private void displayReports(List<Map<String, Object>> reports) {
+
+    private void displayReportsAsCards(List<Map<String, Object>> reports) {
         reportsContainer.getChildren().clear();
         
         if (reports.isEmpty()) {
             statusLabel.setText("No reported comments found");
             reportCountLabel.setText("0 reports");
             
-            // Add empty state illustration
-            VBox emptyState = new VBox(20);
-            emptyState.setAlignment(Pos.CENTER);
-            emptyState.setPadding(new Insets(50));
-            
-            Label iconLabel = new Label("🔍");
-            iconLabel.setStyle("-fx-font-size: 48px;");
-            
-            Label messageLabel = new Label("No reported comments found");
-            messageLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-            
-            Label subMessageLabel = new Label("All comments are in good standing");
-            subMessageLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #7f8c8d;");
-            
-            emptyState.getChildren().addAll(iconLabel, messageLabel, subMessageLabel);
-            reportsContainer.getChildren().add(emptyState);
+            // Add empty state message
+            Label emptyLabel = new Label("No reported comments found");
+            emptyLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #7f8c8d; -fx-padding: 20px;");
+            reportsContainer.getChildren().add(emptyLabel);
             return;
         }
         
         statusLabel.setText("Showing all reported comments");
         reportCountLabel.setText(reports.size() + " reports");
         
+        // Create a FlowPane to hold the cards with spacing
+        FlowPane cardsPane = new FlowPane();
+        cardsPane.setHgap(20); // Horizontal gap between cards
+        cardsPane.setVgap(20); // Vertical gap between cards
+        cardsPane.setPadding(new Insets(20));
+        cardsPane.setPrefWrapLength(900); // Adjust based on your window width
+        
+        // Add each report as a card
         for (Map<String, Object> report : reports) {
-            reportsContainer.getChildren().add(createReportView(report));
-            
-            // Add separator between reports
-            Separator separator = new Separator();
-            separator.setPadding(new Insets(10, 0, 10, 0));
-            reportsContainer.getChildren().add(separator);
+            VBox card = createReportCard(report);
+            cardsPane.getChildren().add(card);
         }
+        
+        reportsContainer.getChildren().add(cardsPane);
     }
     
-    private VBox createReportView(Map<String, Object> report) {
-        VBox reportBox = new VBox(15);
-        reportBox.getStyleClass().add("report-card");
-        reportBox.setPadding(new Insets(15));
+    private VBox createReportCard(Map<String, Object> report) {
+        // Create a card container
+        VBox card = new VBox(10);
+        card.setPrefWidth(280);
+        card.setMaxWidth(280);
+        card.setMinHeight(300);
+        card.setPadding(new Insets(15));
+        card.getStyleClass().add("report-card");
         
-        // Report header with reporter info and timestamp
-        HBox header = new HBox(10);
-        header.setAlignment(Pos.CENTER_LEFT);
+        // Add card styling
+        card.setStyle("-fx-background-color: white; " +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2); " +
+                "-fx-background-radius: 8; " +
+                "-fx-border-radius: 8;");
+        
+        // Report header with reporter info
+        HBox reporterInfo = new HBox(10);
+        reporterInfo.setAlignment(Pos.CENTER_LEFT);
         
         User reporter = (User) report.get("reporter");
-        Label reporterLabel = new Label("Reported by: " + reporter.getNom() + " " + reporter.getPrenom());
-        reporterLabel.getStyleClass().add("report-header");
+        Label reporterLabel = new Label("🚩 Reported by: " + reporter.getNom() + " " + reporter.getPrenom());
+        reporterLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 13px;");
+        reporterInfo.getChildren().add(reporterLabel);
         
+        // Report reason
         String reason = (String) report.get("reason");
-        Label reasonLabel = new Label("Reason: " + formatReason(reason));
-        reasonLabel.getStyleClass().add("report-reason");
+        Label reasonLabel = new Label(formatReason(reason));
+        reasonLabel.setStyle("-fx-background-color: #ff9800; -fx-text-fill: white; " +
+                "-fx-padding: 3 8; -fx-background-radius: 4; -fx-font-size: 12px;");
         
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-        
+        // Report date
         LocalDateTime createdAt = (LocalDateTime) report.get("createdAt");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm");
-        Label dateLabel = new Label(createdAt.format(formatter));
-        dateLabel.getStyleClass().add("report-date");
+        Label dateLabel = new Label("📅 " + createdAt.format(formatter));
+        dateLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #7f8c8d;");
         
-        header.getChildren().addAll(reporterLabel, reasonLabel, spacer, dateLabel);
+        // Comment content section
+        VBox commentBox = new VBox(8);
+        commentBox.setStyle("-fx-background-color: #f8f9fa; -fx-padding: 10; -fx-background-radius: 5;");
         
-        // Comment content with improved styling
-        VBox commentBox = new VBox(10);
-        commentBox.getStyleClass().add("comment-box");
-        
+        // Comment author
         User commentUser = (User) report.get("commentUser");
-        HBox commentHeader = new HBox(10);
-        commentHeader.setAlignment(Pos.CENTER_LEFT);
+        Label commentAuthorLabel = new Label("👤 " + commentUser.getNom() + " " + commentUser.getPrenom());
+        commentAuthorLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 13px;");
         
-        Label userIconLabel = new Label("👤");
-        userIconLabel.setStyle("-fx-font-size: 16px;");
+        // Comment content with text wrapping
+        String commentContent = (String) report.get("commentContent");
+        Label contentLabel = new Label(commentContent);
+        contentLabel.setWrapText(true);
+        contentLabel.setStyle("-fx-font-size: 13px;");
         
-        Label commentAuthorLabel = new Label(commentUser.getNom() + " " + commentUser.getPrenom());
-        commentAuthorLabel.setStyle("-fx-font-weight: bold;");
+        commentBox.getChildren().addAll(commentAuthorLabel, contentLabel);
         
-        commentHeader.getChildren().addAll(userIconLabel, commentAuthorLabel);
+        // Add a separator
+        Separator separator = new Separator();
+        separator.setStyle("-fx-padding: 5 0;");
         
-        // Use TextFlow for better text wrapping
-        Text commentText = new Text((String) report.get("commentContent"));
-        TextFlow commentFlow = new TextFlow(commentText);
-        commentFlow.setStyle("-fx-font-size: 14px;");
-        
-        commentBox.getChildren().addAll(commentHeader, commentFlow);
-        
-        // Action buttons with improved styling
-        HBox actions = new HBox(15);
-        actions.setAlignment(Pos.CENTER_RIGHT);
-        actions.setPadding(new Insets(10, 0, 0, 0));
+        // Action buttons
+        HBox actionButtons = new HBox(10);
+        actionButtons.setAlignment(Pos.CENTER);
         
         Button ignoreButton = new Button("Ignore Report");
-        ignoreButton.getStyleClass().add("ignore-button");
+        ignoreButton.setStyle("-fx-background-color: #95a5a6; -fx-text-fill: white;");
         
-        Button deleteCommentButton = new Button("Delete Comment");
-        deleteCommentButton.getStyleClass().add("delete-button");
+        Button deleteButton = new Button("Delete Comment");
+        deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
         
         int reportId = (int) report.get("id");
         int commentId = (int) report.get("commentId");
         
         ignoreButton.setOnAction(e -> handleIgnoreReport(reportId, commentId));
-        deleteCommentButton.setOnAction(e -> handleDeleteComment(reportId, commentId));
+        deleteButton.setOnAction(e -> handleDeleteComment(reportId, commentId));
         
-        actions.getChildren().addAll(ignoreButton, deleteCommentButton);
+        actionButtons.getChildren().addAll(ignoreButton, deleteButton);
         
-        // Add all components to report box
-        reportBox.getChildren().addAll(header, commentBox, actions);
+        // Add a spacer to push buttons to bottom
+        Region spacer = new Region();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
         
-        return reportBox;
+        // Add all components to the card
+        card.getChildren().addAll(
+                reporterInfo,
+                reasonLabel,
+                dateLabel,
+                separator,
+                commentBox,
+                spacer,
+                actionButtons
+        );
+        
+        return card;
     }
     
     private String formatReason(String reason) {
+        // Format the reason code to a user-friendly string
         switch (reason) {
             case "contenu_inapproprie":
-                return "Inappropriate content";
+                return "Inappropriate Content";
             case "harcelement":
                 return "Harassment";
             case "spam":
                 return "Spam";
             case "fausse_information":
-                return "False information";
+                return "False Information";
             default:
                 return reason;
         }
     }
+
+    @FXML
+    public void refreshReports() {
+        statusLabel.setText("Loading reported comments...");
+        progressBar.setVisible(true);
+
+        Thread loadThread = new Thread(() -> {
+            try {
+                List<Map<String, Object>> reports = CommentReportDAO.findAllReports();
+
+                javafx.application.Platform.runLater(() -> {
+                    displayReportsAsCards(reports);
+                    progressBar.setVisible(false);
+                });
+            } catch (SQLException e) {
+                javafx.application.Platform.runLater(() -> {
+                    showError("Error loading reported comments: " + e.getMessage());
+                    progressBar.setVisible(false);
+                });
+            }
+        });
+
+        loadThread.setDaemon(true);
+        loadThread.start();
+    }
     
     private void handleIgnoreReport(int reportId, int commentId) {
-        // Create a confirmation dialog with improved styling
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Ignore Report");
-        confirmation.setHeaderText("Ignore this report?");
-        confirmation.setContentText("This will dismiss the report but keep the comment visible to all users.");
-        
-        // Style the dialog
-        DialogPane dialogPane = confirmation.getDialogPane();
-        dialogPane.getStylesheets().add(getClass().getResource("/com/pfe/novaview/styles/admin-styles.css").toExternalForm());
-        
-        // Add custom buttons
-        ButtonType ignoreButtonType = new ButtonType("Ignore Report", ButtonBar.ButtonData.OK_DONE);
-        ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-        confirmation.getButtonTypes().setAll(ignoreButtonType, cancelButtonType);
+        confirmation.setHeaderText("Ignore Comment Report");
+        confirmation.setContentText("Are you sure you want to ignore this report? The comment will remain visible to users.");
         
         Optional<ButtonType> result = confirmation.showAndWait();
-        
-        if (result.isPresent() && result.get() == ignoreButtonType) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                // Show processing indicator
-                statusLabel.setText("Processing...");
-                progressBar.setVisible(true);
+                // Delete the report but keep the comment
+                CommentReportDAO.delete(reportId);
                 
-                // Delete just this report
-                CommentReportDAO.deleteReport(reportId);
+                // Update the comment's reported status
+                CommentDAO.updateReportStatus(commentId, false, null);
                 
-                // Refresh the list
-                List<Map<String, Object>> reports = CommentReportDAO.findAllReports();
-                displayReports(reports);
+                // Show success message
+                Alert success = new Alert(Alert.AlertType.INFORMATION);
+                success.setTitle("Report Ignored");
+                success.setHeaderText(null);
+                success.setContentText("The report has been ignored successfully.");
+                success.showAndWait();
                 
-                // Hide processing indicator
-                progressBar.setVisible(false);
-                
-                // Show confirmation
-                showInfo("Report has been ignored successfully");
-                
+                // Refresh the reports list
+                refreshReports();
             } catch (SQLException e) {
-                progressBar.setVisible(false);
                 showError("Error ignoring report: " + e.getMessage());
             }
         }
     }
     
     private void handleDeleteComment(int reportId, int commentId) {
-        // Create a confirmation dialog with improved styling
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Delete Comment");
-        confirmation.setHeaderText("Delete this comment?");
-        confirmation.setContentText("This will permanently remove the comment and all associated reports. This action cannot be undone.");
-        
-        // Style the dialog
-        DialogPane dialogPane = confirmation.getDialogPane();
-        dialogPane.getStylesheets().add(getClass().getResource("/com/pfe/novaview/styles/admin-styles.css").toExternalForm());
-        
-        // Add custom buttons with warning styling
-        ButtonType deleteButtonType = new ButtonType("Delete Comment", ButtonBar.ButtonData.OK_DONE);
-        ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-        confirmation.getButtonTypes().setAll(deleteButtonType, cancelButtonType);
-        
-        // Get the delete button and style it
-        Button deleteButton = (Button) dialogPane.lookupButton(deleteButtonType);
-        deleteButton.getStyleClass().add("delete-button");
+        confirmation.setHeaderText("Delete Reported Comment");
+        confirmation.setContentText("Are you sure you want to delete this comment? This action cannot be undone.");
         
         Optional<ButtonType> result = confirmation.showAndWait();
-        
-        if (result.isPresent() && result.get() == deleteButtonType) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                // Show processing indicator
-                statusLabel.setText("Processing...");
-                progressBar.setVisible(true);
-                
-                // Delete the comment
+                // Delete the comment (this should cascade delete the report)
                 CommentDAO.delete(commentId);
                 
-                // Delete all reports for this comment
-                CommentReportDAO.deleteAllForComment(commentId);
+                // Show success message
+                Alert success = new Alert(Alert.AlertType.INFORMATION);
+                success.setTitle("Comment Deleted");
+                success.setHeaderText(null);
+                success.setContentText("The comment has been deleted successfully.");
+                success.showAndWait();
                 
-                // Refresh the list
-                List<Map<String, Object>> reports = CommentReportDAO.findAllReports();
-                displayReports(reports);
-                
-                // Hide processing indicator
-                progressBar.setVisible(false);
-                
-                // Show confirmation
-                showInfo("Comment has been deleted successfully");
-                
+                // Refresh the reports list
+                refreshReports();
             } catch (SQLException e) {
-                progressBar.setVisible(false);
                 showError("Error deleting comment: " + e.getMessage());
             }
-        }
-    }
-    
-    @FXML
-    public void refreshReports() {
-        initialize();
-    }
-    
-    @FXML
-    public void backToAdminView() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/admin-posts-management.fxml"));
-            Parent root = loader.load();
-            
-            Stage stage = (Stage) reportsContainer.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Admin Posts Management");
-        } catch (IOException e) {
-            showError("Error returning to admin view: " + e.getMessage());
         }
     }
     
@@ -308,24 +289,6 @@ public class ReportedCommentsController {
         alert.setTitle("Error");
         alert.setHeaderText(null);
         alert.setContentText(message);
-        
-        // Style the dialog
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(getClass().getResource("/com/pfe/novaview/styles/admin-styles.css").toExternalForm());
-        
-        alert.showAndWait();
-    }
-    
-    private void showInfo(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        
-        // Style the dialog
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(getClass().getResource("/com/pfe/novaview/styles/admin-styles.css").toExternalForm());
-        
         alert.showAndWait();
     }
 }

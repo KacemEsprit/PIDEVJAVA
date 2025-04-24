@@ -19,8 +19,11 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+
+import java.io.File;
 import java.nio.file.Paths;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -243,19 +246,42 @@ public class AdminDashboardController {
     @FXML
     private void showPendingPosts() {
         try {
-            VBox pendingPostsContent = new VBox(10);
-            pendingPostsContent.setPadding(new Insets(20));
-            pendingPostsContent.setStyle("-fx-background-color: white;");
+            VBox postsContent = new VBox(10);
+            postsContent.setPadding(new Insets(20));
+            postsContent.setStyle("-fx-background-color: white;");
 
             HBox header = new HBox(10);
             header.setAlignment(Pos.CENTER_LEFT);
-            Label titleLabel = new Label("Pending Posts");
+            Label titleLabel = new Label("Posts Management");
             titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
             Region spacer = new Region();
             HBox.setHgrow(spacer, Priority.ALWAYS);
             Button refreshButton = new Button("Refresh");
-            refreshButton.setOnAction(e -> loadPendingPostsContent(pendingPostsContent));
+            refreshButton.setOnAction(e -> loadAllPostsContent(postsContent, "ALL"));
             header.getChildren().addAll(titleLabel, spacer, refreshButton);
+
+            // Add filter buttons
+            HBox filterButtons = new HBox(10);
+            filterButtons.setAlignment(Pos.CENTER_LEFT);
+            filterButtons.setPadding(new Insets(10, 0, 20, 0));
+            
+            Button allButton = new Button("All Posts");
+            allButton.getStyleClass().add("filter-button");
+            allButton.setOnAction(e -> loadAllPostsContent(postsContent, "ALL"));
+            
+            Button pendingButton = new Button("Pending");
+            pendingButton.getStyleClass().add("filter-button");
+            pendingButton.setOnAction(e -> loadAllPostsContent(postsContent, "pending"));
+            
+            Button approvedButton = new Button("Approved");
+            approvedButton.getStyleClass().add("filter-button");
+            approvedButton.setOnAction(e -> loadAllPostsContent(postsContent, "approved"));
+            
+            Button refusedButton = new Button("Refused");
+            refusedButton.getStyleClass().add("filter-button");
+            refusedButton.setOnAction(e -> loadAllPostsContent(postsContent, "refused"));
+            
+            filterButtons.getChildren().addAll(allButton, pendingButton, approvedButton, refusedButton);
 
             ProgressIndicator progressIndicator = new ProgressIndicator();
             progressIndicator.setVisible(false);
@@ -264,51 +290,54 @@ public class AdminDashboardController {
             scrollPane.setFitToWidth(true);
             VBox.setVgrow(scrollPane, Priority.ALWAYS);
 
-            VBox postsContainer = new VBox(15);
+            FlowPane postsContainer = new FlowPane(15, 15);
+            postsContainer.setPadding(new Insets(10));
             scrollPane.setContent(postsContainer);
 
-            pendingPostsContent.getChildren().addAll(header, progressIndicator, scrollPane);
+            postsContent.getChildren().addAll(header, filterButtons, progressIndicator, scrollPane);
 
-            Tab pendingPostsTab = null;
+            Tab postsTab = null;
 
             for (Tab tab : mainTabPane.getTabs()) {
-                if (tab.getText().equals("Pending Posts")) {
-                    pendingPostsTab = tab;
+                if (tab.getText().equals("Posts Management")) {
+                    postsTab = tab;
                     break;
                 }
             }
 
             // Create new tab if it doesn't exist
-            if (pendingPostsTab == null) {
-                pendingPostsTab = new Tab("Pending Posts");
-                pendingPostsTab.setContent(pendingPostsContent);
-                pendingPostsTab.setClosable(true);
-                mainTabPane.getTabs().add(pendingPostsTab);
+            if (postsTab == null) {
+                postsTab = new Tab("Posts Management");
+                postsTab.setContent(postsContent);
+                postsTab.setClosable(true);
+                mainTabPane.getTabs().add(postsTab);
             } else {
                 // Update existing tab content
-                pendingPostsTab.setContent(pendingPostsContent);
+                postsTab.setContent(postsContent);
             }
 
             // Select the tab
-            mainTabPane.getSelectionModel().select(pendingPostsTab);
+            mainTabPane.getSelectionModel().select(postsTab);
 
-            // Load pending posts
-            loadPendingPostsContent(pendingPostsContent);
+            // Load all posts initially
+            loadAllPostsContent(postsContent, "ALL");
 
         } catch (Exception e) {
-            showError("Error loading pending posts: " + e.getMessage());
+            showError("Error loading posts: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     /**
-     * Load pending posts content
+     * Load all posts with filtering capability
+     * @param container The container to display posts in
+     * @param filter The filter to apply (ALL, pending, approved, refused)
      */
-    private void loadPendingPostsContent(VBox container) {
+    private void loadAllPostsContent(VBox container, String filter) {
         // Find the progress indicator and posts container
         ProgressIndicator progressIndicator = null;
         ScrollPane scrollPane = null;
-
+    
         for (javafx.scene.Node node : container.getChildren()) {
             if (node instanceof ProgressIndicator) {
                 progressIndicator = (ProgressIndicator) node;
@@ -316,224 +345,316 @@ public class AdminDashboardController {
                 scrollPane = (ScrollPane) node;
             }
         }
-
-        if (progressIndicator == null || scrollPane == null) {
-            showError("UI components not found");
-            return;
+    
+        if (progressIndicator != null) {
+            progressIndicator.setVisible(true);
         }
-
-        // Show loading indicator
-        progressIndicator.setVisible(true);
-
-        // Get posts container
-        VBox postsContainer = (VBox) scrollPane.getContent();
-        postsContainer.getChildren().clear();
-
-        // Load posts in background thread
-        ProgressIndicator finalProgressIndicator = progressIndicator;
-        ProgressIndicator finalProgressIndicator1 = progressIndicator;
-        Thread loadThread = new Thread(() -> {
+    
+        if (scrollPane != null) {
+            // Use FlowPane with proper spacing for card layout
+            FlowPane postsContainer = new FlowPane();
+            postsContainer.setHgap(30); // Horizontal gap between cards
+            postsContainer.setVgap(30); // Vertical gap between cards
+            postsContainer.setPadding(new Insets(25));
+            postsContainer.setAlignment(Pos.CENTER);
+            scrollPane.setContent(postsContainer);
+    
             try {
-                // Get pending posts from database
-                List<Post> pendingPosts = PostDAO.findByStatus("pending");
-
-                // Update UI on JavaFX thread
-                javafx.application.Platform.runLater(() -> {
-                    try {
-                        // Hide loading indicator
-                        finalProgressIndicator.setVisible(false);
-
-                        if (pendingPosts.isEmpty()) {
-                            Label noPostsLabel = new Label("No pending posts to display");
-                            noPostsLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #666;");
-                            postsContainer.getChildren().add(noPostsLabel);
-                        } else {
-                            Label countLabel = new Label("Found " + pendingPosts.size() + " pending posts");
-                            countLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #666; -fx-padding: 0 0 10 0;");
-                            postsContainer.getChildren().add(countLabel);
-
-                            // Add each post to the container
-                            for (Post post : pendingPosts) {
-                                VBox postView = createPendingPostView(post);
-                                postsContainer.getChildren().add(postView);
-                            }
-                        }
-                    } catch (Exception e) {
-                        finalProgressIndicator.setVisible(false);
-                        showError("Error displaying posts: " + e.getMessage());
-                        e.printStackTrace();
+                List<Post> allPosts;
+                
+                // Get posts based on filter
+                if ("ALL".equals(filter)) {
+                    allPosts = PostDAO.findAll();
+                } else {
+                    allPosts = PostDAO.findByStatus(filter);
+                }
+                
+                if (allPosts.isEmpty()) {
+                    Label noPostsLabel = new Label("No posts found");
+                    noPostsLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #7f8c8d;");
+                    postsContainer.getChildren().add(noPostsLabel);
+                } else {
+                    for (Post post : allPosts) {
+                        VBox postCard = createPostCard(post);
+                        postsContainer.getChildren().add(postCard);
                     }
-                });
-            } catch (Exception e) {
-                javafx.application.Platform.runLater(() -> {
-                    finalProgressIndicator1.setVisible(false);
-                    showError("Error loading posts: " + e.getMessage());
-                    e.printStackTrace();
-                });
+                }
+            } catch (SQLException e) {
+                showError("Error loading posts: " + e.getMessage());
+            } finally {
+                if (progressIndicator != null) {
+                    progressIndicator.setVisible(false);
+                }
             }
-        });
-
-        loadThread.setDaemon(true);
-        loadThread.start();
-    }
-
-    /**
-     * Create a view for a pending post
-     */
-    private VBox createPendingPostView(Post post) {
-        VBox postBox = new VBox(10);
-        postBox.setStyle("-fx-border-color: #ddd; -fx-border-width: 1; -fx-padding: 15; -fx-background-color: white; -fx-background-radius: 5;");
-
-        // User info section
-        HBox userInfo = new HBox(10);
-        userInfo.setAlignment(Pos.CENTER_LEFT);
-
-        Label userLabel = new Label(post.isAnonymous() ? "Anonymous User" : post.getUser().getNom() + " " + post.getUser().getPrenom());
-        userLabel.setStyle("-fx-font-weight: bold;");
-
-        // Use a simple "Pending" label instead of trying to access a date
-        Label dateLabel = new Label("Pending");
-        if (post.getPublishDate() != null) {
-            dateLabel.setText(post.getPublishDate().toString());
         }
-        dateLabel.setStyle("-fx-text-fill: #7f8c8d;");
-
-        Label statusLabel = new Label("PENDING");
-        statusLabel.setStyle("-fx-background-color: #f39c12; -fx-text-fill: white; -fx-padding: 3 8; -fx-background-radius: 3;");
-
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        userInfo.getChildren().addAll(userLabel, dateLabel, spacer, statusLabel);
-
-        // Post content - using content instead of subject since there's no getSubject() method
-        Label titleLabel = new Label("Post #" + post.getId());
-        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-
+    }
+    
+    private VBox createPostCard(Post post) {
+        VBox postBox = new VBox(10);
+        postBox.getStyleClass().add("post-card");
+        postBox.setPadding(new Insets(20));
+        postBox.setPrefWidth(300);
+        postBox.setMaxWidth(300);
+        postBox.setMinHeight(250);
+        
+        // Add card styling
+        postBox.setStyle("-fx-background-color: white; " +
+                        "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); " +
+                        "-fx-background-radius: 10; " +
+                        "-fx-border-radius: 10;");
+        
+        // Status indicator with rounded corners
+        Label statusLabel = new Label(post.getStatus().toUpperCase());
+        statusLabel.setPadding(new Insets(5, 10, 5, 10));
+        statusLabel.setStyle("-fx-background-radius: 15; -fx-font-size: 12px; -fx-font-weight: bold;");
+        
+        // Style based on status
+        switch (post.getStatus()) {
+            case "pending":
+                statusLabel.setStyle(statusLabel.getStyle() + "-fx-background-color: #f39c12; -fx-text-fill: white;");
+                break;
+            case "approved":
+                statusLabel.setStyle(statusLabel.getStyle() + "-fx-background-color: #2ecc71; -fx-text-fill: white;");
+                break;
+            case "refused":
+                statusLabel.setStyle(statusLabel.getStyle() + "-fx-background-color: #e74c3c; -fx-text-fill: white;");
+                break;
+        }
+        
+        // Post header with user info
+        HBox header = new HBox(10);
+        header.setAlignment(Pos.CENTER_LEFT);
+    
+        Label userLabel = new Label(post.getUser().getNom() + " " + post.getUser().getPrenom());
+        userLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+    
+        Label categoryLabel = new Label(post.getCategory());
+        categoryLabel.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; " +
+                          "-fx-padding: 3 8; -fx-background-radius: 4; -fx-font-size: 12px;");
+    
+        header.getChildren().addAll(userLabel, categoryLabel, statusLabel);
+    
+        // Post content with proper wrapping
         Label contentLabel = new Label(post.getContent());
         contentLabel.setWrapText(true);
+        contentLabel.setMaxHeight(80);
         contentLabel.setStyle("-fx-font-size: 14px;");
-
-        // Category label if available
-        if (post.getCategory() != null && !post.getCategory().isEmpty()) {
-            Label categoryLabel = new Label(post.getCategory());
-            categoryLabel.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-padding: 3 8; -fx-background-radius: 3;");
-            postBox.getChildren().add(categoryLabel);
+        
+        // Truncate long content
+        if (post.getContent().length() > 100) {
+            contentLabel.setText(post.getContent().substring(0, 100) + "...");
         }
-
+    
+        // Add images if any (just show one thumbnail)
+        ImageView imageView = null;
+        if (!post.getImageUrls().isEmpty()) {
+            try {
+                String imagePath = post.getImageUrls().get(0);
+                Image image;
+                if (imagePath.startsWith("http")) {
+                    image = new Image(imagePath);
+                } else {
+                    image = new Image(new File(imagePath).toURI().toString());
+                }
+    
+                imageView = new ImageView(image);
+                imageView.setFitHeight(120);
+                imageView.setFitWidth(260);
+                imageView.setPreserveRatio(true);
+            } catch (Exception e) {
+                System.err.println("Error loading image: " + e.getMessage());
+            }
+        }
+    
         // Action buttons
         HBox actionButtons = new HBox(10);
-        actionButtons.setAlignment(Pos.CENTER_RIGHT);
+        actionButtons.setAlignment(Pos.CENTER);
         actionButtons.setPadding(new Insets(10, 0, 0, 0));
-
+    
+        Button viewButton = new Button("View");
+        viewButton.getStyleClass().add("view-button");
+        viewButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5;");
+        viewButton.setOnAction(e -> openPostDetails(post));
+    
         Button approveButton = new Button("Approve");
-        approveButton.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white;");
+        approveButton.getStyleClass().add("approve-button");
+        approveButton.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 5;");
         approveButton.setOnAction(e -> handleApprovePost(post));
-
+        
         Button rejectButton = new Button("Reject");
-        rejectButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
+        rejectButton.getStyleClass().add("reject-button");
+        rejectButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5;");
         rejectButton.setOnAction(e -> handleRejectPost(post));
-
-        actionButtons.getChildren().addAll(approveButton, rejectButton);
-
+        
+        Button deleteButton = new Button("Delete");
+        deleteButton.getStyleClass().add("delete-button");
+        deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5;");
+        deleteButton.setOnAction(e -> handleDeletePost(post));
+    
+        // Only show appropriate buttons based on status
+        if ("pending".equals(post.getStatus())) {
+            actionButtons.getChildren().addAll(viewButton, approveButton, rejectButton);
+        } else {
+            actionButtons.getChildren().addAll(viewButton, deleteButton);
+        }
+    
         // Add all components to post box
-        postBox.getChildren().addAll(userInfo, titleLabel, contentLabel, actionButtons);
-
+        postBox.getChildren().add(header);
+        postBox.getChildren().add(new Separator());
+        postBox.getChildren().add(contentLabel);
+    
+        // Add image if available
+        if (imageView != null) {
+            HBox imageContainer = new HBox();
+            imageContainer.setAlignment(Pos.CENTER);
+            imageContainer.getChildren().add(imageView);
+            postBox.getChildren().add(imageContainer);
+        }
+    
+        // Add a spacer to push buttons to bottom
+        Region spacer = new Region();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+        postBox.getChildren().add(spacer);
+        
+        // Add separator before buttons
+        postBox.getChildren().add(new Separator());
+        postBox.getChildren().add(actionButtons);
+    
         return postBox;
     }
-
-    /**
-     * Handle approving a post
-     */
-    private void handleApprovePost(Post post) {
+    
+    private void openPostDetails(Post post) {
         try {
-            // Update post status to approved
-            post.setStatus("approved");
-            // Use the correct method from PostDAO
-            PostDAO.save(post); // Changed from updatePost to save
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/publication-details.fxml"));
+            Parent root = loader.load();
 
-            // Find and refresh the pending posts tab
-            for (Tab tab : mainTabPane.getTabs()) {
-                if (tab.getText().equals("Pending Posts")) {
-                    VBox content = (VBox) tab.getContent();
-                    loadPendingPostsContent(content);
-                    break;
-                }
-            }
+            PublicationDetailsController controller = loader.getController();
+            controller.setPost(post);
 
-            showInfo("Post approved successfully");
-        } catch (Exception e) {
-            showError("Error approving post: " + e.getMessage());
-            e.printStackTrace();
+            Stage stage = new Stage();
+            stage.setTitle("Publication Details");
+            
+            // Set a reasonable size for the publication details window
+            Scene scene = new Scene(root, 800, 700);
+            stage.setScene(scene);
+            
+            // Set minimum size constraints
+            stage.setMinWidth(600);
+            stage.setMinHeight(500);
+            
+            stage.show();
+        } catch (IOException e) {
+            showError("Error opening publication details: " + e.getMessage());
         }
     }
+    
+    private void handleApprovePost(Post post) {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Approve Post");
+        confirmation.setHeaderText("Approve Post");
+        confirmation.setContentText("Are you sure you want to approve this post?");
 
-    /**
-     * Handle rejecting a post
-     */
-    private void handleRejectPost(Post post) {
-        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmDialog.setTitle("Reject Post");
-        confirmDialog.setHeaderText("Are you sure you want to reject this post?");
-        confirmDialog.setContentText("This action cannot be undone.");
-
-        Optional<ButtonType> result = confirmDialog.showAndWait();
+        Optional<ButtonType> result = confirmation.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                // Update post status to rejected
-                post.setStatus("rejected");
-                // Use the correct method from PostDAO
-                PostDAO.save(post); // Changed from updatePost to save
+                post.setStatus("approved");
+                PostDAO.updateStatus(post.getId(), "approved");
 
-                // Find and refresh the pending posts tab
-                for (Tab tab : mainTabPane.getTabs()) {
-                    if (tab.getText().equals("Pending Posts")) {
-                        VBox content = (VBox) tab.getContent();
-                        loadPendingPostsContent(content);
-                        break;
-                    }
-                }
+                Alert success = new Alert(Alert.AlertType.INFORMATION);
+                success.setTitle("Success");
+                success.setHeaderText(null);
+                success.setContentText("Post has been approved successfully!");
+                success.showAndWait();
 
-                showInfo("Post rejected successfully");
-            } catch (Exception e) {
+                // Refresh the posts list
+                showPendingPosts();
+            } catch (SQLException e) {
+                showError("Error approving post: " + e.getMessage());
+            }
+        }
+    }
+    
+    private void handleRejectPost(Post post) {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Reject Post");
+        confirmation.setHeaderText("Reject Post");
+        confirmation.setContentText("Are you sure you want to reject this post?");
+
+        Optional<ButtonType> result = confirmation.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                post.setStatus("refused");
+                PostDAO.updateStatus(post.getId(), "refused");
+
+                Alert success = new Alert(Alert.AlertType.INFORMATION);
+                success.setTitle("Success");
+                success.setHeaderText(null);
+                success.setContentText("Post has been rejected successfully!");
+                success.showAndWait();
+
+                // Refresh the posts list
+                showPendingPosts();
+            } catch (SQLException e) {
                 showError("Error rejecting post: " + e.getMessage());
-                e.printStackTrace();
+            }
+        }
+    }
+    
+    private void handleDeletePost(Post post) {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Delete Post");
+        confirmation.setHeaderText("Delete Post");
+        confirmation.setContentText("Are you sure you want to delete this post? This action cannot be undone.");
+
+        Optional<ButtonType> result = confirmation.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                PostDAO.delete(post.getId());
+
+                Alert success = new Alert(Alert.AlertType.INFORMATION);
+                success.setTitle("Success");
+                success.setHeaderText(null);
+                success.setContentText("Post has been deleted successfully!");
+                success.showAndWait();
+
+                // Refresh the posts list
+                showPendingPosts();
+            } catch (SQLException e) {
+                showError("Error deleting post: " + e.getMessage());
             }
         }
     }
 
-    /**
-     * Show reported comments tab
-     */
     @FXML
     private void showReportedComments() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/reported-comments.fxml"));
-            Parent reportedCommentsView = loader.load();
-
-            // Get existing tabs
+            Parent reportedCommentsContent = loader.load();
+            
             Tab reportedCommentsTab = null;
-
-            // Check if tab already exists
+            
             for (Tab tab : mainTabPane.getTabs()) {
                 if (tab.getText().equals("Reported Comments")) {
                     reportedCommentsTab = tab;
                     break;
                 }
             }
-
+            
             // Create new tab if it doesn't exist
             if (reportedCommentsTab == null) {
                 reportedCommentsTab = new Tab("Reported Comments");
-                reportedCommentsTab.setContent(reportedCommentsView);
+                reportedCommentsTab.setContent(reportedCommentsContent);
                 reportedCommentsTab.setClosable(true);
                 mainTabPane.getTabs().add(reportedCommentsTab);
+            } else {
+                // Update existing tab content
+                reportedCommentsTab.setContent(reportedCommentsContent);
             }
-
+            
             // Select the tab
             mainTabPane.getSelectionModel().select(reportedCommentsTab);
-
-        } catch (IOException e) {
+            
+        } catch (Exception e) {
             showError("Error loading reported comments: " + e.getMessage());
             e.printStackTrace();
         }

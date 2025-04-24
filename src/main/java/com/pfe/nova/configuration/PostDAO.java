@@ -201,6 +201,12 @@ public class PostDAO {
     // Add these methods to your PostDAO class
 
     // Update SQL queries to use "publication" table instead of "post"
+    /**
+     * Find posts by status
+     * @param status The status to filter by (pending, approved, refused)
+     * @return A list of posts with the specified status
+     * @throws SQLException If a database error occurs
+     */
     public static List<Post> findByStatus(String status) throws SQLException {
         List<Post> posts = new ArrayList<>();
         String query = "SELECT * FROM publication WHERE status = ? ORDER BY date_pb DESC";
@@ -220,6 +226,13 @@ public class PostDAO {
         
         return posts;
     }
+    
+    /**
+     * Find all posts
+     * @return A list of all posts
+     * @throws SQLException If a database error occurs
+     */
+
     
     public static List<Post> findByUserId(int userId) throws SQLException {
         List<Post> posts = new ArrayList<>();
@@ -342,4 +355,41 @@ public class PostDAO {
         
         return posts;
     }
+    
+    /**
+     * Retrieves a post by its ID
+     * @param postId The ID of the post to retrieve
+     * @return The post object or null if not found
+     * @throws SQLException If a database error occurs
+     */
+    public static Post getPostById(int postId) throws SQLException {
+        String query = "SELECT * FROM publication WHERE id = ?";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setInt(1, postId);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Post post = mapResultSetToPost(rs);
+                    
+                    // Optionally load additional data like user details
+                    if (post.getUser() != null && post.getUser().getId() > 0) {
+                        try {
+                            User user = UserDAO.getUserById(post.getUser().getId());
+                            post.setUser(user);
+                        } catch (Exception e) {
+                            System.err.println("Error loading user for post: " + e.getMessage());
+                        }
+                    }
+                    
+                    return post;
+                }
+            }
+        }
+        
+        return null;
+    }
+    
 }

@@ -35,18 +35,19 @@
                     </graphic>
                     <text>Users</text>
                 </Button>
+                <!-- In the nav-buttons VBox, add or update the pendingPostsBtn -->
                 <Button fx:id="pendingPostsBtn" styleClass="nav-button" onAction="#showPendingPosts">
                     <graphic>
-                        <Label text="🕒" styleClass="icon-label"/>
+                        <Label text="📝" styleClass="icon-label"/>
                     </graphic>
-                    
-                    <text>Pending Posts</text>
+                    <text>Posts Management</text>
                 </Button>
+                <!-- In the nav-buttons VBox, add this button -->
                 <Button fx:id="reportedCommentsBtn" styleClass="nav-button" onAction="#showReportedComments">
                     <graphic>
                         <Label text="🚩" styleClass="icon-label"/>
                     </graphic>
-                    <text>ReportedComments</text>
+                    <text>Reported Comments</text>
                 </Button>
                 <Button fx:id="statsBtn" styleClass="nav-button" onAction="#showStatistics">
                     <graphic>
