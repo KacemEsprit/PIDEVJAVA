@@ -2,7 +2,9 @@ package com.pfe.nova.Controller;
 
 import com.pfe.nova.models.*;
 import com.pfe.nova.configuration.UserDAO;
+import com.pfe.nova.utils.Session;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -148,9 +150,23 @@ public class EditUserController {
             user.setTel(telField.getText().trim());
             user.setAdresse(addressField.getText().trim());
             user.setRole(role);
+            
+            // Preserve the picture if it exists
+            if (currentUser.getPicture() != null && !currentUser.getPicture().isEmpty()) {
+                user.setPicture(currentUser.getPicture());
+            }
 
             // Update the user in the database
             if (UserDAO.updateUser(user)) {
+                // Update session if the edited user is the current logged-in user
+                User sessionUser = Session.getInstance().getUtilisateurConnecte();
+                if (sessionUser != null && sessionUser.getId() == user.getId()) {
+                    Session.getInstance().setUtilisateurConnecte(user);
+                }
+                
+                // Notify parent controllers about the update
+                notifyParentControllers(user);
+                
                 showSuccess("User updated successfully.");
                 closeWindow();
             } else {
@@ -161,6 +177,60 @@ public class EditUserController {
         } catch (Exception e) {
             showError("An error occurred: " + e.getMessage());
         }
+    }
+    
+    // Add this helper method to notify parent controllers
+    private void notifyParentControllers(User updatedUser) {
+        try {
+            // Get all stages
+            for (Stage stage : javafx.stage.Window.getWindows().filtered(window -> window instanceof Stage)
+                    .stream()
+                    .map(window -> (Stage) window)
+                    .toList()) {
+                
+                // Get the scene and root
+                if (stage.getScene() != null && stage.getScene().getRoot() != null) {
+                    Parent root = stage.getScene().getRoot();
+                    
+                    // Check if the root has an AdminDashboardController
+                    AdminDashboardController adminController = findController(root, AdminDashboardController.class);
+                    if (adminController != null) {
+                        // Update the admin dashboard
+                        adminController.updateSidebarInfo(updatedUser);
+                        return; // Found and updated, no need to continue
+                    }
+                    
+                    // Check for DashboardController (for other user types)
+                    DashboardController dashController = findController(root, DashboardController.class);
+                    if (dashController != null) {
+                        // Update the dashboard
+                        dashController.updateUserInterface(updatedUser);
+                        return; // Found and updated, no need to continue
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error notifying parent controllers: " + e.getMessage());
+        }
+    }
+    
+    // Helper method to find a controller in the scene graph
+    private <T> T findController(Parent root, Class<T> controllerClass) {
+        if (root.getUserData() != null && controllerClass.isInstance(root.getUserData())) {
+            return controllerClass.cast(root.getUserData());
+        }
+        
+        // Try to find the controller in children
+        for (javafx.scene.Node node : root.getChildrenUnmodifiable()) {
+            if (node instanceof Parent) {
+                T controller = findController((Parent) node, controllerClass);
+                if (controller != null) {
+                    return controller;
+                }
+            }
+        }
+        
+        return null;
     }
 
     private void showError(String message) {

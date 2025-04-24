@@ -66,6 +66,22 @@ public class LoginController {
         }
     }
 
+    @FXML
+    private void navigateToForgotPassword() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/forgot-password.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Forgot Password");
+            stage.centerOnScreen();
+        } catch (IOException e) {
+            showError("Unable to load forgot password page: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private void navigateToDashboard(User user) {
         try {
             System.out.println("Navigating to dashboard for role: " + user.getRole());

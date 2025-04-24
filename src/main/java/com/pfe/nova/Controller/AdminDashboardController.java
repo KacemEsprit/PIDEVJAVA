@@ -647,24 +647,9 @@ public class AdminDashboardController {
         }
     }
 
-    private void showInfo(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+  
 
-    /**
-     * Display an error message to the user
-     */
-    private void showError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+  
 
     @FXML
     private void handleEditUser(User user) {
@@ -691,7 +676,18 @@ public class AdminDashboardController {
             stage.setResizable(false);
 
             // Add a listener to refresh the table when the edit window is closed
-            stage.setOnHiding(event -> loadUsersData());
+            stage.setOnHiding(event -> {
+                loadUsersData();
+                
+                // If the edited user is the current admin, update sidebar info
+                if (fullUser.getId() == adminUser.getId()) {
+                    User updatedUser = UserDAO.getUserById(adminUser.getId());
+                    if (updatedUser != null) {
+                        adminUser = updatedUser;
+                        updateSidebarInfo(updatedUser);
+                    }
+                }
+            });
 
             stage.show();
 
@@ -703,15 +699,61 @@ public class AdminDashboardController {
             showError("Unexpected error: " + e.getMessage());
         }
     }
-
-
+    
+    // Update sidebar information with updated user data
+    public void updateSidebarInfo(User user) {
+        if (user == null) return;
+        
+        // Update sidebar profile information
+        sidebarProfileName.setText(user.getNom() + " " + user.getPrenom());
+        sidebarProfileEmail.setText(user.getEmail());
+        
+        // Update profile image if available
+        if (user.getPicture() != null && !user.getPicture().isEmpty()) {
+            try {
+                Image image = new Image(Paths.get(user.getPicture()).toUri().toString());
+                sidebarProfileImage.setImage(image);
+            } catch (Exception e) {
+                System.err.println("Error updating profile image: " + e.getMessage());
+            }
+        }
+        
+        // If this is the admin user, update the stored reference
+        if (user.getId() == adminUser.getId()) {
+            this.adminUser = user;
+        }
+        
+        // Refresh the users data if needed
+        loadUsersData();
+    }
+    
+    // Helper method to show error messages
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    
+    // Helper method to show info messages
+    private void showInfo(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    
+    // Helper method to confirm deletion
     private boolean confirmDelete(User user) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Delete");
         alert.setHeaderText("Delete User");
-        alert.setContentText("Are you sure you want to delete user: " + user.getNom() + " " + user.getPrenom() + "?");
-
-        return alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK;
+        alert.setContentText("Are you sure you want to delete " + user.getNom() + " " + user.getPrenom() + "?");
+        
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 
 
@@ -720,9 +762,16 @@ public class AdminDashboardController {
         try {
             // Check if the Profile tab already exists
             Tab profileTab = null;
+            ProfileController profileController = null;
+            
             for (Tab tab : mainTabPane.getTabs()) {
                 if ("Profile".equals(tab.getText())) {
                     profileTab = tab;
+                    // Try to get the controller if the tab already exists
+                    if (tab.getContent() instanceof Parent) {
+                        Parent root = (Parent) tab.getContent();
+                        profileController = (ProfileController) root.getUserData();
+                    }
                     break;
                 }
             }
@@ -732,15 +781,28 @@ public class AdminDashboardController {
                 Parent profileRoot = loader.load();
 
                 // Pass the current admin user to the ProfileController
-                ProfileController profileController = loader.getController();
-                // Use the session user if available, otherwise fallback to adminUser
-                User user = Session.getInstance().getUtilisateurConnecte();
-                if (user == null) user = adminUser;
-                profileController.initData(user);
-
+                profileController = loader.getController();
+                // Store the controller in the root's user data for later access
+                profileRoot.setUserData(profileController);
+                
                 profileTab = new Tab("Profile", profileRoot);
                 profileTab.setClosable(true);
                 mainTabPane.getTabs().add(profileTab);
+            }
+
+            // Always refresh the user data when showing the profile tab
+            if (profileController != null) {
+                // Use the session user if available, otherwise fallback to adminUser
+                User user = Session.getInstance().getUtilisateurConnecte();
+                if (user == null) user = adminUser;
+                
+                // Get the latest user data from the database
+                User refreshedUser = UserDAO.getUserById(user.getId());
+                if (refreshedUser != null) {
+                    profileController.initData(refreshedUser);
+                } else {
+                    profileController.initData(user);
+                }
             }
 
             mainTabPane.getSelectionModel().select(profileTab);

@@ -4,6 +4,7 @@ module com.pfe.nova {
     requires org.controlsfx.controls;
     requires java.sql;
     requires jbcrypt;
+    requires jakarta.mail;
 
     opens com.pfe.nova to javafx.fxml;
     opens com.pfe.nova.Application to javafx.graphics;

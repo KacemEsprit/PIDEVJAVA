@@ -2,80 +2,96 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <?import javafx.geometry.Insets?>
-<?import java.net.URL?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.pfe.nova.Controller.DashboardController"
-            prefWidth="1000"
-            prefHeight="700">
-            
-    <stylesheets>
-        <URL value="@styles/admin-styles.css" />
-    </stylesheets>
+            style="-fx-background-color: #f5f6fa;">
     
+    <!-- Top Header Bar -->
     <top>
-        <!-- Add this inside the top HBox, next to the logout button -->
-        <HBox alignment="CENTER_RIGHT" spacing="10" styleClass="admin-header">
-            <padding>
-                <Insets top="10" right="20" bottom="10" left="20"/>
-            </padding>
-            <Label fx:id="welcomeLabel" styleClass="content-title"/>
-            <Label fx:id="sessionTestLabel" styleClass="session-label"/>
-            <Button text="Logout" fx:id="logoutButton" onAction="#handleLogout" styleClass="delete-button"/>
-        </HBox>
+        <VBox>
+            <!-- Main Navbar -->
+            <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-background-color: #3498db; -fx-padding: 15;">
+                <Label text="OncoKidsCare" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="profileButton" text="Profile" onAction="#showProfile" 
+                        style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold; 
+                               -fx-background-radius: 5; -fx-padding: 10 15; -fx-cursor: hand;
+                               -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);"/>
+                <Button fx:id="logoutButton" text="Logout" onAction="#handleLogout"
+                        style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;
+                               -fx-background-radius: 5; -fx-padding: 10 15; -fx-cursor: hand;
+                               -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);"/>
+            </HBox>
+            
+            <!-- Secondary Navigation Bar -->
+            <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #2980b9; -fx-padding: 10;">
+                <Button fx:id="createRapportNavBtn" text="Create Report" onAction="#handleCreateRapport"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; 
+                               -fx-background-radius: 5; -fx-padding: 5 10; -fx-cursor: hand;
+                               -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;"/>
+                <Button fx:id="viewRapportsNavBtn" text="View Reports" onAction="#handleViewRapports"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; 
+                               -fx-background-radius: 5; -fx-padding: 5 10; -fx-cursor: hand;
+                               -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;"/>
+                <Button fx:id="communityPostsNavBtn" text="Community Posts" onAction="#navigateToPostList"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; 
+                               -fx-background-radius: 5; -fx-padding: 5 10; -fx-cursor: hand;
+                               -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;"/>
+                <Button fx:id="appointmentsNavBtn" text="Appointments" 
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; 
+                               -fx-background-radius: 5; -fx-padding: 5 10; -fx-cursor: hand;
+                               -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;"/>
+            </HBox>
+        </VBox>
     </top>
-
+    
+    <!-- Main Content -->
     <center>
-        <TabPane fx:id="contentTabPane">
-            <Tab text="Profile" closable="false">
-                <VBox spacing="15" styleClass="content-container">
-                    <padding>
-                        <Insets top="20" right="20" bottom="20" left="20"/>
-                    </padding>
-                    
-                    <Label fx:id="nameLabel" styleClass="profile-label"/>
-                    <Label fx:id="emailLabel" styleClass="profile-label"/>
-                    <Label fx:id="phoneLabel" styleClass="profile-label"/>
-                    <Label fx:id="addressLabel" styleClass="profile-label"/>
-                    <VBox fx:id="roleSpecificContent" spacing="10"/>
-                    
-                    <Button text="Community Posts" fx:id="communityPostsButton" 
-                            onAction="#navigateToPostList" styleClass="action-button"/>
-                    <Button text="Create Report" fx:id="createRapportButton" 
-                            onAction="#handleCreateRapport" styleClass="action-button"/>
-                    <Button text="View Reports" fx:id="viewRapportsButton" 
-                            onAction="#handleViewRapports" styleClass="action-button"/>
+        <VBox spacing="20" style="-fx-padding: 20;">
+            <!-- Welcome Section -->
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <ImageView fx:id="profileImage" fitHeight="80" fitWidth="80" preserveRatio="true" 
+                           style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);"/>
+                <VBox spacing="5">
+                    <Label fx:id="welcomeLabel" text="Welcome, User" 
+                           style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+                    <Label fx:id="sessionTestLabel" style="-fx-font-size: 12; -fx-text-fill: #7f8c8d;"/>
                 </VBox>
-            </Tab>
-
-            <Tab text="Patients List" fx:id="patientsTab">
-                <TableView fx:id="patientsTable" styleClass="content-table">
-                    <columns>
-                        <TableColumn fx:id="patientNameColumn" text="Name"/>
-                        <TableColumn fx:id="patientEmailColumn" text="Email"/>
-                        <TableColumn fx:id="patientAgeColumn" text="Age"/>
-                        <TableColumn fx:id="patientGenderColumn" text="Gender"/>
-                        <TableColumn fx:id="patientBloodTypeColumn" text="Blood Type"/>
-                    </columns>
-                </TableView>
-            </Tab>
-
-            <!-- Add this after the Patients List tab -->
-            <Tab text="Doctors List" fx:id="doctorsTab">
-                <TableView fx:id="doctorsTable" styleClass="content-table">
-                    <columns>
-                        <TableColumn fx:id="doctorNameColumn" text="Name"/>
-                        <TableColumn fx:id="doctorEmailColumn" text="Email"/>
-                        <TableColumn fx:id="doctorSpecialityColumn" text="Speciality"/>
-                        <TableColumn fx:id="doctorExperienceColumn" text="Experience"/>
-                        <TableColumn fx:id="doctorDiplomeColumn" text="Diplome"/>
-                    </columns>
-                </TableView>
-            </Tab>
-
-            <!-- Keep other tabs with similar styling -->
-        </TabPane>
+            </HBox>
+            
+            <!-- User Info Box -->
+            <VBox fx:id="userInfoBox" spacing="10" style="-fx-background-color: white; -fx-background-radius: 10; 
+                                                          -fx-padding: 15; -fx-spacing: 10; 
+                                                          -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+                <Label fx:id="nameLabel" style="-fx-font-size: 16;"/>
+                <Label fx:id="emailLabel" style="-fx-font-size: 14;"/>
+                <Label fx:id="phoneLabel" style="-fx-font-size: 14;"/>
+                <Label fx:id="addressLabel" style="-fx-font-size: 14;"/>
+                <VBox fx:id="roleSpecificContent" spacing="10"/>
+            </VBox>
+            
+            <!-- Action Buttons -->
+            <HBox spacing="15">
+                <Button fx:id="communityPostsButton" text="Community Posts" onAction="#navigateToPostList"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; 
+                               -fx-background-radius: 5; -fx-padding: 10 15;"/>
+                <Button fx:id="createRapportButton" text="Create Report" onAction="#handleCreateRapport"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; 
+                               -fx-background-radius: 5; -fx-padding: 10 15;"/>
+                <Button fx:id="viewRapportsButton" text="View Reports" onAction="#handleViewRapports"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; 
+                               -fx-background-radius: 5; -fx-padding: 10 15;"/>
+            </HBox>
+            
+            <!-- Content Tabs -->
+            <TabPane fx:id="contentTabPane" VBox.vgrow="ALWAYS" style="-fx-background-color: #f5f6fa;">
+                <!-- Tab content will be added dynamically -->
+            </TabPane>
+        </VBox>
     </center>
 </BorderPane>

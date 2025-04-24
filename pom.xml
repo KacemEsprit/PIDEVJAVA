@@ -46,6 +46,11 @@
       <artifactId>jbcrypt</artifactId>
       <version>0.4</version>
     </dependency>
+    <dependency>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>jakarta.mail</artifactId>
+      <version>1.6.7</version>
+    </dependency>
     <!-- Update FontAwesomeFX dependencies -->
     <dependency>
         <groupId>de.jensd</groupId>

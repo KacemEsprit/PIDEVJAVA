@@ -12,6 +12,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
+import java.nio.file.Paths;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -26,6 +29,7 @@ public class DashboardController {
     @FXML private Label phoneLabel;
     @FXML private Label addressLabel;
     @FXML private VBox roleSpecificContent;
+    @FXML private ImageView profileImage; // Add this for profile image
     
     @FXML private TabPane contentTabPane; // Add this missing FXML field
     @FXML private Button adminPostsBtn; // Add this for the admin button
@@ -67,27 +71,22 @@ public class DashboardController {
     public void initialize() {
         try {
             setupTableColumns();
-            // Change this line to get the Session instance first
+            // Get the current user from session
             User currentUser = Session.getInstance().getUtilisateurConnecte();
-            boolean isMedecin = currentUser instanceof Medecin;
             
-            // Show the community posts button only for patients
-            if (currentUser != null && "PATIENT".equals(currentUser.getRole())) {
-                communityPostsButton.setVisible(true);
-                // Enable the community posts tab for patients
-                if (communityPostsTab != null) {
-                    communityPostsTab.setDisable(false);
-                }
-            } else {
-                // Disable the tab for non-patients
-                if (communityPostsTab != null) {
-                    communityPostsTab.setDisable(true);
-                }
+            if (currentUser == null) {
+                System.err.println("No user found in session");
+                return;
             }
             
-            // Enable/disable rapport tabs based on user type
-            createRapportTab.setDisable(!isMedecin);
-            viewRapportTab.setDisable(!isMedecin);
+            // Set visibility of tabs based on user role
+            setupTabVisibility(currentUser);
+            
+            // Add tab selection listener
+            contentTabPane.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldTab, newTab) -> handleTabSelection(newTab)
+            );
+            
             // Make sure all FXML elements are properly injected
             if (welcomeLabel == null || nameLabel == null || emailLabel == null || 
                 phoneLabel == null || addressLabel == null || roleSpecificContent == null) {
@@ -96,6 +95,25 @@ public class DashboardController {
         } catch (Exception e) {
             System.err.println("Error in DashboardController initialization: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    private void handleTabSelection(Tab selectedTab) {
+        if (selectedTab == null) return;
+        
+        // Handle tab selection based on tab ID
+        if (selectedTab.equals(createRapportTab)) {
+            handleCreateRapport();
+        } else if (selectedTab.equals(viewRapportTab)) {
+            handleViewRapports();
+        } else if (selectedTab.equals(communityPostsTab)) {
+            navigateToPostList();
+        /* } else if (selectedTab.equals(appointmentsTab)) {
+            handleAppointmentsTab();
+        } else if (selectedTab.equals(donationsTab)) {
+            handleDonationsTab();
+        } else if (selectedTab.equals(adminTab)) {
+            handleAdminTab(); */
         }
     }
 
@@ -133,6 +151,18 @@ public class DashboardController {
             boolean isAdmin = user.getRole() != null && user.getRole().toUpperCase().contains("ADMIN");
             adminPostsBtn.setVisible(isAdmin);
             adminPostsBtn.setManaged(isAdmin); // This removes the space when button is hidden
+        }
+        
+        // Load profile image if available
+        if (user.getPicture() != null && !user.getPicture().isEmpty()) {
+            try {
+                Image image = new Image(Paths.get(user.getPicture()).toUri().toString());
+                if (profileImage != null) {
+                    profileImage.setImage(image);
+                }
+            } catch (Exception e) {
+                System.err.println("Error loading profile image: " + e.getMessage());
+            }
         }
     }
 
@@ -187,22 +217,54 @@ public class DashboardController {
 
         setupRoleSpecificContent();
     }
-//    private void setupUserInterface() {
-//        welcomeLabel.setText("Welcome, " + currentUser.getNom() + " " + currentUser.getPrenom());
-//        nameLabel.setText("Name: " + currentUser.getNom() + " " + currentUser.getPrenom());
-//        emailLabel.setText("Email: " + currentUser.getEmail());
-//        phoneLabel.setText("Phone: " + currentUser.getTel());
-//        addressLabel.setText("Address: " + currentUser.getAdresse());
-//
-//        // Show/hide tabs based on user role
-//        if (patientsTab != null) patientsTab.setDisable(!(currentUser instanceof Medecin));
-//        if (findDoctorsTab != null) findDoctorsTab.setDisable(!(currentUser instanceof Patient));
-//        if (adminTab != null) adminTab.setDisable(!(currentUser.getRole().equals("ADMIN")));
-//        if (donationsTab != null) donationsTab.setDisable(!(currentUser instanceof Donateur));
-//
-//        setupRoleSpecificContent();
-//    }
-
+    private void setupTabVisibility(User user) {
+        if (user == null) return;
+        
+        // Check user instance type instead of role string
+        boolean isMedecin = user instanceof Medecin;
+        boolean isPatient = user instanceof Patient;
+        boolean isDonateur = user instanceof Donateur;
+        
+        // Set visibility based on user type
+        if (patientsTab != null) patientsTab.setDisable(!isMedecin);
+        if (findDoctorsTab != null) findDoctorsTab.setDisable(!isPatient);
+        
+        // Admin will be redirected to adminDashboard, so we disable the admin tab for all users
+        if (adminTab != null) adminTab.setDisable(true);
+        
+        // Donations tab is only for donateurs
+        if (donationsTab != null) donationsTab.setDisable(!isDonateur);
+        
+        // Rapport tabs are only for doctors
+        if (createRapportTab != null) createRapportTab.setDisable(!isMedecin);
+        if (viewRapportTab != null) viewRapportTab.setDisable(!isMedecin);
+        
+        // Community posts tab is for patients
+        if (communityPostsTab != null) {
+            communityPostsTab.setDisable(!isPatient);
+        }
+        
+        // Appointments tab is for both patients and doctors
+        if (appointmentsTab != null) {
+            appointmentsTab.setDisable(!(isPatient || isMedecin));
+        }
+        
+        // Show/hide buttons based on role
+        if (communityPostsButton != null) {
+            communityPostsButton.setVisible(isPatient);
+            communityPostsButton.setManaged(isPatient);
+        }
+        
+        if (createRapportButton != null) {
+            createRapportButton.setVisible(isMedecin);
+            createRapportButton.setManaged(isMedecin);
+        }
+        
+        if (viewRapportsButton != null) {
+            viewRapportsButton.setVisible(isMedecin);
+            viewRapportsButton.setManaged(isMedecin);
+        }
+    }
     private void setupRoleSpecificContent() {
         roleSpecificContent.getChildren().clear();
         
@@ -353,7 +415,7 @@ public class DashboardController {
             
             // Get the controller and set the current user
             PostListController controller = loader.getController();
-            controller.setCurrentUser(Session.getCurrentUser());
+            controller.setCurrentUser(Session.getInstance().getUtilisateurConnecte());
             
             // Create a new scene and stage
             Scene scene = new Scene(root);
@@ -370,11 +432,6 @@ public class DashboardController {
             e.printStackTrace();
             // Show error alert
             showError("Error loading posts list: " + e.getMessage());
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setTitle("Navigation Error");
-//            alert.setHeaderText("Could not navigate to Posts");
-//            alert.setContentText("An error occurred: " + e.getMessage());
-//            alert.showAndWait();
         }
     }
     
@@ -383,4 +440,60 @@ public class DashboardController {
     public void handleCommunityPostsTab() {
         navigateToPostList();
     }
-}
+
+    @FXML
+    private void showProfile() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/profile.fxml"));
+            Parent profileRoot = loader.load();
+
+            // Pass the current user to the ProfileController
+            ProfileController profileController = loader.getController();
+            // Use the session user if available, otherwise fallback to currentUser
+            User user = Session.getInstance().getUtilisateurConnecte();
+            if (user == null) user = currentUser;
+            profileController.initData(user);
+
+            // Create a new stage for the profile
+            Stage profileStage = new Stage();
+            profileStage.setTitle("User Profile");
+            profileStage.setScene(new Scene(profileRoot));
+            profileStage.setResizable(false);
+            profileStage.show();
+        } catch (IOException e) {
+            showError("Error loading profile: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+
+    private void showInfo(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    public void updateUserInterface(User updatedUser) {
+        if (updatedUser == null) return;
+        
+        // Update the current user reference
+        this.currentUser = updatedUser;
+        
+        // Update UI elements
+        welcomeLabel.setText("Welcome, " + updatedUser.getNom() + " " + updatedUser.getPrenom());
+        nameLabel.setText("Name: " + updatedUser.getNom() + " " + updatedUser.getPrenom());
+        emailLabel.setText("Email: " + updatedUser.getEmail());
+        phoneLabel.setText("Phone: " + updatedUser.getTel());
+        addressLabel.setText("Address: " + updatedUser.getAdresse());
+        
+        // Update session test label
+        User sessionUser = Session.getInstance().getUtilisateurConnecte();
+        if (sessionUser != null) {
+            sessionTestLabel.setText("Session User: " + sessionUser.getEmail());
+        }
+        
+        // Update role-specific content
+        setupRoleSpecificContent();
+    }}

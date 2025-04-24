@@ -43,6 +43,9 @@
                styleClass="error-label"
                visible="false"/>
 
+        <Hyperlink text="Forgot Password?"
+                   onAction="#navigateToForgotPassword"
+                   styleClass="signup-link"/>
         <Hyperlink text="Create an account"
                    onAction="#navigateToSignup"
                    styleClass="signup-link"/>
