@@ -22,7 +22,7 @@ public class LoginController {
 
     @FXML
     public void initialize() {
-        setupButtonHoverEffects();
+        //setupButtonHoverEffects();
     }
     @FXML
     private void handleLogin() {
@@ -119,14 +119,14 @@ public class LoginController {
         return UserDAO.authenticateUser(email, password);
     }
 
-    private void setupButtonHoverEffects() {
-        loginButton.setOnMouseEntered(e ->
-                loginButton.setStyle("-fx-background-color: #2980b9; -fx-pref-width: 300px; -fx-pref-height: 40px; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 3;")
-        );
-        loginButton.setOnMouseExited(e ->
-                loginButton.setStyle("-fx-background-color: #3498db; -fx-pref-width: 300px; -fx-pref-height: 40px; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 3;")
-        );
-    }
+//    private void setupButtonHoverEffects() {
+//        loginButton.setOnMouseEntered(e ->
+//                loginButton.setStyle("-fx-background-color: #2980b9; -fx-pref-width: 300px; -fx-pref-height: 40px; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 3;")
+//        );
+//        loginButton.setOnMouseExited(e ->
+//                loginButton.setStyle("-fx-background-color: #3498db; -fx-pref-width: 300px; -fx-pref-height: 40px; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 3;")
+//        );
+//    }
 
 
     private void showError(String message) {

@@ -76,7 +76,7 @@
             </VBox>
             
             <!-- Action Buttons -->
-            <HBox spacing="15">
+           <!--  <HBox spacing="15">
                 <Button fx:id="communityPostsButton" text="Community Posts" onAction="#navigateToPostList"
                         style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; 
                                -fx-background-radius: 5; -fx-padding: 10 15;"/>
@@ -86,7 +86,7 @@
                 <Button fx:id="viewRapportsButton" text="View Reports" onAction="#handleViewRapports"
                         style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; 
                                -fx-background-radius: 5; -fx-padding: 10 15;"/>
-            </HBox>
+            </HBox> -->
             
             <!-- Content Tabs -->
             <TabPane fx:id="contentTabPane" VBox.vgrow="ALWAYS" style="-fx-background-color: #f5f6fa;">

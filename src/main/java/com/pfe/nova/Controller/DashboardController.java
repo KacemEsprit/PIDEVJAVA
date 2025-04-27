@@ -435,11 +435,7 @@ public class DashboardController {
         }
     }
     
-    // Add a method to handle the tab selection
-    @FXML
-    public void handleCommunityPostsTab() {
-        navigateToPostList();
-    }
+   
 
     @FXML
     private void showProfile() {
@@ -496,4 +492,17 @@ public class DashboardController {
         
         // Update role-specific content
         setupRoleSpecificContent();
-    }}
+        
+        // ADD THIS LINE to reload dynamic data (tables, etc.)
+        loadData();
+    }
+    
+  
+    
+    // Add a method to handle the tab selection
+    @FXML
+    public void handleCommunityPostsTab() {
+        navigateToPostList();
+    }
+    
+}
