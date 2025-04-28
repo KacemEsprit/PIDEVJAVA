@@ -76,6 +76,17 @@
                 styleClass="signup-button"
                 prefWidth="300"
                 prefHeight="40"/>
+                
+        <HBox alignment="CENTER" spacing="10">
+            <Label text="Or" styleClass="divider-text"/>
+        </HBox>
+        
+        <Button text="Sign up with Google"
+                fx:id="googleSignupButton"
+                onAction="#handleGoogleSignup"
+                styleClass="google-signup-button"
+                prefWidth="300"
+                prefHeight="40"/>
 
         <Label fx:id="errorLabel"
                styleClass="error-label"

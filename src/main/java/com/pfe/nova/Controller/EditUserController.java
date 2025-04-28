@@ -31,7 +31,7 @@ public class EditUserController {
 
     @FXML
     public void initialize() {
-        roleComboBox.getItems().addAll("ADMIN", "MEDECIN", "PATIENT", "DONATEUR");
+        roleComboBox.getItems().addAll("ROLE_ADMIN", "ROLE_MEDECIN", "ROLE_PATIENT", "ROLE_DONATEUR");
 
         String fieldStyle = "-fx-padding: 10; -fx-background-radius: 5; -fx-border-color: #e0e0e0; " +
                            "-fx-border-radius: 5; -fx-background-color: #f8f9fa;";
@@ -80,7 +80,7 @@ public class EditUserController {
 
         // Add role-specific fields based on user type
         switch (user.getRole()) {
-            case "MEDECIN":
+            case "ROLE_MEDECIN", "MEDECIN":
                 Medecin medecin = (Medecin) user;
                 specialityField.setText(medecin.getSpecialite());
                 experienceField.setText(medecin.getExperience());
@@ -88,7 +88,7 @@ public class EditUserController {
                 roleSpecificFields.getChildren().addAll(specialityField, experienceField, diplomaField);
                 break;
 
-            case "PATIENT":
+            case "ROLE_PATIENT", "PATIENT":
                 Patient patient = (Patient) user;
                 ageField.setText(String.valueOf(patient.getAge()));
                 genderComboBox.setValue(patient.getGender());
@@ -96,7 +96,7 @@ public class EditUserController {
                 roleSpecificFields.getChildren().addAll(ageField, genderComboBox, bloodTypeField);
                 break;
 
-            case "DONATEUR":
+            case "ROLE_DONATEUR", "DONATEUR":
                 Donateur donateur = (Donateur) user;
                 donateurTypeField.setText(donateur.getDonateurType());
                 roleSpecificFields.getChildren().add(donateurTypeField);

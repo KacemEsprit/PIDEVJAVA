@@ -38,6 +38,17 @@
                 styleClass="login-button"
                 prefWidth="300"
                 prefHeight="40"/>
+                
+        <HBox alignment="CENTER" spacing="10">
+            <Label text="Or" styleClass="divider-text"/>
+        </HBox>
+        
+        <Button text="Sign in with Google"
+                fx:id="googleLoginButton"
+                onAction="#handleGoogleLogin"
+                styleClass="google-login-button"
+                prefWidth="300"
+                prefHeight="40"/>
 
         <Label fx:id="errorLabel"
                styleClass="error-label"

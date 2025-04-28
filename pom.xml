@@ -42,11 +42,6 @@
     </dependency>
     <!-- Remove the duplicate jbcrypt dependency -->
     <dependency>
-      <groupId>org.mindrot</groupId>
-      <artifactId>jbcrypt</artifactId>
-      <version>0.4</version>
-    </dependency>
-    <dependency>
       <groupId>com.sun.mail</groupId>
       <artifactId>jakarta.mail</artifactId>
       <version>1.6.7</version>
@@ -62,6 +57,53 @@
         <artifactId>fontawesomefx-fontawesome</artifactId>
         <version>4.7.0-9.1.2</version>
     </dependency>
+
+
+    <!-- https://mvnrepository.com/artifact/com.google.oauth-client/google-oauth-client-jetty -->
+    <dependency>
+      <groupId>com.google.oauth-client</groupId>
+      <artifactId>google-oauth-client-jetty</artifactId>
+      <version>1.39.0</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.google.oauth-client/google-oauth-client -->
+    <dependency>
+      <groupId>com.google.oauth-client</groupId>
+      <artifactId>google-oauth-client</artifactId>
+      <version>1.39.0</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.google.http-client/google-http-client -->
+    <dependency>
+      <groupId>com.google.http-client</groupId>
+      <artifactId>google-http-client</artifactId>
+      <version>1.46.3</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.google.http-client/google-http-client-jackson2 -->
+    <dependency>
+      <groupId>com.google.http-client</groupId>
+      <artifactId>google-http-client-jackson2</artifactId>
+      <version>1.46.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.http-client</groupId>
+      <artifactId>google-http-client-gson</artifactId>
+      <version>1.46.0</version>
+    </dependency>
+
+
+    <!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-oauth2 -->
+    <dependency>
+      <groupId>com.google.apis</groupId>
+      <artifactId>google-api-services-oauth2</artifactId>
+      <version>v2-rev157-1.25.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.api-client</groupId>
+      <artifactId>google-api-client</artifactId>
+      <version>2.7.2</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.google.http-client/google-http-client-jackson2 -->
+
   </dependencies>
 
   <build>

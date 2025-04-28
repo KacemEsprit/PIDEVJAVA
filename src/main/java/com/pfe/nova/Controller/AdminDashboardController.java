@@ -140,7 +140,7 @@ public class AdminDashboardController {
     }
 
     public void initData(User user) {
-        if (!"ADMIN".equals(user.getRole())) {
+        if (!"ROLE_ADMIN".equals(user.getRole()) && !"ADMIN".equals(user.getRole())) {
             // Redirect non-admin users
             System.err.println("Non-admin user attempted to access admin dashboard");
             handleLogout();
@@ -167,7 +167,7 @@ public class AdminDashboardController {
     }
 
     private void setupUI() {
-        filterRole.getItems().addAll("ALL", "ADMIN", "MEDECIN", "PATIENT", "DONATEUR");
+        filterRole.getItems().addAll("ALL", "ROLE_ADMIN", "ROLE_MEDECIN", "ROLE_PATIENT", "ROLE_DONATEUR");
         filterRole.setValue("ALL");
 
         // Add search listener

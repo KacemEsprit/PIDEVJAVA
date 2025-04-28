@@ -27,7 +27,7 @@ public class UserDAO {
                             System.out.println("Password verified successfully for role: " + role);
                             
                             switch (role) {
-                                case "ADMIN":
+                                case "ROLE_ADMIN", "ADMIN":
                                     return new User(
                                         rs.getInt("id"),
                                         rs.getString("nom"),
@@ -37,10 +37,10 @@ public class UserDAO {
                                         rs.getString("adresse"),
                                         hashedPasswordFromDB,
                                         rs.getString("picture"),
-                                        "ADMIN"
+                                        "ROLE_ADMIN"
                                     );
                                     
-                                case "PATIENT":
+                                case "ROLE_PATIENT", "PATIENT":
                                     return new Patient(
                                         rs.getInt("id"),
                                         rs.getString("nom"),
@@ -55,7 +55,7 @@ public class UserDAO {
                                         rs.getString("blood_type")
                                     );
                                     
-                                case "MEDECIN":
+                                case "ROLE_MEDECIN", "MEDECIN":
                                     return new Medecin(
                                         rs.getInt("id"),
                                         rs.getString("nom"),
@@ -70,7 +70,7 @@ public class UserDAO {
                                         rs.getString("diplome")
                                     );
                                     
-                                case "DONATEUR":
+                                case "ROLE_DONATEUR", "DONATEUR":
                                     return new Donateur(
                                         rs.getInt("id"),
                                         rs.getString("nom"),
@@ -425,6 +425,87 @@ public class UserDAO {
             System.err.println("Error getting user by ID: " + e.getMessage());
             e.printStackTrace();
         }
+        return null;
+    }
+
+
+    public static User findUserByEmail(String email) {
+        String query = "SELECT * FROM user WHERE email = ?";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setString(1, email);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String role = rs.getString("role");
+                    System.out.println("Found user with email: " + email + ", role: " + role);
+                    
+                    switch (role) {
+                        case "ADMIN":
+                            return new User(
+                                rs.getInt("id"),
+                                rs.getString("nom"),
+                                rs.getString("prenom"),
+                                email,
+                                rs.getString("tel"),
+                                rs.getString("adresse"),
+                                rs.getString("password"),
+                                rs.getString("picture"),
+                                "ADMIN"
+                            );
+                            
+                        case "PATIENT":
+                            return new Patient(
+                                rs.getInt("id"),
+                                rs.getString("nom"),
+                                rs.getString("prenom"),
+                                email,
+                                rs.getString("tel"),
+                                rs.getString("adresse"),
+                                rs.getString("password"),
+                                rs.getString("picture"),
+                                rs.getInt("age"),
+                                rs.getString("gender"),
+                                rs.getString("blood_type")
+                            );
+                            
+                        case "MEDECIN":
+                            return new Medecin(
+                                rs.getInt("id"),
+                                rs.getString("nom"),
+                                rs.getString("prenom"),
+                                email,
+                                rs.getString("tel"),
+                                rs.getString("adresse"),
+                                rs.getString("password"),
+                                rs.getString("picture"),
+                                rs.getString("specialite"),
+                                rs.getString("experience"),
+                                rs.getString("diplome")
+                            );
+                            
+                        case "DONATEUR":
+                            return new Donateur(
+                                rs.getInt("id"),
+                                rs.getString("nom"),
+                                rs.getString("prenom"),
+                                email,
+                                rs.getString("tel"),
+                                rs.getString("adresse"),
+                                rs.getString("password"),
+                                rs.getString("picture"),
+                                rs.getString("donateur_type")
+                            );
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Exception in findUserByEmail: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
         return null;
     }
 }
