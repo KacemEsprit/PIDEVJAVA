@@ -49,6 +49,13 @@
                     </graphic>
                     <text>Reported Comments</text>
                 </Button>
+                <!-- Dans la section nav-buttons VBox, ajoutez ce bouton après le bouton reportedCommentsBtn -->
+                <Button fx:id="postsStatsBtn" styleClass="nav-button" onAction="#showPostsStatistics">
+                    <graphic>
+                        <Label text="📊" styleClass="icon-label"/>
+                    </graphic>
+                    <text>Posts Statistics</text>
+                </Button>
                 <Button fx:id="statsBtn" styleClass="nav-button" onAction="#showStatistics">
                     <graphic>
                         <Label text="📊" styleClass="icon-label"/>

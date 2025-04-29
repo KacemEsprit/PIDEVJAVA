@@ -6,32 +6,34 @@
 <?import java.net.URL?>
 
 <ScrollPane xmlns="http://javafx.com/javafx"
-           xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.pfe.nova.Controller.PublicationDetailsController"
-           styleClass="details-scroll-pane"
-           fitToWidth="true"
-           prefWidth="800" 
-           prefHeight="700">
-    
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.pfe.nova.Controller.PublicationDetailsController"
+            styleClass="details-scroll-pane"
+            fitToWidth="true"
+            prefWidth="800"
+            prefHeight="700">
+
     <VBox spacing="25" styleClass="publication-details">
         <padding>
             <Insets top="30" right="40" bottom="30" left="40"/>
         </padding>
-        
-        <!-- Header with back button -->
+
         <HBox alignment="CENTER_LEFT" spacing="15" styleClass="details-header">
             <Button fx:id="backButton" onAction="#handleBack" text="← Back" styleClass="back-button"/>
         </HBox>
-        
-        <!-- Main content container -->
+
         <VBox fx:id="publicationContent" spacing="20" styleClass="publication-content"/>
-        
-        <!-- Comments section -->
+
         <VBox fx:id="commentsList" spacing="20" styleClass="comments-section">
-            <TextField fx:id="commentField" promptText="Write a comment..."/>
+            <HBox spacing="10" alignment="CENTER_LEFT" styleClass="comment-input-container">
+                <TextField fx:id="commentField" promptText="Write a comment..." styleClass="comment-input-field" HBox.hgrow="ALWAYS"/>
+                <Button fx:id="recordButton" text="🎤 Record" styleClass="comment-action-button"/>
+                <Button fx:id="stopButton" text="⬛ Stop" styleClass="comment-action-button" visible="false" managed="false"/>
+                <Button fx:id="submitButton" text="Post" styleClass="comment-submit-button"/>
+            </HBox>
         </VBox>
     </VBox>
-    
+
     <stylesheets>
         <URL value="@styles/publication-details.css"/>
     </stylesheets>
