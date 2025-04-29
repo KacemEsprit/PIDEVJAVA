@@ -356,18 +356,31 @@ public class UserDAO {
     }
 
 
+    /**
+     * Get a user by ID
+     * @param userId The user ID to find
+     * @return The User object or null if not found
+     */
     public static User getUserById(int userId) {
+        // This is just an alias for findById to maintain compatibility
+        return findById(userId);
+    }
+    public static User findById(int userId) {
         String query = "SELECT * FROM user WHERE id = ?";
+        
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             
             stmt.setInt(1, userId);
+            
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     String role = rs.getString("role");
+                    User user = null;
+                    
                     switch (role) {
                         case "ADMIN":
-                            return new User(
+                            user = new User(
                                 rs.getInt("id"),
                                 rs.getString("nom"),
                                 rs.getString("prenom"),
@@ -378,8 +391,9 @@ public class UserDAO {
                                 rs.getString("picture"),
                                 "ADMIN"
                             );
+                            break;
                         case "MEDECIN":
-                            return new Medecin(
+                            user = new Medecin(
                                 rs.getInt("id"),
                                 rs.getString("nom"),
                                 rs.getString("prenom"),
@@ -392,8 +406,9 @@ public class UserDAO {
                                 rs.getString("experience"),
                                 rs.getString("diplome")
                             );
+                            break;
                         case "PATIENT":
-                            return new Patient(
+                            user = new Patient(
                                 rs.getInt("id"),
                                 rs.getString("nom"),
                                 rs.getString("prenom"),
@@ -406,8 +421,9 @@ public class UserDAO {
                                 rs.getString("gender"),
                                 rs.getString("blood_type")
                             );
+                            break;
                         case "DONATEUR":
-                            return new Donateur(
+                            user = new Donateur(
                                 rs.getInt("id"),
                                 rs.getString("nom"),
                                 rs.getString("prenom"),
@@ -418,11 +434,25 @@ public class UserDAO {
                                 rs.getString("picture"),
                                 rs.getString("donateur_type")
                             );
+                            break;
+                        default:
+                            user = new User(
+                                rs.getInt("id"),
+                                rs.getString("nom"),
+                                rs.getString("prenom"),
+                                rs.getString("email"),
+                                rs.getString("tel"),
+                                rs.getString("adresse"),
+                                rs.getString("password"),
+                                rs.getString("picture"),
+                                role
+                            );
                     }
+                    return user;
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error getting user by ID: " + e.getMessage());
+            System.out.println("Error finding user by ID: " + e.getMessage());
             e.printStackTrace();
         }
         return null;

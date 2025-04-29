@@ -104,7 +104,9 @@ public class CommentReportDAO {
      * @throws SQLException if a database error occurs
      */
     public static boolean delete(int reportId) throws SQLException {
-        String query = "DELETE FROM comment_reports WHERE id = ?";
+        String query = "DELETE FROM comment_report WHERE id = ?";
+        
+        System.out.println("Executing delete query: " + query + " with reportId: " + reportId);
         
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -112,7 +114,12 @@ public class CommentReportDAO {
             statement.setInt(1, reportId);
             int rowsAffected = statement.executeUpdate();
             
+            System.out.println("Rows affected by delete: " + rowsAffected);
             return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("SQL Error in delete: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         }
     }
 

@@ -947,6 +947,49 @@ public class AdminDashboardController {
         // Load users data
         loadUsersData();
     }
+
+    // Ajoutez cette méthode pour afficher les statistiques des publications
+    @FXML
+    private void showPostsStatistics() {
+        try {
+            // Créer un nouvel onglet s'il n'existe pas déjà
+            String tabId = "postsStatisticsTab";
+            Tab postsStatisticsTab = findTab(tabId);
+            
+            if (postsStatisticsTab == null) {
+                postsStatisticsTab = new Tab("Publications Statistics");
+                postsStatisticsTab.setId(tabId);
+                postsStatisticsTab.setClosable(false);
+                
+                // Charger le contenu FXML
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/post-statistics.fxml"));
+                Parent content = loader.load();
+                
+                // Ajouter le contenu à l'onglet
+                postsStatisticsTab.setContent(content);
+                
+                // Ajouter l'onglet au TabPane
+                mainTabPane.getTabs().add(postsStatisticsTab);
+            }
+            
+            // Sélectionner l'onglet
+            mainTabPane.getSelectionModel().select(postsStatisticsTab);
+            
+        } catch (IOException e) {
+            showError("Error loading posts statistics: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    // Méthode utilitaire pour trouver un onglet par ID
+    private Tab findTab(String id) {
+        for (Tab tab : mainTabPane.getTabs()) {
+            if (id.equals(tab.getId())) {
+                return tab;
+            }
+        }
+        return null;
+    }
 }
 
 

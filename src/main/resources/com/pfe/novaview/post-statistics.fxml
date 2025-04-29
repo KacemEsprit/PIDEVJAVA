@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" stylesheets="@styles/admin-styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pfe.nova.Controller.PostStatisticsController">
+   <children>
+      <ScrollPane fitToWidth="true" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <content>
+            <VBox spacing="20.0">
+               <children>
+                  <Label styleClass="page-title" text="Publication Statistics Dashboard">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+
+                  <!-- Summary Cards -->
+                  <HBox spacing="20.0">
+                     <children>
+                        <VBox styleClass="stat-card">
+                           <children>
+                              <Label styleClass="stat-card-title" text="Total Publications" />
+                              <Text fx:id="totalPostsLabel" styleClass="stat-number" text="0" />
+                              <Text fx:id="totalPostsTrend" styleClass="trend-indicator" text="0%" />
+                           </children>
+                        </VBox>
+                        <VBox styleClass="stat-card">
+                           <children>
+                              <Label styleClass="stat-card-title" text="Approved Publications" />
+                              <Text fx:id="approvedPostsLabel" styleClass="stat-number" text="0" />
+                              <Text fx:id="approvedPostsTrend" styleClass="trend-indicator" text="0%" />
+                           </children>
+                        </VBox>
+                        <VBox styleClass="stat-card">
+                           <children>
+                              <Label styleClass="stat-card-title" text="Pending Publications" />
+                              <Text fx:id="pendingPostsLabel" styleClass="stat-number" text="0" />
+                              <Text fx:id="pendingPostsTrend" styleClass="trend-indicator" text="0%" />
+                           </children>
+                        </VBox>
+                        <VBox styleClass="stat-card">
+                           <children>
+                              <Label styleClass="stat-card-title" text="Most Active Category" />
+                              <Text fx:id="mostActiveCategoryLabel" styleClass="stat-text" text="N/A" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+
+                  <!-- Charts Row 1 -->
+                  <HBox spacing="20.0">
+                     <children>
+                        <VBox styleClass="chart-container" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="chart-title" text="Categories Distribution" />
+                              <PieChart fx:id="categoriesChart" prefHeight="300.0" />
+                           </children>
+                        </VBox>
+                        <VBox styleClass="chart-container" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="chart-title" text="Publication Status" />
+                              <PieChart fx:id="statusChart" prefHeight="300.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+
+                  <!-- Charts Row 2 -->
+                  <HBox spacing="20.0">
+                     <children>
+                        <VBox styleClass="chart-container" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="chart-title" text="Monthly Publication Trends" />
+                              <AreaChart fx:id="monthlyPostsChart" prefHeight="300.0">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </AreaChart>
+                           </children>
+                        </VBox>
+                        <VBox styleClass="chart-container" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label fx:id="engagementCategoryLabel" styleClass="chart-title" text="Engagement by Category" />
+                              <BarChart fx:id="engagementChart" prefHeight="300.0">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </BarChart>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+
+                  <!-- Top Performing Publications -->
+                  <VBox styleClass="chart-container">
+                     <children>
+                        <Label fx:id="trendPublicationsLabel" styleClass="chart-title" text="Top Performing Publications" />
+                        <FlowPane fx:id="topPostsContainer" hgap="15.0" prefWrapLength="1000.0" vgap="15.0" />
+                     </children>
+                  </VBox>
+
+                  <!-- Additional Analysis Section -->
+                  <VBox fx:id="topPerformingContainer" styleClass="chart-container">
+                     <children>
+                        <Label styleClass="chart-title" text="Additional Analysis" />
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+               </padding>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
