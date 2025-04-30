@@ -107,6 +107,7 @@ public class DashboardController {
 
     @FXML private Button createRapportButton;
     @FXML private Button viewRapportsButton;
+    @FXML private Button orderButton;
 
     @FXML
     private void handleCreateRapport() {
@@ -152,6 +153,11 @@ public class DashboardController {
             sessionTestLabel.setText("Session User: " + sessionUser.getEmail());
         } else {
             sessionTestLabel.setText("No user in session.");
+        }
+
+        // Show/hide order button based on user role
+        if (orderButton != null) {
+            orderButton.setVisible(currentUser instanceof Patient);
         }
 
         setupRoleSpecificContent();
@@ -281,5 +287,36 @@ public class DashboardController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void handleOrder() {
+        try {
+            // Vérifier si l'utilisateur est un patient
+            if (!(currentUser instanceof Patient)) {
+                showError("Seuls les patients peuvent passer des commandes.");
+                return;
+            }
+
+            Patient patient = (Patient) currentUser;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/order_management.fxml"));
+            Parent root = loader.load();
+            OrderController orderController = loader.getController();
+            orderController.initializeForPatient(patient.getId()); // Passer l'ID du patient
+            
+            Stage stage = new Stage();
+            stage.setTitle("Passer une commande");
+            stage.setScene(new Scene(root));
+            stage.setOnHidden(e -> {
+                if (orderController != null && orderController.isOrderPlaced()) {
+                    orderController.clearCart(); 
+                    orderController.saveCartToFile(); 
+                }
+            });
+            stage.show();
+        } catch (IOException e) {
+            showError("Erreur lors de l'ouverture de la page de commande: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

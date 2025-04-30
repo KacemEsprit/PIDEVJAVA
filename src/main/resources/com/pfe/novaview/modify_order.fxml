@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.pfe.nova.Controller.ModifyOrderController"
+            prefHeight="400.0" prefWidth="600.0">
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Label text="Modifier la commande" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <ScrollPane fx:id="scrollPane" VBox.vgrow="ALWAYS">
+                <FlowPane fx:id="medicationFlowPane" hgap="10" vgap="10">
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </padding>
+                </FlowPane>
+            </ScrollPane>
+        </VBox>
+    </center>
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Button fx:id="saveButton" text="Enregistrer 💾" style="-fx-background-color:rgba(9, 223, 247, 0.94); -fx-text-fill: white;"/>
+            <Button fx:id="cancelButton" text="Annuler ❌" style="-fx-background-color:rgb(212, 42, 42); -fx-text-fill: white;"/>
+        </HBox>
+    </bottom>
+</BorderPane>

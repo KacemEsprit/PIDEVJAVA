@@ -26,6 +26,27 @@
                     style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-pref-width: 160;"/>
             <Button text="Reports" onAction="#showReports"
                     style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-pref-width: 160;"/>
+            
+            <VBox fx:id="pharmacieMenu" spacing="5">
+                <Button text="Pharmacie ▼" onAction="#togglePharmacieMenu"
+                        style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-pref-width: 160;">
+                    <VBox.margin>
+                        <Insets bottom="5"/>
+                    </VBox.margin>
+                </Button>
+                <VBox fx:id="pharmacieSubMenu" visible="false" managed="false" spacing="5">
+                    <Button text="Gestion Médicaments" onAction="#showMedicationManagement"
+                            style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-pref-width: 140; -fx-translate-x: 20;"/>
+                    <Button text="Confirmation Commandes" onAction="#showOrderConfirmation"
+                            style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-pref-width: 140; -fx-translate-x: 20;"/>                
+                    <Button text="Avis" onAction="#showReviewsStatistics"
+                            style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-pref-width: 140; -fx-translate-x: 20;"/>
+                    <Button text="ToDo List" onAction="#showToDoList"
+                            style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-pref-width: 140; -fx-translate-x: 20;"/>
+                    
+                </VBox>
+            </VBox>
+            
             <Button text="Settings" onAction="#showSettings"
                     style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-pref-width: 160;"/>
         </VBox>

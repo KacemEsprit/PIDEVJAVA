@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.control.Label?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
@@ -37,6 +38,7 @@
                                     style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
                             <Button text="View Rapports" fx:id="viewRapportsButton" onAction="#handleViewRapports"
                                     style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+                            
                         </children>
                     </VBox>
                 </Tab>
@@ -126,7 +128,16 @@
                 <Tab text="View Rapports" fx:id="viewRapportTab" disable="true">
                     <fx:include source="ViewRapports.fxml"/>
                 </Tab>
+                <!-- order -->
 
+                <Tab text="Pharmacie" fx:id="orderTab" disable="false">
+                    <VBox spacing="10.0" style="-fx-padding: 20;">
+                        <children>
+                            
+                            <fx:include source="order_management.fxml"/>
+                        </children>
+                    </VBox>
+                </Tab>
                 <!-- Admin -->
                 <Tab text="Administration" fx:id="adminTab" disable="true">
                     <VBox spacing="10.0" style="-fx-padding: 20;">

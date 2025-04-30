@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -207,5 +208,62 @@ public class AdminDashboardController {
         alert.setContentText("User: " + user.getNom() + " " + user.getPrenom());
 
         return alert.showAndWait().filter(response -> response == ButtonType.OK).isPresent();
+    }
+
+    @FXML
+    private void showMedicationManagement() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/medication_management.fxml"));
+            Parent root = loader.load();
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(root);
+        } catch (IOException e) {
+            showError("Erreur lors du chargement de la gestion des médicaments: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void showOrderConfirmation() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/order_confirmation.fxml"));
+            Parent root = loader.load();
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(root);
+        } catch (IOException e) {
+            showError("Erreur lors du chargement de la confirmation des commandes: " + e.getMessage());
+        }
+    }
+    @FXML
+    private void showReviewsStatistics() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/reviews_statistics.fxml"));
+            Parent reviewsView = loader.load();
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(reviewsView);
+        } catch (IOException e) {
+            e.printStackTrace();
+            showError("Erreur lors du chargement des statistiques des avis: " + e.getMessage());
+        }
+    }
+    @FXML
+    private void showToDoList() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/todolist.fxml"));
+            Parent root = loader.load();
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+            showError("Erreur lors du chargement des statistiques des avis: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private VBox pharmacieSubMenu;
+    
+    @FXML
+    private void togglePharmacieMenu() {
+        pharmacieSubMenu.setVisible(!pharmacieSubMenu.isVisible());
+        pharmacieSubMenu.setManaged(!pharmacieSubMenu.isManaged());
     }
 }
