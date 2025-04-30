@@ -11,7 +11,9 @@ module com.pfe.nova {
     requires java.net.http;
     requires jjwt.api;
     requires okio;
-
+    // Remplacer requires java.mail par requires jakarta.mail
+    requires jakarta.mail;
+    
     opens com.pfe.nova to javafx.fxml, de.jensd.fx.glyphs.fontawesome;
     opens com.pfe.nova.Application to javafx.graphics;
     opens com.pfe.nova.models to javafx.fxml;

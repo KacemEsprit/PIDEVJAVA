@@ -61,7 +61,7 @@
                     <padding>
                         <Insets top="8" right="10" bottom="8" left="10"/>
                     </padding>
-                    <Label text="Nova Assistant" styleClass="chatbot-title"/>
+                    <Label text="Oncokidscare Assistant" styleClass="chatbot-title"/>
                     <Region HBox.hgrow="ALWAYS"/>
                     <Button fx:id="chatbotCloseButton" text="✕" onAction="#closeChatbot"
                             styleClass="chatbot-close-button"/>

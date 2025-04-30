@@ -4,6 +4,8 @@ import com.pfe.nova.configuration.PostDAO;
 import com.pfe.nova.configuration.UserDAO;
 import com.pfe.nova.models.Post;
 import com.pfe.nova.models.User;
+import com.pfe.nova.services.EmailPostService;
+import com.pfe.nova.services.EmailPostTemplateService;
 import com.pfe.nova.utils.Session;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -559,6 +561,24 @@ public class AdminDashboardController {
             try {
                 post.setStatus("approved");
                 PostDAO.updateStatus(post.getId(), "approved");
+
+                // Envoyer un email au propriétaire du post avec le template HTML
+                User postOwner = post.getUser();
+                if (postOwner != null && postOwner.getEmail() != null) {
+                    try {
+                        EmailPostService emailPostService = new EmailPostService("benalibenalirania123@gmail.com", "qwdb odbp rkgd ihuy");
+                        String subject = "Votre publication a été approuvée";
+                        
+                        // Utiliser le template HTML
+                        String htmlContent = EmailPostTemplateService.getPostApprovalTemplate(postOwner, post);
+                        
+                        emailPostService.sendHtmlEmail(postOwner.getEmail(), subject, htmlContent);
+                        System.out.println("Email de notification envoyé à " + postOwner.getEmail());
+                    } catch (Exception e) {
+                        System.err.println("Erreur lors de l'envoi de l'email: " + e.getMessage());
+                        // Ne pas bloquer le processus d'approbation si l'envoi d'email échoue
+                    }
+                }
 
                 Alert success = new Alert(Alert.AlertType.INFORMATION);
                 success.setTitle("Success");

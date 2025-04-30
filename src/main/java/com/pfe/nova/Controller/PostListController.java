@@ -9,6 +9,8 @@ import com.pfe.nova.configuration.LikeDAO;
 import com.pfe.nova.models.Like;
 import com.pfe.nova.models.User;
 import com.pfe.nova.components.ChatbotView;
+import com.pfe.nova.services.EmailPostService;
+import com.pfe.nova.services.EmailPostTemplateService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -306,6 +308,24 @@ public void openMessagesView() {
             try {
                 post.setStatus("approved");
                 PostDAO.updateStatus(post.getId(), "approved");
+
+                // Envoyer un email au propriétaire du post avec le template HTML
+                User postOwner = post.getUser();
+                if (postOwner != null && postOwner.getEmail() != null) {
+                    try {
+                        EmailPostService emailPostService = new EmailPostService("benalibenalirania123@gmail.com", "qwdb odbp rkgd ihuy");
+                        String subject = "Votre publication a été approuvée";
+                        
+                        // Utiliser le template HTML
+                        String htmlContent = EmailPostTemplateService.getPostApprovalTemplate(postOwner, post);
+                        
+                        emailPostService.sendHtmlEmail(postOwner.getEmail(), subject, htmlContent);
+                        System.out.println("Email de notification envoyé à " + postOwner.getEmail());
+                    } catch (Exception e) {
+                        System.err.println("Erreur lors de l'envoi de l'email: " + e.getMessage());
+                        // Ne pas bloquer le processus d'approbation si l'envoi d'email échoue
+                    }
+                }
 
                 Alert success = new Alert(Alert.AlertType.INFORMATION);
                 success.setTitle("Success");
@@ -978,10 +998,12 @@ public void openMessagesView() {
     }
 
     @FXML
-    public void closeChatbot() {
-        chatbotToggleButton.setSelected(false);
-        chatbotContainer.setVisible(false);
-        chatbotContainer.setManaged(false);
+    private void closeChatbot() {
+        if (chatbotToggleButton != null) {
+            chatbotToggleButton.setSelected(false);
+            chatbotContainer.setVisible(false);
+            chatbotContainer.setManaged(false);
+        }
     }
 
     @FXML

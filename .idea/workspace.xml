@@ -5,20 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc4d44b3-873d-422a-bea4-dd33ed12ab3c" name="Changes" comment="kacems">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/services/EmailPostService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Application/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/DashboardController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/LoginController$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/LoginController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/SignupController$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/SignupController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/HelloApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/HelloController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/configuration/DatabaseConnection.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/configuration/UserDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/models/User.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/AdminDashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/AdminDashboardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PostListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PostListController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/components/ChatbotView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/components/ChatbotView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/post-list.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/post-list.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/post-list.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/post-list.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,10 +95,11 @@
     "Maven.Nova [org.apache.maven.plugins:maven-install-plugin:3.1.2:install-file].executor": "Run",
     "Maven.Nova [org.apache.maven.plugins:maven-install-plugin:3.1.2:install].executor": "Run",
     "Maven.Nova [org.apache.maven.plugins:maven-jar-plugin:3.4.1:jar].executor": "Run",
+    "Maven.oncokidscare [org.apache.maven.plugins:maven-clean-plugin:2.5:clean].executor": "Run",
     "Maven.oncokidscare [org.apache.maven.plugins:maven-install-plugin:2.4:install].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "rania",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/test/PIDEVJAVA",
@@ -283,7 +280,7 @@
       <workItem from="1745778433601" duration="18742000" />
       <workItem from="1745844069446" duration="2000" />
       <workItem from="1745879585426" duration="20239000" />
-      <workItem from="1746051663637" duration="320000" />
+      <workItem from="1746051663637" duration="5386000" />
     </task>
     <task id="LOCAL-00001" summary="crud">
       <option name="closed" value="true" />

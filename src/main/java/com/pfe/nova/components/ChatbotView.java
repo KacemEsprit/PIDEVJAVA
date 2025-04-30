@@ -30,7 +30,7 @@ public class ChatbotView extends VBox {
         this.setStyle("-fx-background-color: #f5f5f5; -fx-background-radius: 10;");
 
         // Header
-        Label headerLabel = new Label("Nova Assistant (Gemini AI)");
+        Label headerLabel = new Label("Oncokidscare Assistant ");
         headerLabel.setFont(Font.font("System", FontWeight.BOLD, 16));
         headerLabel.setStyle("-fx-text-fill: #2c3e50;");
 
@@ -62,16 +62,17 @@ public class ChatbotView extends VBox {
         messageField = new TextField();
         messageField.setPromptText("Type your message here...");
         messageField.setPrefHeight(40);
+        messageField.setStyle("-fx-background-color: white; -fx-border-color: #95E1D3; -fx-border-radius: 20px; -fx-background-radius: 20px; -fx-padding: 5px 15px;");
         HBox.setHgrow(messageField, Priority.ALWAYS);
 
         sendButton = new Button("Send");
         sendButton.setPrefHeight(40);
-        sendButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white;");
+        sendButton.setStyle("-fx-background-color: #95E1D3; -fx-text-fill: white; -fx-background-radius: 20px; -fx-font-weight: bold;");
 
         inputBox.getChildren().addAll(messageField, sendButton);
 
         // Add welcome message
-        addBotMessage("Hello! I'm Nova Assistant powered by Gemini AI. How can I help you today?");
+        addBotMessage("Hello! I'm Oncokidscare Assistant . How can I help you today?");
 
         // Add all components to the main container
         this.getChildren().addAll(headerLabel, scrollPane, statusBox, inputBox);
@@ -133,7 +134,7 @@ public class ChatbotView extends VBox {
         text.setFill(Color.WHITE);
         textFlow.getChildren().add(text);
         textFlow.setPadding(new Insets(10));
-        textFlow.setStyle("-fx-background-color: #3498db; -fx-background-radius: 15 0 15 15;");
+        textFlow.setStyle("-fx-background-color: #95E1D3; -fx-background-radius: 15 0 15 15;");
         textFlow.setMaxWidth(300);
 
         messageBox.getChildren().add(textFlow);
@@ -152,7 +153,7 @@ public class ChatbotView extends VBox {
         text.setFill(Color.BLACK);
         textFlow.getChildren().add(text);
         textFlow.setPadding(new Insets(10));
-        textFlow.setStyle("-fx-background-color: #e9e9e9; -fx-background-radius: 0 15 15 15;");
+        textFlow.setStyle("-fx-background-color: #e9e9e9; -fx-background-radius: 0 15 15 15; -fx-border-color: #95E1D3; -fx-border-width: 1; -fx-border-radius: 0 15 15 15;");
         textFlow.setMaxWidth(300);
 
         messageBox.getChildren().add(textFlow);

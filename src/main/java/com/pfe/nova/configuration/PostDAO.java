@@ -121,7 +121,6 @@ public class PostDAO {
     public static List<Post> findAll() throws SQLException {
         List<Post> posts = new ArrayList<>();
         String sql = "SELECT p.* FROM publication p " +
-                "WHERE p.status = 'approved' " +
                 "ORDER BY p.date_pb DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();

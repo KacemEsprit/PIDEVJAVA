@@ -366,24 +366,25 @@
     -fx-background-color: #e74c3c;
 }
 
+/* Chatbot Styles */
 .chatbot-container {
-    -fx-background-color: white;
-    -fx-border-color: #e0e0e0;
-    -fx-border-width: 1;
-    -fx-border-radius: 10;
-    -fx-background-radius: 10;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 3);
+    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);
+    -fx-border-color: #95E1D3;
+    -fx-border-width: 2px;
+    -fx-border-radius: 15px;
 }
 
 .chatbot-header {
-    -fx-background-color: #3498db;
-    -fx-background-radius: 10 10 0 0;
+    -fx-background-color: #95E1D3;
+    -fx-background-radius: 13px 13px 0 0;
 }
 
 .chatbot-title {
-    -fx-text-fill: white;
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
-    -fx-font-size: 14px;
+    -fx-text-fill: white;
 }
 
 .chatbot-close-button {
@@ -391,16 +392,25 @@
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-cursor: hand;
-    -fx-padding: 2 8;
 }
 
-.chatbot-close-button:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.2);
-    -fx-background-radius: 100;
+.chatbot-icon-button {
+    -fx-background-color: #95E1D3;
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+    -fx-padding: 8px 15px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
+.chatbot-icon-button:hover {
+    -fx-background-color: #7fd1c0;
 }
 
 .chatbot-content-area {
-    -fx-background-color: white;
+    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 0 0 13px 13px;
 }
 
 .chatbot-messages-scroll {
