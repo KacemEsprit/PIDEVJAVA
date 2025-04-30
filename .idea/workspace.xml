@@ -5,27 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc4d44b3-873d-422a-bea4-dd33ed12ab3c" name="Changes" comment="kacems">
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/AdminDashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/AdminDashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PostListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PostListController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PublicationDetailsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PublicationDetailsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/ReportedCommentsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/ReportedCommentsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/CommentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/CommentDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/CommentReportDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/CommentReportDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/LikeDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/LikeDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/PostDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/PostDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/UserDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/jensd/fx/glyphs/fontawesome/FontAwesomeIconView.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/admin-dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/admin-dashboard.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/post-list.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/post-list.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/publication-details.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/publication-details.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/admin-styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/admin-styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/post-list.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/post-list.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/publication-details.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/publication-details.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Application/Main.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/DashboardController.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/LoginController$1.class" beforeDir="false" />
@@ -86,6 +67,13 @@
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -106,16 +94,18 @@
     "Maven.Nova [clean].executor": "Run",
     "Maven.Nova [install:install-file].executor": "Run",
     "Maven.Nova [install].executor": "Run",
+    "Maven.Nova [org.apache.maven.plugins:maven-clean-plugin:2.5:clean].executor": "Run",
     "Maven.Nova [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
     "Maven.Nova [org.apache.maven.plugins:maven-install-plugin:3.1.2:install-file].executor": "Run",
     "Maven.Nova [org.apache.maven.plugins:maven-install-plugin:3.1.2:install].executor": "Run",
     "Maven.Nova [org.apache.maven.plugins:maven-jar-plugin:3.4.1:jar].executor": "Run",
+    "Maven.oncokidscare [org.apache.maven.plugins:maven-install-plugin:2.4:install].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "rania",
+    "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/PIDEVJAVA/src/main/java/com/pfe/nova/Controller/configuration",
+    "last_opened_file_path": "D:/test/PIDEVJAVA",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -293,6 +283,7 @@
       <workItem from="1745778433601" duration="18742000" />
       <workItem from="1745844069446" duration="2000" />
       <workItem from="1745879585426" duration="20239000" />
+      <workItem from="1746051663637" duration="320000" />
     </task>
     <task id="LOCAL-00001" summary="crud">
       <option name="closed" value="true" />
