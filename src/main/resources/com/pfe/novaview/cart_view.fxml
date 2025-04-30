@@ -37,9 +37,7 @@
     
     <HBox spacing="10" alignment="CENTER">
         <Button text="Annuler ❌" onAction="#handleCancelOrder" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-padding: 10 20;"/>
-        <Button text="Mes Commandes" onAction="#handleViewCart"
-                style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-size: 14px;"
-                prefWidth="150"/>
+
         <Button text="Commander 🛒" onAction="#handleCheckout"
                 style="-fx-background-color:rgb(5, 142, 234); -fx-text-fill: white; -fx-font-size: 14px;"
                 prefWidth="150"/>

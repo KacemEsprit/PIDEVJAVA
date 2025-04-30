@@ -38,47 +38,106 @@ public class CommentDAO {
         }
     }
 
-    public static List<Comment> findByPostId(int postId) throws SQLException {
-        List<Comment> comments = new ArrayList<>();
-        String sql = "SELECT c.*, u.nom FROM comment c " +
-                    "LEFT JOIN user u ON c.user_id = u.id " +
-                    "WHERE c.publication_id = ? " +
-                    "ORDER BY c.created_at DESC";
+
+    public static void updateReportStatus(int commentId, boolean reported, String reason) throws SQLException {
+        String sql = "UPDATE comment SET reported = ?, report_reason = ? WHERE id = ?";
         
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            stmt.setInt(1, postId);
-            ResultSet rs = stmt.executeQuery();
+
+            System.out.println("Executing SQL: " + sql);
+            System.out.println("Parameters: reported=" + reported + ", reason=" + reason + ", commentId=" + commentId);
             
-            while (rs.next()) {
-                Comment comment = new Comment();
-                comment.setId(rs.getInt("id"));
-                comment.setUserId(rs.getInt("user_id"));
-                comment.setPublicationId(rs.getInt("publication_id"));
-                comment.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-                comment.setContenuCom(rs.getString("contenu_com"));
-                comment.setType(rs.getString("type"));
-                
-                User user = new User();
-                user.setId(rs.getInt("user_id"));
-                user.setNom(rs.getString("nom"));
-                comment.setUser(user);
-                
-                comments.add(comment);
+            pstmt.setBoolean(1, reported);
+            pstmt.setString(2, reason);
+            pstmt.setInt(3, commentId);
+            
+            int rowsAffected = pstmt.executeUpdate();
+            System.out.println("Rows affected: " + rowsAffected);
+        } catch (SQLException e) {
+            System.err.println("SQL Error in updateReportStatus: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
+    public static List<Comment> findByPostId(int postId) throws SQLException {
+        List<Comment> comments = new ArrayList<>();
+        String sql = "SELECT c.*, u.nom, u.prenom FROM comment c JOIN user u ON c.user_id = u.id WHERE c.publication_id = ? ORDER BY c.created_at DESC";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, postId);
+            
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Comment comment = new Comment();
+                    comment.setId(rs.getInt("id"));
+                    comment.setUserId(rs.getInt("user_id"));
+                    comment.setPublicationId(rs.getInt("publication_id"));
+                    comment.setContenuCom(rs.getString("contenu_com"));
+                    comment.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    comment.setReported(rs.getBoolean("reported"));
+                    comment.setReportReason(rs.getString("report_reason"));
+                    
+                    User user = new User();
+                    user.setId(rs.getInt("user_id"));
+                    user.setNom(rs.getString("nom"));
+                    user.setPrenom(rs.getString("prenom"));
+                    comment.setUser(user);
+                    
+                    comments.add(comment);
+                }
             }
         }
+        
         return comments;
     }
 
-    public static void delete(int id) throws SQLException {
-        String sql = "DELETE FROM comment WHERE id = ?";
-        
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+    public static void delete(int commentId) throws SQLException {
+        Connection conn = null;
+        try {
+            conn = DatabaseConnection.getConnection();
+            conn.setAutoCommit(false);
             
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
+
+            String deleteReportsSQL = "DELETE FROM comment_report WHERE comment_id = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(deleteReportsSQL)) {
+                stmt.setInt(1, commentId);
+                stmt.executeUpdate();
+            }
+            
+
+            String deleteCommentSQL = "DELETE FROM comment WHERE id = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(deleteCommentSQL)) {
+                stmt.setInt(1, commentId);
+                stmt.executeUpdate();
+            }
+            
+            conn.commit();
+        } catch (SQLException e) {
+
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            throw e;
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

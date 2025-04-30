@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
+
+<VBox spacing="20" style="-fx-background-color: white; -fx-padding: 20;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pfe.nova.Controller.StatisticsController">
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="User Statistics" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
+    </HBox>
+    
+    <GridPane hgap="20" vgap="20">
+        <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="stat-card">
+            <Label fx:id="totalUsersLabel" style="-fx-font-size: 32; -fx-font-weight: bold;"/>
+            <Label text="Total Users" style="-fx-font-size: 14;"/>
+        </VBox>
+    </GridPane>
+    
+    <PieChart fx:id="userRoleChart" title="User Distribution by Role"/>
+</VBox>

@@ -2,159 +2,89 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.geometry.Insets?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.pfe.nova.Controller.DashboardController"
-            prefWidth="800.0" prefHeight="600.0">
+            style="-fx-background-color: #f5f6fa;">
 
+    <!-- Top Header Bar -->
     <top>
-        <HBox alignment="CENTER_RIGHT" spacing="10.0" style="-fx-padding: 10; -fx-background-color: #3498db;">
-            <children>
-                <Label fx:id="welcomeLabel" style="-fx-text-fill: white; -fx-font-size: 16px;"/>
-                <Button text="Logout" fx:id="logoutButton" onAction="#handleLogout"
-                        style="-fx-background-color: #e74c3c;"/>
-            </children>
-        </HBox>
+        <VBox>
+            <!-- Main Navbar -->
+            <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-background-color: #3498db; -fx-padding: 15;">
+                <Label text="OncoKidsCare" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button text="Mes Commandes" onAction="#handleViewCart"
+                        style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-size: 14px;"
+                        prefWidth="150"/>
+                <Button fx:id="profileButton" text="Profile" onAction="#showProfile"
+                        style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold;
+                               -fx-background-radius: 5; -fx-padding: 10 15; -fx-cursor: hand;
+                               -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);"/>
+                <Button fx:id="logoutButton" text="Logout" onAction="#handleLogout"
+                        style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;
+                               -fx-background-radius: 5; -fx-padding: 10 15; -fx-cursor: hand;
+                               -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);"/>
+            </HBox>
+
+            <!-- Secondary Navigation Bar -->
+            <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #2980b9; -fx-padding: 10;">
+                <Button fx:id="createRapportNavBtn" text="Create Report" onAction="#handleCreateRapport"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;
+                               -fx-background-radius: 5; -fx-padding: 5 10; -fx-cursor: hand;
+                               -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;"/>
+                <Button fx:id="viewRapportsNavBtn" text="View Reports" onAction="#handleViewRapports"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;
+                               -fx-background-radius: 5; -fx-padding: 5 10; -fx-cursor: hand;
+                               -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;"/>
+                <Button fx:id="communityPostsNavBtn" text="Community Posts" onAction="#navigateToPostList"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;
+                               -fx-background-radius: 5; -fx-padding: 5 10; -fx-cursor: hand;
+                               -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;"/>
+                <Button fx:id="appointmentsNavBtn" text="Appointments"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;
+                               -fx-background-radius: 5; -fx-padding: 5 10; -fx-cursor: hand;
+                               -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;"/>
+                <Button fx:id="pharmacieNavBtn" text="Pharmacie" onAction="#handleOrder"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;
+                               -fx-background-radius: 5; -fx-padding: 5 10; -fx-cursor: hand;
+                               -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;"/>
+
+
+            </HBox>
+        </VBox>
     </top>
 
+    <!-- Main Content -->
     <center>
-        <TabPane fx:id="contentTabPane">
-            <tabs>
+        <VBox spacing="20" style="-fx-padding: 20;">
+            <!-- Welcome Section -->
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <ImageView fx:id="profileImage" fitHeight="80" fitWidth="80" preserveRatio="true"
+                           style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);"/>
+                <VBox spacing="5">
+                    <Label fx:id="welcomeLabel" text="Welcome, User"
+                           style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+                    <Label fx:id="sessionTestLabel" style="-fx-font-size: 12; -fx-text-fill: #7f8c8d;"/>
+                </VBox>
+            </HBox>
 
-                <!-- Profile Tab -->
-                <Tab text="Profile" closable="false">
-                    <VBox fx:id="profileContent" spacing="10.0" style="-fx-padding: 20;">
-                        <children>
-                            <Label fx:id="nameLabel" style="-fx-font-size: 14px;"/>
-                            <Label fx:id="emailLabel" style="-fx-font-size: 14px;"/>
-                            <Label fx:id="phoneLabel" style="-fx-font-size: 14px;"/>
-                            <Label fx:id="addressLabel" style="-fx-font-size: 14px;"/>
-                            <VBox fx:id="roleSpecificContent" spacing="10.0"/>
-                            <Label fx:id="sessionTestLabel" style="-fx-font-size: 14px; -fx-text-fill: green;"/>
-                            <Button text="Create Rapport" fx:id="createRapportButton" onAction="#handleCreateRapport"
-                                    style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
-                            <Button text="View Rapports" fx:id="viewRapportsButton" onAction="#handleViewRapports"
-                                    style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
-                            
-                        </children>
-                    </VBox>
-                </Tab>
+            <!-- User Info Box -->
+            <VBox fx:id="userInfoBox" spacing="10" style="-fx-background-color: white; -fx-background-radius: 10;
+                                                          -fx-padding: 15; -fx-spacing: 10;
+                                                          -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+                <Label fx:id="nameLabel" style="-fx-font-size: 16;"/>
+                <Label fx:id="emailLabel" style="-fx-font-size: 14;"/>
+                <Label fx:id="phoneLabel" style="-fx-font-size: 14;"/>
+                <Label fx:id="addressLabel" style="-fx-font-size: 14;"/>
+                <VBox fx:id="roleSpecificContent" spacing="10"/>
+            </VBox>
 
-                <!-- Patients Tab -->
-                <Tab text="Patients List" fx:id="patientsTab" disable="false">
-                    <VBox spacing="10.0" style="-fx-padding: 20;">
-                        <children>
-                            <TableView fx:id="patientsTable" VBox.vgrow="ALWAYS">
-                                <columns>
-                                    <TableColumn fx:id="patientNameColumn" text="Name"/>
-                                    <TableColumn fx:id="patientEmailColumn" text="Email"/>
-                                    <TableColumn fx:id="patientAgeColumn" text="Age"/>
-                                    <TableColumn fx:id="patientGenderColumn" text="Gender"/>
-                                    <TableColumn fx:id="patientBloodTypeColumn" text="Blood Type"/>
-                                </columns>
-                            </TableView>
-                        </children>
-                    </VBox>
-                </Tab>
-
-                <!-- Find Doctors -->
-                <Tab text="Find Doctors" fx:id="findDoctorsTab" disable="true">
-                    <VBox spacing="10.0" style="-fx-padding: 20;">
-                        <children>
-                            <TableView fx:id="doctorsTable" VBox.vgrow="ALWAYS">
-                                <columns>
-                                    <TableColumn fx:id="doctorNameColumn" text="Name"/>
-                                    <TableColumn fx:id="specialityColumn" text="Speciality"/>
-                                    <TableColumn fx:id="experienceColumn" text="Experience"/>
-                                    <TableColumn fx:id="contactColumn" text="Contact"/>
-                                </columns>
-                            </TableView>
-                        </children>
-                    </VBox>
-                </Tab>
-
-                <!-- Appointments -->
-                <Tab text="Appointments" fx:id="appointmentsTab" disable="true">
-                    <VBox spacing="10.0" style="-fx-padding: 20;">
-                        <children>
-                            <HBox spacing="10.0" alignment="CENTER_LEFT">
-                                <children>
-                                    <Button text="New Appointment" fx:id="newAppointmentButton"
-                                            style="-fx-background-color: #2ecc71;"/>
-                                </children>
-                            </HBox>
-                            <TableView fx:id="appointmentsTable" VBox.vgrow="ALWAYS">
-                                <columns>
-                                    <TableColumn fx:id="appointmentDateColumn" text="Date"/>
-                                    <TableColumn fx:id="appointmentTimeColumn" text="Time"/>
-                                    <TableColumn fx:id="appointmentWithColumn" text="With"/>
-                                    <TableColumn fx:id="appointmentStatusColumn" text="Status"/>
-                                </columns>
-                            </TableView>
-                        </children>
-                    </VBox>
-                </Tab>
-
-                <!-- Donations -->
-                <Tab text="My Donations" fx:id="donationsTab" disable="true">
-                    <VBox spacing="10.0" style="-fx-padding: 20;">
-                        <children>
-                            <HBox spacing="10.0" alignment="CENTER_LEFT">
-                                <children>
-                                    <Button text="New Donation" fx:id="newDonationButton"
-                                            style="-fx-background-color: #2ecc71;"/>
-                                </children>
-                            </HBox>
-                            <TableView fx:id="donationsTable" VBox.vgrow="ALWAYS">
-                                <columns>
-                                    <TableColumn fx:id="donationDateColumn" text="Date"/>
-                                    <TableColumn fx:id="donationTypeColumn" text="Type"/>
-                                    <TableColumn fx:id="donationAmountColumn" text="Amount"/>
-                                    <TableColumn fx:id="donationStatusColumn" text="Status"/>
-                                </columns>
-                            </TableView>
-                        </children>
-                    </VBox>
-                </Tab>
-
-                <!-- Rapports -->
-                <Tab text="Create Rapport" fx:id="createRapportTab" disable="true">
-                    <fx:include source="CreateRapport.fxml"/>
-                </Tab>
-
-                <Tab text="View Rapports" fx:id="viewRapportTab" disable="true">
-                    <fx:include source="ViewRapports.fxml"/>
-                </Tab>
-                <!-- order -->
-
-                <Tab text="Pharmacie" fx:id="orderTab" disable="false">
-                    <VBox spacing="10.0" style="-fx-padding: 20;">
-                        <children>
-                            
-                            <fx:include source="order_management.fxml"/>
-                        </children>
-                    </VBox>
-                </Tab>
-                <!-- Admin -->
-                <Tab text="Administration" fx:id="adminTab" disable="true">
-                    <VBox spacing="10.0" style="-fx-padding: 20;">
-                        <children>
-                            <TableView fx:id="usersTable" VBox.vgrow="ALWAYS">
-                                <columns>
-                                    <TableColumn fx:id="userNameColumn" text="Name"/>
-                                    <TableColumn fx:id="userEmailColumn" text="Email"/>
-                                    <TableColumn fx:id="userRoleColumn" text="Role"/>
-                                    <TableColumn fx:id="userStatusColumn" text="Status"/>
-                                </columns>
-                            </TableView>
-                        </children>
-                    </VBox>
-                </Tab>
-
-            </tabs>
-        </TabPane>
+            <StackPane fx:id="contentArea"/>
+        </VBox>
     </center>
 </BorderPane>

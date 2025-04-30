@@ -7,12 +7,12 @@ public class Medecin extends User {
 
     public Medecin() {
         super();
-        setRole("MEDECIN");
+        setRole("ROLE_MEDECIN");
     }
 
     public Medecin(int id, String nom, String prenom, String email, String tel, String adresse, 
                    String password, String picture, String specialite, String experience, String diplome) {
-        super(id, nom, prenom, email, tel, adresse, password, picture, "MEDECIN");
+        super(id, nom, prenom, email, tel, adresse, password, picture, "ROLE_MEDECIN");
         this.specialite = specialite;
         this.experience = experience;
         this.diplome = diplome;

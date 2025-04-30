@@ -6,6 +6,7 @@ import com.pfe.nova.configuration.PostDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import java.io.File;
 import java.util.ArrayList;
@@ -23,13 +24,65 @@ public class PostFormController {
     @FXML private FlowPane imagePreviewPane;
     @FXML private Label errorLabel;
 
+    // Remove the hardcoded user ID constant if it exists
+    // private static final int DEFAULT_USER_ID = 2;
+    
+    // Add a field for the current user
+    private User currentUser;
+
     private List<String> selectedImagePaths = new ArrayList<>();
     private Post editingPost = null;
+
+    // Add this method to set the current user
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
 
     @FXML
     public void initialize() {
         setupCategoryComboBox();
         setupImageButton();
+        
+        // Add character limit to content area
+        setupContentAreaWithLimit();
+    }
+
+    private void setupContentAreaWithLimit() {
+      
+        final int MAX_CHARS = 500;
+        
+        // Add a label to show character count
+        Label charCountLabel = new Label("0/" + MAX_CHARS);
+        charCountLabel.setStyle("-fx-text-fill: #757575;");
+        
+        // Add the label below the content area
+        if (contentArea.getParent() instanceof VBox) {
+            VBox parent = (VBox) contentArea.getParent();
+            int index = parent.getChildren().indexOf(contentArea);
+            parent.getChildren().add(index + 1, charCountLabel);
+        }
+        
+        // Add listener to update character count and limit input
+        contentArea.textProperty().addListener((observable, oldValue, newValue) -> {
+            int currentLength = newValue.length();
+            
+            // Update the character count label
+            charCountLabel.setText(currentLength + "/" + MAX_CHARS);
+            
+            // Change color when approaching the limit
+            if (currentLength > MAX_CHARS * 0.8) {
+                charCountLabel.setStyle("-fx-text-fill: #e67e22;"); // Orange when approaching limit
+            } else {
+                charCountLabel.setStyle("-fx-text-fill: #757575;"); // Default color
+            }
+            
+            // Truncate text if it exceeds the limit
+            if (currentLength > MAX_CHARS) {
+                contentArea.setText(newValue.substring(0, MAX_CHARS));
+                charCountLabel.setText(MAX_CHARS + "/" + MAX_CHARS);
+                charCountLabel.setStyle("-fx-text-fill: #e74c3c;"); // Red when at limit
+            }
+        });
     }
 
     private void setupCategoryComboBox() {
@@ -92,17 +145,32 @@ public class PostFormController {
     // In your method where you save the post and its images
     private void savePost() {
         try {
+            // Validate that we have a current user
+            if (currentUser == null) {
+                errorLabel.setText("Error: No user logged in");
+                errorLabel.setVisible(true);
+                return;
+            }
+            
             // Create and set up the post object
             Post post = (editingPost != null) ? editingPost : new Post();
             post.setContent(contentArea.getText());
             post.setCategory(categoryComboBox.getValue());
             post.setAnonymous(anonymousCheckBox.isSelected());
             
+            // Use the current user instead of hardcoded ID
+            if (editingPost == null) {
+                post.setUser(currentUser);
+            }
+            
+            // Remove this block that uses DEFAULT_USER_ID
+            /*
             if (editingPost == null) {
                 User tempUser = new User();
-                tempUser.setId(4); // Replace with actual logged-in user ID
+                tempUser.setId(DEFAULT_USER_ID); // Use the constant defined above
                 post.setUser(tempUser);
             }
+            */
             
             // Upload images and get their URLs
             List<String> imageUrls = new ArrayList<>();
@@ -125,6 +193,4 @@ public class PostFormController {
             errorLabel.setVisible(true);
         }
     }
-    
-    // Delete all these duplicate declarations below
 }

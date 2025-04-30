@@ -10,13 +10,13 @@ public class Main extends Application {
     
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/main-view.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/login.fxml"));
         Scene scene = new Scene(root);
         
         // Add the modern stylesheet
         scene.getStylesheets().add(getClass().getResource("/com/pfe/novaview/modern-style.css").toExternalForm());
         
-        primaryStage.setTitle("OncoKidsCare");
+        primaryStage.setTitle("OncoKidsCare - Login");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

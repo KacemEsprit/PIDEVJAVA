@@ -19,7 +19,7 @@
    <children>
       <BorderPane prefHeight="600.0" prefWidth="800.0">
          <top>
-            <AnchorPane prefHeight="70.0" styleClass="top-form" style="-fx-background-color: #1a237e;">
+            <AnchorPane prefHeight="70.0" styleClass="top-form" style="-fx-background-color: #95E1D3;">
                <children>
                   <Label layoutX="25.0" layoutY="15.0" text="Create New Post" textFill="WHITE">
                      <font>
@@ -41,7 +41,7 @@
                            </font>
                         </Label>
                         
-                        <Label text="Content" textFill="#1a237e">
+                        <Label text="Content" textFill="#95E1D3">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -52,7 +52,7 @@
                            <children>
                               <VBox spacing="10.0" prefWidth="350.0">
                                  <children>
-                                    <Label text="Category" textFill="#1a237e">
+                                    <Label text="Category" textFill="#95E1D3">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
@@ -63,7 +63,7 @@
                               
                               <VBox spacing="10.0" prefWidth="350.0">
                                  <children>
-                                    <Label text="Privacy" textFill="#1a237e">
+                                    <Label text="Privacy" textFill="#95E1D3">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
@@ -80,7 +80,7 @@
                         
                         <Line endX="650.0" startX="-100.0" stroke="#e0e0e0" />
                         
-                        <Label text="Add Images (Optional)" textFill="#1a237e">
+                        <Label text="Add Images (Optional)" textFill="#95E1D3">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -88,7 +88,7 @@
                         
                         <HBox spacing="15.0" alignment="CENTER_LEFT">
                            <children>
-                              <Button fx:id="addImagesButton" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #3949ab; -fx-text-fill: white; -fx-background-radius: 5;" text="Choose Images" />
+                              <Button fx:id="addImagesButton" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #95E1D3; -fx-text-fill: white; -fx-background-radius: 5;" text="Choose Images" />
                               <Label fx:id="imageCountLabel" text="0/5 images" textFill="#757575">
                                  <font>
                                     <Font size="14.0" />
@@ -108,7 +108,7 @@
                         <HBox alignment="CENTER_RIGHT" spacing="15.0">
                            <children>
                               <Button onAction="#handleCancel" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: #e0e0e0; -fx-text-fill: #424242; -fx-background-radius: 5;" text="Cancel" />
-                              <Button onAction="#handleSave" defaultButton="true" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: #1a237e; -fx-text-fill: white; -fx-background-radius: 5;" text="Publish" />
+                              <Button onAction="#handleSave" defaultButton="true" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: #95E1D3; -fx-text-fill: white; -fx-background-radius: 5;" text="Publish" />
                            </children>
                         </HBox>
                      </children>

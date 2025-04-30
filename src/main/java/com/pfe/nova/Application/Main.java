@@ -1,6 +1,7 @@
 package com.pfe.nova.Application;
 
 import com.pfe.nova.configuration.DatabaseConnection;
+import com.pfe.nova.Controller.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,11 +17,20 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         testDatabaseConnection();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/login.fxml"));
-        primaryStage.setTitle("Posts");
-        primaryStage.setScene(new Scene(root, 800, 600));
+        // Load the FXML file
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/login.fxml"));
+        Parent root = loader.load();
+        
+        // Get the controller and pass HostServices
+        LoginController controller = loader.getController();
+        controller.setHostServices(getHostServices());
+        
+        // Set up the stage
+        primaryStage.setTitle("Login");
+        primaryStage.setScene(new Scene(root, 1200, 800));
         primaryStage.show();
     }
+    
     private void testDatabaseConnection() {
         try (Connection connection = DatabaseConnection.getConnection()) {
             if (connection != null) {
@@ -32,6 +42,7 @@ public class Main extends Application {
             System.out.println("SQL Exception: " + e.getMessage());
         }
     }
+    
     public static void main(String[] args) {
         launch(args);
     }

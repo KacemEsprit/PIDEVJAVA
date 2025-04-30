@@ -15,7 +15,7 @@
 }
 
 .comment-field:focused {
-    -fx-border-color: #0984e3;
+    -fx-border-color: #95E1D3;
     -fx-border-width: 2px;
 }
 

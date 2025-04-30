@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.pfe.nova.Controller.CodeEntryController"
+      alignment="CENTER"
+      spacing="20"
+      styleClass="login-container">
+
+    <stylesheets>
+        <URL value="@styles/admin-styles.css" />
+    </stylesheets>
+
+    <VBox styleClass="login-card" spacing="20">
+        <Label text="Enter Verification Code" styleClass="login-title"/>
+        <Label text="Please enter the code sent to your email." styleClass="login-subtitle"/>
+
+        <TextField fx:id="codeField"
+                  promptText="Verification Code"
+                  styleClass="login-field"
+                  prefWidth="300"
+                  prefHeight="40"/>
+
+        <Button text="Verify"
+                fx:id="verifyButton"
+                onAction="#handleVerify"
+                styleClass="login-button"
+                prefWidth="300"
+                prefHeight="40"/>
+
+        <Label fx:id="infoLabel"
+               styleClass="error-label"
+               visible="false"/>
+    </VBox>
+</VBox>

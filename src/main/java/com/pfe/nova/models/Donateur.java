@@ -5,12 +5,12 @@ public class Donateur extends User {
 
     public Donateur() {
         super();
-        setRole("DONATEUR");
+        setRole("ROLE_DONATEUR");
     }
 
     public Donateur(int id, String nom, String prenom, String email, String tel, String adresse,
                    String password, String picture, String donateurType) {
-        super(id, nom, prenom, email, tel, adresse, password, picture, "DONATEUR");
+        super(id, nom, prenom, email, tel, adresse, password, picture, "ROLE_DONATEUR");
         this.donateurType = donateurType;
     }
 
@@ -21,4 +21,4 @@ public class Donateur extends User {
     public void setDonateurType(String donateurType) {
         this.donateurType = donateurType;
     }
-}  
+}

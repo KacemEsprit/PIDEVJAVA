@@ -2,6 +2,7 @@ package com.pfe.nova.Controller;
 import java.awt.Desktop;
 import com.pfe.nova.configuration.MedicationDAO;
 import com.pfe.nova.models.Medication;
+import javafx.animation.ScaleTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,17 +14,21 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
+import javafx.util.Duration;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -141,8 +146,32 @@ public class MedicationController {
         card.getChildren().addAll(imageView, nameLabel, descriptionText, priceLabel, quantityLabel, buttonsBox);
         
         card.setOnMouseClicked(e -> selectMedication(medication));
-        
+
+        card.setOnMouseEntered(e -> {
+            ScaleTransition st = new ScaleTransition(Duration.millis(200), card);
+            st.setToX(1.05);
+            st.setToY(1.05);
+            st.play();
+        });
+
+        card.setOnMouseExited(e -> {
+            ScaleTransition st = new ScaleTransition(Duration.millis(200), card);
+            st.setToX(1.0);
+            st.setToY(1.0);
+            st.play();
+        });
+        DropShadow shadow = new DropShadow();
+        shadow.setColor(Color.web("#aaaaaa"));
+        card.setOnMouseEntered(e -> {
+            card.setEffect(shadow);
+        });
+        card.setOnMouseExited(e -> {
+            card.setEffect(null);
+        });
         return card;
+
+
+
     }
     
     private void selectMedication(Medication medication) {

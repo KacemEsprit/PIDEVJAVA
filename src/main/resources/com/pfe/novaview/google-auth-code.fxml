@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.pfe.nova.Controller.GoogleAuthCodeController"
+      alignment="CENTER"
+      spacing="15"
+      style="-fx-background-color: white; -fx-padding: 20;">
+    
+    <Label text="Google Authentication" 
+           style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #4285F4;"/>
+    
+    <Label text="Please enter the authentication code from Google" 
+           style="-fx-font-size: 14; -fx-text-fill: #5f6368; -fx-wrap-text: true; -fx-text-alignment: center;"
+           maxWidth="300"/>
+    
+    <TextField fx:id="codeField" 
+               promptText="Enter code here"
+               prefWidth="250"
+               prefHeight="35"
+               style="-fx-background-radius: 5; -fx-border-color: #dadce0; -fx-border-radius: 5;"/>
+    
+    <Label fx:id="infoLabel" 
+           visible="false"
+           style="-fx-text-fill: red; -fx-font-size: 12;"
+           maxWidth="300"
+           wrapText="true"/>
+    
+    <Button fx:id="verifyButton" 
+            text="Verify" 
+            onAction="#handleVerify"
+            prefWidth="250"
+            prefHeight="35"
+            style="-fx-background-color: #4285F4; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;"/>
+    
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+</VBox>

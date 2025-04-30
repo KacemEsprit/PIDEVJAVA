@@ -21,7 +21,7 @@
             <HBox alignment="CENTER" spacing="20">
                 <Region HBox.hgrow="ALWAYS" />
                 
-                <Label text="Gerer Médicaments" 
+                <Label text=" 💊Gerer Médicaments"
                        style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #212529;" />
 
                 <Region HBox.hgrow="ALWAYS" />

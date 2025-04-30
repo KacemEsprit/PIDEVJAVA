@@ -3,55 +3,98 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import java.net.URL?>
 
 <VBox xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.pfe.nova.Controller.SignupController"
       alignment="CENTER"
       spacing="20"
-      style="-fx-padding: 20;">
+      styleClass="signup-container">
 
-    <ComboBox fx:id="roleComboBox" 
-              promptText="Select Role"
-              style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+    <stylesheets>
+        <URL value="@styles/admin-styles.css" />
+    </stylesheets>
 
-    <TextField fx:id="nomField"
-               promptText="Nom"
-               style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+    <VBox styleClass="signup-card" spacing="15">
+        <Label text="Create Account" styleClass="signup-title"/>
+        <Label text="Fill in your information" styleClass="signup-subtitle"/>
 
-    <TextField fx:id="prenomField"
-               promptText="Prenom"
-               style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+        <ComboBox fx:id="roleComboBox" 
+                  promptText="Select Role"
+                  styleClass="signup-field"
+                  prefWidth="300"
+                  prefHeight="40"/>
 
-    <TextField fx:id="emailField"
-               promptText="Email"
-               style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+        <TextField fx:id="nomField"
+                  promptText="Nom"
+                  styleClass="signup-field"
+                  prefWidth="300"
+                  prefHeight="40"/>
 
-    <TextField fx:id="telField"
-               promptText="Telephone"
-               style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+        <TextField fx:id="prenomField"
+                  promptText="Prenom"
+                  styleClass="signup-field"
+                  prefWidth="300"
+                  prefHeight="40"/>
 
-    <TextField fx:id="adresseField"
-               promptText="Adresse"
-               style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+        <TextField fx:id="emailField"
+                  promptText="Email"
+                  styleClass="signup-field"
+                  prefWidth="300"
+                  prefHeight="40"/>
 
-    <PasswordField fx:id="passwordField"
-                   promptText="Password"
-                   style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+        <TextField fx:id="telField"
+                  promptText="Telephone"
+                  styleClass="signup-field"
+                  prefWidth="300"
+                  prefHeight="40"/>
 
-    <PasswordField fx:id="confirmPasswordField"
-                   promptText="Confirm Password"
-                   style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+        <TextField fx:id="adresseField"
+                  promptText="Adresse"
+                  styleClass="signup-field"
+                  prefWidth="300"
+                  prefHeight="40"/>
 
-    <!-- Dynamic fields container -->
-    <VBox fx:id="dynamicFieldsContainer" spacing="10"/>
+        <PasswordField fx:id="passwordField"
+                      promptText="Password"
+                      styleClass="signup-field"
+                      prefWidth="300"
+                      prefHeight="40"/>
 
-    <Button text="Sign Up"
-            fx:id="signupButton"
-            onAction="#handleSignup"
-            style="-fx-pref-width: 300px; -fx-pref-height: 40px"/>
+        <PasswordField fx:id="confirmPasswordField"
+                      promptText="Confirm Password"
+                      styleClass="signup-field"
+                      prefWidth="300"
+                      prefHeight="40"/>
 
-    <Label fx:id="errorLabel"
-           style="-fx-text-fill: #e74c3c; -fx-font-size: 15px;"
-           visible="false"/>
+        <VBox fx:id="dynamicFieldsContainer" spacing="10"/>
+
+        <Button text="Sign Up"
+                fx:id="signupButton"
+                onAction="#handleSignup"
+                styleClass="signup-button"
+                prefWidth="300"
+                prefHeight="40"/>
+                
+        <HBox alignment="CENTER" spacing="10">
+            <Label text="Or" styleClass="divider-text"/>
+        </HBox>
+        
+        <Button text="Sign up with Google"
+                fx:id="googleSignupButton"
+                onAction="#handleGoogleSignup"
+                styleClass="google-signup-button"
+                prefWidth="300"
+                prefHeight="40"/>
+
+        <Label fx:id="errorLabel"
+               styleClass="error-label"
+               visible="false"/>
+
+        <HBox alignment="CENTER" spacing="5">
+            <Label text="Already have an account?" styleClass="text-muted"/>
+            <Hyperlink text="Sign in" onAction="#navigateToLogin" styleClass="login-link"/>
+        </HBox>
+    </VBox>
 </VBox>

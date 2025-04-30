@@ -4,16 +4,88 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc4d44b3-873d-422a-bea4-dd33ed12ab3c" name="Changes" comment="rania 14/04">
+    <list default="true" id="cc4d44b3-873d-422a-bea4-dd33ed12ab3c" name="Changes" comment="kacems">
+      <change afterPath="$PROJECT_DIR$/bash.exe.stackdump" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/CodeEntryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/ForgotPasswordController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/GoogleAuthCodeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/ProfileController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/ReportedCommentsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/ResetPasswordController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/StatisticsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/test.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/CommentReportDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/Session.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/models/CommentReport.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/models/GoogleUserInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/models/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/utils/EmailSender.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/code-entry.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/forgot-password.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/google-auth-code.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/profile.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/rapport_form.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/reported-comments.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/reset-password.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/statistics.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/admin-styles.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/uploads/profiles/1745265012749_sddefault (1).jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/uploads/profiles/1745265448629_ep-7-woods-acklesism2-1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/uploads/profiles/1745265493159_Saul.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/uploads/profiles/1745274088361_WORLDCUPFINAL-slide-P0F2-superJumbo.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/uploads/profiles/1745274128123_Saul.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/uploads/profiles/1745526863428_23b37a4v1n7e1.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/uploads/profiles/1745526919722_sddefault.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/uploads/profiles/1745526944656_Saul.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/uploads/profiles/1745527571151_Saul.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/uploads/profiles/1745527614089_images (1).jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/uploads/profiles/1745527821782_481235417_1937191953474852_8011912341416122632_n.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/uploads/profiles/1745527965574_images (1).jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/uploads/profiles/1745529468261_Saul.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/uploads/profiles/1745866625442_159043721_1009345676259489_4032659972770470195_n.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Application/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Application/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/AdminDashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/AdminDashboardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/CartController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/DashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/HelloApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/DatabaseConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/DatabaseConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/EditUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/EditUserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/MedicationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/MedicationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PostFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PostFormController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PostListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PostListController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/SignupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/SignupController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/CommentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/CommentDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/LikeDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/LikeDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/PostDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/PostDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/configuration/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/models/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/models/Comment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/models/Donateur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/models/Donateur.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/models/Medecin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/models/Medecin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/models/Patient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/models/Patient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/models/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/models/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/models/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/utils/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/utils/Session.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/admin-dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/admin-dashboard.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/cart_view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/cart_view.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/dashboard.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/edituser.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/edituser.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/login.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/medication_management.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/medication_management.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/order_management.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/order_management.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/post-form.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/post-form.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/post-list.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/post-list.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/signup.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/signup.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/post-list.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/post-list.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/publication-details.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/publication-details.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/styles/post-list.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/styles/post-list.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/styles/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/styles/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Application/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/Application/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/DashboardController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/DashboardController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/LoginController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/LoginController$1.class" afterDir="false" />
@@ -21,9 +93,13 @@
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/SignupController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/SignupController$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/SignupController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/SignupController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/HelloApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/HelloApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/HelloController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/HelloController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/configuration/DatabaseConnection.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/configuration/DatabaseConnection.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/configuration/UserDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/configuration/UserDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/models/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/models/User.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/novaview/dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/novaview/dashboard.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/novaview/login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/novaview/login.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/novaview/signup.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/novaview/signup.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,8 +110,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="FxmlFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -48,34 +124,31 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
-    &quot;history&quot;: [
+  &quot;history&quot;: [
     {
+      &quot;state&quot;: &quot;OPEN&quot;,
+      &quot;assignee&quot;: &quot;KacemEsprit&quot;
+    }
+  ],
+  &quot;lastFilter&quot;: {
     &quot;state&quot;: &quot;OPEN&quot;,
     &quot;assignee&quot;: &quot;KacemEsprit&quot;
-    }
-    ],
-    &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;KacemEsprit&quot;
-    }
-    }</component>
+  }
+}</component>
   <component name="GithubPullRequestsUISettings">{
-    &quot;selectedUrlAndAccountId&quot;: {
+  &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/KacemEsprit/PIDEVJAVA.git&quot;,
     &quot;accountId&quot;: &quot;1d8d4be7-cea8-4964-b17b-205df7f0b504&quot;
-    }
-    }</component>
+  }
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/PostListController.class" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/target/classes/com/pfe/novaview/publication-details.fxml" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
-    &quot;isMigrated&quot;: true
-    }</component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -87,8 +160,8 @@
     <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
-    &quot;associatedIndex&quot;: 7
-    }</component>
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2vB1IylvRQHIvWUos2Oi7F8fwRl" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -102,18 +175,13 @@
     &quot;Application.HelloApplication.executor&quot;: &quot;Debug&quot;,
     &quot;Application.Main.executor&quot;: &quot;Run&quot;,
     &quot;Application.com.pfe.nova.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.Nova [org.apache.maven.plugins:maven-clean-plugin:2.5:clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.Nova [org.apache.maven.plugins:maven-install-plugin:2.4:help].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.Nova [org.apache.maven.plugins:maven-install-plugin:2.4:install-file].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.Nova [org.apache.maven.plugins:maven-install-plugin:2.4:install].executor&quot;: &quot;Run&quot;,
     &quot;Maven.Nova [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/DELL/OneDrive/Bureau/copieintegration/PIDEVJAVA&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/21693/Documents/PIDEVJAVA/PIDEVJAVA&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -123,7 +191,7 @@
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.JavaFX&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -137,18 +205,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\DELL\OneDrive\Bureau\integrationjava\PIDEVJAVA\src\main\resources\com\pfe\novaview" />
       <recent name="C:\Users\21693\Documents\Esprit\Pidev\Nova\src\main\resources\images" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\GLEsprit3eme\Projet_PI\PIDEVJAVA-rania\PIDEVJAVA\src\main\resources\styles" />
-      <recent name="C:\GLEsprit3eme\Projet_PI\PIDEVJAVA-rania\PIDEVJAVA\src\main\resources\com\pfe\novaview" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.pfe.nova" />
-      <recent name="com.pfe.nova.models" />
-      <recent name="com.pfe.nova.Controller" />
-      <recent name="com.pfe.nova.configuration" />
+      <recent name="C:\Users\DELL\OneDrive\Bureau\copieintegration\PIDEVJAVA\src\main\java" />
+      <recent name="C:\Users\DELL\OneDrive\Bureau\copieintegration\PIDEVJAVA\src\main\java\com\pfe\nova" />
     </key>
   </component>
   <component name="RunManager" selected="Application.Main">
@@ -165,51 +226,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.pfe.nova.HelloApplication" />
-      <module name="Nova" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.pfe.nova.Controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Main" type="Application" factoryName="Application" activateToolWindowBeforeRun="false" temporary="true">
       <option name="MAIN_CLASS_NAME" value="com.pfe.nova.Application.Main" />
       <module name="Nova" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.pfe.nova.Application.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" activateToolWindowBeforeRun="false" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="com.pfe.nova.Application.Main" />
-      <module name="Nova" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.pfe.nova.Application.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="com.pfe.nova.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.pfe.nova.Main" />
-      <module name="Nova" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.pfe.nova.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -279,34 +301,10 @@
       <workItem from="1744664482603" duration="2205000" />
       <workItem from="1744736368258" duration="6778000" />
       <workItem from="1744803474622" duration="3779000" />
-      <workItem from="1744819860950" duration="81000" />
-      <workItem from="1744820001449" duration="1022000" />
-      <workItem from="1744822193989" duration="51000" />
-      <workItem from="1744823732480" duration="841000" />
-      <workItem from="1744830080233" duration="67000" />
-      <workItem from="1744832106522" duration="13000" />
-      <workItem from="1744840732399" duration="1338000" />
-      <workItem from="1744852261457" duration="158000" />
-      <workItem from="1744909108019" duration="91000" />
-      <workItem from="1744909234247" duration="1650000" />
-      <workItem from="1744912776625" duration="4362000" />
-      <workItem from="1744930164610" duration="3887000" />
-      <workItem from="1744971211803" duration="370000" />
-      <workItem from="1744980757673" duration="6861000" />
-      <workItem from="1745100508975" duration="420000" />
-      <workItem from="1745354805978" duration="18000" />
-      <workItem from="1745355365566" duration="580000" />
-      <workItem from="1745367936252" duration="526000" />
-      <workItem from="1745370342152" duration="98000" />
-      <workItem from="1745586801371" duration="1334000" />
-      <workItem from="1745724678822" duration="1433000" />
-      <workItem from="1745728017968" duration="757000" />
-      <workItem from="1745791337887" duration="327000" />
-      <workItem from="1745865572109" duration="756000" />
-      <workItem from="1745890480124" duration="416000" />
-      <workItem from="1745892364591" duration="134000" />
-      <workItem from="1745944362169" duration="240000" />
-      <workItem from="1745948898261" duration="64000" />
+      <workItem from="1744843220785" duration="3998000" />
+      <workItem from="1744931358685" duration="2545000" />
+      <workItem from="1746011890330" duration="18588000" />
+      <workItem from="1746042134773" duration="1158000" />
     </task>
     <task id="LOCAL-00001" summary="crud">
       <option name="closed" value="true" />
@@ -341,7 +339,7 @@
   <component name="Vcs.Log.Tabs.Properties">
     <option name="OPEN_GENERIC_TABS">
       <map>
-        <entry key="b3f5adc7-89db-401e-bdb8-8bbb0751a0d3" value="TOOL_WINDOW" />
+        <entry key="c251506f-7fd6-42f3-a303-773baf4e07ec" value="TOOL_WINDOW" />
       </map>
     </option>
     <option name="TAB_STATES">
@@ -363,7 +361,7 @@
             </State>
           </value>
         </entry>
-        <entry key="b3f5adc7-89db-401e-bdb8-8bbb0751a0d3">
+        <entry key="c251506f-7fd6-42f3-a303-773baf4e07ec">
           <value>
             <State />
           </value>

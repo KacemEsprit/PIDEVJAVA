@@ -11,8 +11,25 @@ public class Comment {
     private String voiceUrl;
     private String type;
     private Integer duration;
+    // Add these fields and methods to your Comment class
     private boolean reported;
     private String reportReason;
+    
+    public boolean isReported() {
+        return reported;
+    }
+    
+    public void setReported(boolean reported) {
+        this.reported = reported;
+    }
+    
+    public String getReportReason() {
+        return reportReason;
+    }
+    
+    public void setReportReason(String reportReason) {
+        this.reportReason = reportReason;
+    }
     private User user;
 
     public Comment() {
@@ -45,12 +62,7 @@ public class Comment {
     public Integer getDuration() { return duration; }
     public void setDuration(Integer duration) { this.duration = duration; }
     
-    public boolean isReported() { return reported; }
-    public void setReported(boolean reported) { this.reported = reported; }
-    
-    public String getReportReason() { return reportReason; }
-    public void setReportReason(String reportReason) { this.reportReason = reportReason; }
-    
+
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
 }

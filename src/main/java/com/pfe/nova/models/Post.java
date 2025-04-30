@@ -12,10 +12,14 @@ public class Post {
     private List<String> imageUrls;
     private String category;
     private User user;
+    private int viewCount;
+    private String status;
+    private int likes;
 
     public Post() {
         this.imageUrls = new ArrayList<>();
         this.publishDate = LocalDateTime.now();
+        this.status = "pending"; // Default status is pending
     }
 
     // Getters and Setters
@@ -45,10 +49,6 @@ public class Post {
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
 
-    // Add these fields and their getters/setters
-    private int viewCount;
-    private String status;
-
     public int getViewCount() {
         return viewCount;
     }
@@ -63,5 +63,13 @@ public class Post {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    
+    public int getLikes() {
+        return likes;
+    }
+    
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 }

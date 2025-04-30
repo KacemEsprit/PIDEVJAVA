@@ -12,6 +12,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.animation.ScaleTransition;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
+
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,7 +37,7 @@ public class OrderController {
     @FXML private Button cartButton;
     @FXML private Label cartCountLabel;
     @FXML private TextField searchField;
-    
+
     private int patientId; 
     
     private List<Medication> allMedications;
@@ -287,7 +292,29 @@ public class OrderController {
         controlsBox.getChildren().addAll(quantitySpinner, addButton);
         
         card.getChildren().addAll(imageView, nameLabel, descriptionLabel, priceLabel, controlsBox);
-        
+        // Animation au survol
+        card.setOnMouseEntered(e -> {
+            ScaleTransition st = new ScaleTransition(Duration.millis(200), card);
+            st.setToX(1.05);
+            st.setToY(1.05);
+            st.play();
+        });
+
+        card.setOnMouseExited(e -> {
+            ScaleTransition st = new ScaleTransition(Duration.millis(200), card);
+            st.setToX(1.0);
+            st.setToY(1.0);
+            st.play();
+        });
+        DropShadow shadow = new DropShadow();
+        shadow.setColor(Color.web("#aaaaaa"));
+        card.setOnMouseEntered(e -> {
+            card.setEffect(shadow);
+        });
+        card.setOnMouseExited(e -> {
+            card.setEffect(null);
+        });
+
         return card;
     }
     

@@ -15,8 +15,13 @@ module com.pfe.nova {
     requires com.google.zxing.javase;
     requires twilio;
     requires org.json;
-    requires javafx.web;
-    requires java.mail;    // Ouvre les packages pour FXML et JavaFX
+    requires com.google.api.client;
+    requires google.api.services.oauth2.v2.rev157;
+    requires com.google.api.client.json.gson;
+    requires google.api.client;
+
+    requires java.mail;
+    requires jdk.httpserver;    // Ouvre les packages pour FXML et JavaFX
     opens com.pfe.nova to javafx.fxml;
     opens com.pfe.nova.Application to javafx.graphics, javafx.fxml;
     opens com.pfe.nova.models to javafx.base, javafx.fxml;

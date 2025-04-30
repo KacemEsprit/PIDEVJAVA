@@ -166,21 +166,7 @@ public class CartController {
         updateCartView();
     }
     
-    @FXML
-    private void handleViewCart() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/order_history.fxml"));
-            Parent orderHistoryView = loader.load();
-            Stage orderHistoryStage = new Stage();
-            orderHistoryStage.setTitle("Historique des Commandes");
-            orderHistoryStage.setScene(new Scene(orderHistoryView));
-            orderHistoryStage.initModality(Modality.APPLICATION_MODAL);
-            orderHistoryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showErrorAlert("Erreur lors de l'affichage de l'historique des commandes: " + e.getMessage());
-        }
-    }
+
     
     @FXML
     private void handleCheckout() {
