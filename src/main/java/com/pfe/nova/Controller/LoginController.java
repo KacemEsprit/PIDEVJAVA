@@ -39,16 +39,15 @@ public class LoginController {
 
     // Google OAuth configuration
     private final String GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
-    private final String GOOGLE_CLIENT_ID = "100768907086-65bq2bedrqenm7nq3e4qd6noft8qulb8.apps.googleusercontent.com";
-    private final String GOOGLE_CLIENT_SECRET = "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";
+   // private final String GOOGLE_CLIENT_ID = "100768907086-65bq2bedrqenm7nq3e4qd6noft8qulb8.apps.googleusercontent.com";
+   // private final String GOOGLE_CLIENT_SECRET = "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";
     private final String GOOGLE_REDIRECT_URI = "http://localhost:8085/oauth2callback";
     private final String GOOGLE_SCOPE = "email profile";
     private String stateToken;
 
     @FXML
     public void initialize() {
-        //setupButtonHoverEffects();
-        // Style the Google button
+
         googleLoginButton.setStyle("-fx-background-color: #4285F4; -fx-text-fill: white; -fx-font-weight: bold;");
     }
 
@@ -61,7 +60,7 @@ public class LoginController {
     }
 
     @FXML
-    private void handleGoogleLogin() {
+  /*  private void handleGoogleLogin() {
         try {
             stateToken = generateStateToken();
             String authUrl = GOOGLE_AUTH_URL +
@@ -85,12 +84,12 @@ public class LoginController {
         } catch (Exception e) {
             showError("Error initiating Google login: " + e.getMessage());
         }
-    }
+    }*/
 
 
 
 
-    private void startOAuthListener() {
+ /*   private void startOAuthListener() {
         try {
             HttpServer server = HttpServer.create(new InetSocketAddress(8085), 0);
             server.createContext("/oauth2callback", exchange -> {
@@ -134,10 +133,10 @@ public class LoginController {
         } catch (IOException e) {
             showError("Error starting OAuth listener: " + e.getMessage());
         }
-    }
+    }*/
 
 
-    private void processGoogleAuthCode(String code) {
+  /*  private void processGoogleAuthCode(String code) {
         try {
             // Use Google API Client to exchange the authorization code for an access token
             HttpTransport httpTransport = new NetHttpTransport();
@@ -203,7 +202,7 @@ public class LoginController {
             Platform.runLater(() -> showError("Error processing Google authentication: " + e.getMessage()));
             e.printStackTrace();
         }
-    }
+    }*/
     private void prefillGoogleUserInfo(String email, String firstName, String lastName) {
         // Example implementation
         System.out.println("Prefilling user info: " + email + ", " + firstName + ", " + lastName);

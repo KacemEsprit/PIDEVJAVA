@@ -50,8 +50,8 @@ public class SignupController {
     
     // Google OAuth configuration
     private final String GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
-    private final String GOOGLE_CLIENT_ID = "100768907086-65bq2bedrqenm7nq3e4qd6noft8qulb8.apps.googleusercontent.com";
-    private final String GOOGLE_CLIENT_SECRET = "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";
+  //  private final String GOOGLE_CLIENT_ID = "100768907086-65bq2bedrqenm7nq3e4qd6noft8qulb8.apps.googleusercontent.com";
+  //  private final String GOOGLE_CLIENT_SECRET = "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";
     private final String GOOGLE_REDIRECT_URI = "http://localhost:8085/oauth2callback";
     private final String GOOGLE_SCOPE = "email profile";
     private String stateToken;
@@ -89,7 +89,7 @@ public class SignupController {
     }
     
     @FXML
-    private void handleGoogleSignup() {
+  /*  private void handleGoogleSignup() {
         try {
 
             
@@ -126,7 +126,7 @@ public class SignupController {
             showError("Error opening browser: " + e.getMessage());
             e.printStackTrace();
         }
-    }
+    }*/
     
 
     
