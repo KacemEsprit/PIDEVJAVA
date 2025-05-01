@@ -1,9 +1,7 @@
 package com.pfe.nova.Controller;
-
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.json.gson.GsonFactory;
-import com.pfe.nova.configuration.DatabaseConnection;
 import com.pfe.nova.models.*;
 import com.pfe.nova.utils.Session;
 import javafx.fxml.FXML;
@@ -12,14 +10,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import org.mindrot.jbcrypt.BCrypt;
 import com.pfe.nova.configuration.UserDAO;
 import java.io.IOException;
-import java.sql.*;
 import javafx.application.HostServices;  // Use JavaFX HostServices instead of AWT Desktop
 import java.net.URI;
 import java.util.Random;
-// Remove this import
 import com.sun.net.httpserver.HttpServer;
 import java.net.InetSocketAddress;
 import java.io.OutputStream;
@@ -27,8 +22,6 @@ import javafx.application.Platform;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
-
-
 
 public class LoginController {
     @FXML private TextField emailField;
@@ -69,7 +62,6 @@ public class LoginController {
                     "&scope=" + java.net.URLEncoder.encode(GOOGLE_SCOPE, "UTF-8") +
                     "&response_type=code" +
                     "&state=" + stateToken;
-
             if (hostServices != null) {
                 hostServices.showDocument(authUrl);
             } else {
@@ -230,7 +222,7 @@ public class LoginController {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
     private void handleLogin() {
         String email = emailField.getText();
@@ -251,7 +243,6 @@ public class LoginController {
             System.out.println("Authentication failed for email: " + email);
         }
     }
-
 
     @FXML
     private void navigateToSignup() {

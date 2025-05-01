@@ -1,11 +1,7 @@
 module com.pfe.nova {
     // JavaFX
-    requires javafx.controls;
     requires javafx.fxml;
-    requires javafx.graphics;
-    requires javafx.base;
     requires itextpdf;
-    requires java.desktop;
     requires org.controlsfx.controls;
     requires java.sql;
     requires org.apache.poi.poi;
@@ -22,7 +18,11 @@ module com.pfe.nova {
 
     requires java.mail;
     requires jdk.httpserver;
-    requires client.sdk;    // Ouvre les packages pour FXML et JavaFX
+    requires client.sdk;
+    requires javafx.web;
+    requires jdk.jsobject;
+    requires okhttp3;
+    requires java.desktop;    // Ouvre les packages pour FXML et JavaFX
     opens com.pfe.nova to javafx.fxml;
     opens com.pfe.nova.Application to javafx.graphics, javafx.fxml;
     opens com.pfe.nova.models to javafx.base, javafx.fxml,com.google.api.client;

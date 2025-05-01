@@ -49,6 +49,27 @@
       <artifactId>itextpdf</artifactId>
       <version>5.5.13.3</version>
     </dependency>
+
+    <!-- For WebView -->
+<dependency>
+    <groupId>org.openjfx</groupId>
+    <artifactId>javafx-web</artifactId>
+    <version>17.0.1</version>
+</dependency>
+
+<!-- For HTTP requests -->
+<dependency>
+    <groupId>com.squareup.okhttp3</groupId>
+    <artifactId>okhttp</artifactId>
+    <version>4.9.3</version>
+</dependency>
+
+<!-- For JSON parsing -->
+<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20210307</version>
+</dependency>
     <dependency>
       <groupId>com.sun.mail</groupId>
       <artifactId>javax.mail</artifactId>
