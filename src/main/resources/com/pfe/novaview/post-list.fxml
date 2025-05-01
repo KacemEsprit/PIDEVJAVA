@@ -22,6 +22,7 @@
                 <ComboBox fx:id="categoryFilter" prefWidth="250" styleClass="category-filter"/>
                 <CheckBox fx:id="showPendingPosts" text="Show My Pending Posts" styleClass="pending-filter"/>
                 <Region HBox.hgrow="ALWAYS"/>
+
 <!-- ... existing code ... -->
 <Button styleClass="messages-button" onAction="#openMessagesView" text="Messages" />
 <!-- ... existing code ... -->                <Button text="Create New Post" onAction="#handleNewPost" styleClass="new-post-button"/>
