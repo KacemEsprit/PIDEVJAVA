@@ -23,14 +23,13 @@ module com.pfe.nova {
     requires java.mail;
     requires jdk.httpserver;
     requires client.sdk;
-<<<<<<< HEAD
+
     requires com.fasterxml.jackson.databind;
-    requires java.net.http;    // Ouvre les packages pour FXML et JavaFX
-=======
+
     requires de.jensd.fx.glyphs.fontawesome;
 
     // Ouvre les packages pour FXML et JavaFX
->>>>>>> c4b2604c53af71676c8e2a05719f0672e71995d9
+
     opens com.pfe.nova to javafx.fxml;
     opens com.pfe.nova.Application to javafx.graphics, javafx.fxml;
     opens com.pfe.nova.models to javafx.base, javafx.fxml,com.google.api.client;
@@ -44,5 +43,4 @@ module com.pfe.nova {
     exports com.pfe.nova.Controller;
     exports com.pfe.nova.models;
     exports com.pfe.nova.services;
-
 }

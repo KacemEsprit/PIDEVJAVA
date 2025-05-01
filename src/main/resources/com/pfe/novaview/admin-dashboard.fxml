@@ -30,11 +30,15 @@
                 </Button>
                 <Button fx:id="pendingPostsBtn" styleClass="nav-button" onAction="#showPendingPosts">
                     <graphic><Label text="🕒" styleClass="icon-label"/></graphic>
-                    <text>Pending Posts</text>
+                    <text>Posts Management</text>
                 </Button>
                 <Button fx:id="reportedCommentsBtn" styleClass="nav-button" onAction="#showReportedComments">
                     <graphic><Label text="🚩" styleClass="icon-label"/></graphic>
                     <text>Reported Comments</text>
+                </Button>
+                <Button fx:id="postsStatsBtn" styleClass="nav-button" onAction="#showPostsStatistics">
+                    <graphic><Label text="📊" styleClass="icon-label"/></graphic>
+                    <text>Posts Statistics</text>
                 </Button>
                 <Button fx:id="statsBtn" styleClass="nav-button" onAction="#showStatistics">
                     <graphic><Label text="📊" styleClass="icon-label"/></graphic>

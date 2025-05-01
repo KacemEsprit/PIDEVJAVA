@@ -4,7 +4,10 @@ import com.pfe.nova.configuration.PostDAO;
 import com.pfe.nova.configuration.UserDAO;
 import com.pfe.nova.models.Post;
 import com.pfe.nova.models.User;
+import com.pfe.nova.services.EmailPostService;
+import com.pfe.nova.services.EmailPostTemplateService;
 import com.pfe.nova.utils.Session;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
@@ -15,67 +18,45 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.Image;
-import java.nio.file.Paths;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import javafx.concurrent.Task;
+
 public class AdminDashboardController {
-    @FXML
-    private Label welcomeLabel;
-    @FXML
-    private Button logoutButton;
-    @FXML
-    private StackPane contentArea;
-    @FXML
-    private TabPane mainTabPane;
-    // Replace TableView with GridPane
-    @FXML
-    private GridPane usersGrid;
-    @FXML
-    private Label sidebarProfileName;
-    @FXML 
-    private Label sidebarProfileEmail;
-    @FXML
-    private Label logoLabel;
-    @FXML
-    private ImageView sidebarProfileImage;  // Add this line
-    @FXML
-    private TableView<User> usersTable;
-    @FXML
-    private TableColumn<User, Integer> idColumn;
-    @FXML
-    private TableColumn<User, String> nameColumn;
-    @FXML
-    private TableColumn<User, String> emailColumn;
-    @FXML
-    private TableColumn<User, String> roleColumn;
-    @FXML
-    private TableColumn<User, String> actionsColumn;
-    @FXML
-    private Label sessionTestLabel;
-    @FXML
-    private VBox pharmacieSubMenu;
-    @FXML
-    private Button postsManagementBtn; // Add this field for the posts management button
-
-
+    @FXML private Label welcomeLabel;
+    @FXML private Button logoutButton;
+    @FXML private StackPane contentArea;
+    @FXML private TabPane mainTabPane;
+    @FXML private GridPane usersGrid;
+    @FXML private Label sidebarProfileName;
+    @FXML private Label sidebarProfileEmail;
+    @FXML private ImageView sidebarProfileImage;
+    @FXML private TableView<User> usersTable;
+    @FXML private TableColumn<User, Integer> idColumn;
+    @FXML private TableColumn<User, String> nameColumn;
+    @FXML private TableColumn<User, String> emailColumn;
+    @FXML private TableColumn<User, String> roleColumn;
+    @FXML private TableColumn<User, String> actionsColumn;
+    @FXML private Label sessionTestLabel;
+    @FXML private VBox pharmacieSubMenu;
     @FXML private TextField searchField;
     @FXML private ComboBox<String> filterRole;
 
     private User adminUser;
 
-
-    @FXML
-    private GridPane reportsGridPane;
     @FXML
     public void initialize() {
         setupUI();
-        loadUsersData();  // Keep only this line
+        loadUsersData();
         setupTableColumns();
         User sessionUser = Session.getInstance().getUtilisateurConnecte();
         if (sessionUser != null) {
@@ -85,45 +66,33 @@ public class AdminDashboardController {
         }
     }
 
-
-
-
     private void setupTableColumns() {
         try {
             idColumn.setCellValueFactory(cellData ->
                     new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
-
             nameColumn.setCellValueFactory(cellData ->
                     new SimpleStringProperty(cellData.getValue().getNom() + " " + cellData.getValue().getPrenom()));
-
             emailColumn.setCellValueFactory(cellData ->
                     new SimpleStringProperty(cellData.getValue().getEmail()));
-
             roleColumn.setCellValueFactory(cellData ->
                     new SimpleStringProperty(cellData.getValue().getRole()));
-
             actionsColumn.setCellFactory(column -> new TableCell<User, String>() {
                 private final Button editButton = new Button("Edit");
                 private final Button deleteButton = new Button("Delete");
                 private final HBox buttons = new HBox(5, editButton, deleteButton);
 
                 {
-                    // Set action for the Edit button
                     editButton.setOnAction(event -> {
                         User user = getTableView().getItems().get(getIndex());
                         handleEditUser(user);
                     });
-
-                    // Set action for the Delete button
                     deleteButton.setOnAction(event -> {
                         User user = getTableView().getItems().get(getIndex());
                         if (confirmDelete(user)) {
                             UserDAO.deleteUser(user.getId());
-                            loadUsersData(); // Refresh the table
+                            loadUsersData();
                         }
                     });
-
-                    // Style buttons (optional)
                     editButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white;");
                     deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
                 }
@@ -131,11 +100,7 @@ public class AdminDashboardController {
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (empty) {
-                        setGraphic(null);
-                    } else {
-                        setGraphic(buttons);
-                    }
+                    setGraphic(empty ? null : buttons);
                 }
             });
         } catch (Exception e) {
@@ -146,19 +111,14 @@ public class AdminDashboardController {
 
     public void initData(User user) {
         if (!"ROLE_ADMIN".equals(user.getRole()) && !"ADMIN".equals(user.getRole())) {
-            // Redirect non-admin users
             System.err.println("Non-admin user attempted to access admin dashboard");
             handleLogout();
             return;
         }
-
         this.adminUser = user;
-        
         welcomeLabel.setText("Welcome, " + user.getNom() + " " + user.getPrenom());
         sidebarProfileName.setText(user.getNom() + " " + user.getPrenom());
         sidebarProfileEmail.setText(user.getEmail());
-        
-        // Load profile image if available
         if (user.getPicture() != null && !user.getPicture().isEmpty()) {
             try {
                 Image image = new Image(Paths.get(user.getPicture()).toUri().toString());
@@ -167,35 +127,22 @@ public class AdminDashboardController {
                 System.err.println("Error loading profile image: " + e.getMessage());
             }
         }
-
         loadUsersData();
     }
 
     private void setupUI() {
         filterRole.getItems().addAll("ALL", "ROLE_ADMIN", "ROLE_MEDECIN", "ROLE_PATIENT", "ROLE_DONATEUR");
         filterRole.setValue("ALL");
-
-        // Add search listener
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            handleSearch();
-        });
-
-        // Add role filter listener
-        filterRole.valueProperty().addListener((observable, oldValue, newValue) -> {
-            handleSearch();
-        });
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
+        filterRole.valueProperty().addListener((observable, oldValue, newValue) -> handleSearch());
     }
 
     @FXML
     private void handleLogout() {
-        // Change from Session.logout() to Session.getInstance().logout()
         Session.getInstance().logout();
-
-        // Navigate to login screen
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/login.fxml"));
             Parent root = loader.load();
-
             Stage stage = (Stage) logoutButton.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Login");
@@ -208,7 +155,6 @@ public class AdminDashboardController {
     private void handleSearch() {
         String searchText = searchField.getText().toLowerCase();
         String selectedRole = filterRole.getValue();
-
         List<User> allUsers = UserDAO.getAllUsers();
         List<User> filteredUsers = allUsers.stream()
                 .filter(user -> {
@@ -216,51 +162,62 @@ public class AdminDashboardController {
                             user.getNom().toLowerCase().contains(searchText) ||
                             user.getPrenom().toLowerCase().contains(searchText) ||
                             user.getEmail().toLowerCase().contains(searchText);
-
                     boolean matchesRole = "ALL".equals(selectedRole) ||
                             user.getRole().equals(selectedRole);
-
                     return matchesSearch && matchesRole;
                 })
                 .collect(java.util.stream.Collectors.toList());
-
-        // Clear and reload the grid with filtered users
         usersGrid.getChildren().clear();
         int col = 0;
         int row = 0;
         for (User user : filteredUsers) {
             createUserCard(user, row, col);
             col++;
-            if (col == 3) {  // 3 cards per row
+            if (col == 3) {
                 col = 0;
                 row++;
             }
         }
     }
 
-
     @FXML
     private void showDashboard() {
         mainTabPane.getSelectionModel().select(0);
     }
 
-
     @FXML
     private void showPendingPosts() {
         try {
-            VBox pendingPostsContent = new VBox(10);
-            pendingPostsContent.setPadding(new Insets(20));
-            pendingPostsContent.setStyle("-fx-background-color: white;");
+            VBox postsContent = new VBox(10);
+            postsContent.setPadding(new Insets(20));
+            postsContent.setStyle("-fx-background-color: white;");
 
             HBox header = new HBox(10);
             header.setAlignment(Pos.CENTER_LEFT);
-            Label titleLabel = new Label("Pending Posts");
+            Label titleLabel = new Label("Posts Management");
             titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
             Region spacer = new Region();
             HBox.setHgrow(spacer, Priority.ALWAYS);
             Button refreshButton = new Button("Refresh");
-            refreshButton.setOnAction(e -> loadPendingPostsContent(pendingPostsContent));
+            refreshButton.setOnAction(e -> loadAllPostsContent(postsContent, "ALL"));
             header.getChildren().addAll(titleLabel, spacer, refreshButton);
+
+            HBox filterButtons = new HBox(10);
+            filterButtons.setAlignment(Pos.CENTER_LEFT);
+            filterButtons.setPadding(new Insets(10, 0, 20, 0));
+            Button allButton = new Button("All Posts");
+            allButton.getStyleClass().add("filter-button");
+            allButton.setOnAction(e -> loadAllPostsContent(postsContent, "ALL"));
+            Button pendingButton = new Button("Pending");
+            pendingButton.getStyleClass().add("filter-button");
+            pendingButton.setOnAction(e -> loadAllPostsContent(postsContent, "pending"));
+            Button approvedButton = new Button("Approved");
+            approvedButton.getStyleClass().add("filter-button");
+            approvedButton.setOnAction(e -> loadAllPostsContent(postsContent, "approved"));
+            Button refusedButton = new Button("Refused");
+            refusedButton.getStyleClass().add("filter-button");
+            refusedButton.setOnAction(e -> loadAllPostsContent(postsContent, "refused"));
+            filterButtons.getChildren().addAll(allButton, pendingButton, approvedButton, refusedButton);
 
             ProgressIndicator progressIndicator = new ProgressIndicator();
             progressIndicator.setVisible(false);
@@ -269,51 +226,41 @@ public class AdminDashboardController {
             scrollPane.setFitToWidth(true);
             VBox.setVgrow(scrollPane, Priority.ALWAYS);
 
-            VBox postsContainer = new VBox(15);
+            FlowPane postsContainer = new FlowPane(15, 15);
+            postsContainer.setPadding(new Insets(10));
             scrollPane.setContent(postsContainer);
 
-            pendingPostsContent.getChildren().addAll(header, progressIndicator, scrollPane);
+            postsContent.getChildren().addAll(header, filterButtons, progressIndicator, scrollPane);
 
-            Tab pendingPostsTab = null;
-
+            Tab postsTab = null;
             for (Tab tab : mainTabPane.getTabs()) {
-                if (tab.getText().equals("Pending Posts")) {
-                    pendingPostsTab = tab;
+                if (tab.getText().equals("Posts Management")) {
+                    postsTab = tab;
                     break;
                 }
             }
 
-            // Create new tab if it doesn't exist
-            if (pendingPostsTab == null) {
-                pendingPostsTab = new Tab("Pending Posts");
-                pendingPostsTab.setContent(pendingPostsContent);
-                pendingPostsTab.setClosable(true);
-                mainTabPane.getTabs().add(pendingPostsTab);
+            if (postsTab == null) {
+                postsTab = new Tab("Posts Management");
+                postsTab.setContent(postsContent);
+                postsTab.setClosable(true);
+                mainTabPane.getTabs().add(postsTab);
             } else {
-                // Update existing tab content
-                pendingPostsTab.setContent(pendingPostsContent);
+                postsTab.setContent(postsContent);
             }
 
-            // Select the tab
-            mainTabPane.getSelectionModel().select(pendingPostsTab);
-
-            // Load pending posts
-            loadPendingPostsContent(pendingPostsContent);
+            mainTabPane.getSelectionModel().select(postsTab);
+            loadAllPostsContent(postsContent, "ALL");
 
         } catch (Exception e) {
-            showError("Error loading pending posts: " + e.getMessage());
+            showError("Error loading posts: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    /**
-     * Load pending posts content
-     */
-    private void loadPendingPostsContent(VBox container) {
-        // Find the progress indicator and posts container
+    private void loadAllPostsContent(VBox container, String filter) {
         ProgressIndicator progressIndicator = null;
         ScrollPane scrollPane = null;
-
         for (javafx.scene.Node node : container.getChildren()) {
             if (node instanceof ProgressIndicator) {
                 progressIndicator = (ProgressIndicator) node;
@@ -321,224 +268,281 @@ public class AdminDashboardController {
                 scrollPane = (ScrollPane) node;
             }
         }
-
-        if (progressIndicator == null || scrollPane == null) {
-            showError("UI components not found");
-            return;
+        if (progressIndicator != null) {
+            progressIndicator.setVisible(true);
         }
-
-        // Show loading indicator
-        progressIndicator.setVisible(true);
-
-        // Get posts container
-        VBox postsContainer = (VBox) scrollPane.getContent();
-        postsContainer.getChildren().clear();
-
-        // Load posts in background thread
-        ProgressIndicator finalProgressIndicator = progressIndicator;
-        ProgressIndicator finalProgressIndicator1 = progressIndicator;
-        Thread loadThread = new Thread(() -> {
+        if (scrollPane != null) {
+            FlowPane postsContainer = new FlowPane();
+            postsContainer.setHgap(30);
+            postsContainer.setVgap(30);
+            postsContainer.setPadding(new Insets(25));
+            postsContainer.setAlignment(Pos.CENTER);
+            scrollPane.setContent(postsContainer);
             try {
-                // Get pending posts from database
-                List<Post> pendingPosts = PostDAO.findByStatus("pending");
-
-                // Update UI on JavaFX thread
-                javafx.application.Platform.runLater(() -> {
-                    try {
-                        // Hide loading indicator
-                        finalProgressIndicator.setVisible(false);
-
-                        if (pendingPosts.isEmpty()) {
-                            Label noPostsLabel = new Label("No pending posts to display");
-                            noPostsLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #666;");
-                            postsContainer.getChildren().add(noPostsLabel);
-                        } else {
-                            Label countLabel = new Label("Found " + pendingPosts.size() + " pending posts");
-                            countLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #666; -fx-padding: 0 0 10 0;");
-                            postsContainer.getChildren().add(countLabel);
-
-                            // Add each post to the container
-                            for (Post post : pendingPosts) {
-                                VBox postView = createPendingPostView(post);
-                                postsContainer.getChildren().add(postView);
-                            }
-                        }
-                    } catch (Exception e) {
-                        finalProgressIndicator.setVisible(false);
-                        showError("Error displaying posts: " + e.getMessage());
-                        e.printStackTrace();
+                List<Post> allPosts;
+                if ("ALL".equals(filter)) {
+                    allPosts = PostDAO.findAll();
+                } else {
+                    allPosts = PostDAO.findByStatus(filter);
+                }
+                if (allPosts.isEmpty()) {
+                    Label noPostsLabel = new Label("No posts found");
+                    noPostsLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #7f8c8d;");
+                    postsContainer.getChildren().add(noPostsLabel);
+                } else {
+                    for (Post post : allPosts) {
+                        VBox postCard = createPostCard(post);
+                        postsContainer.getChildren().add(postCard);
                     }
-                });
-            } catch (Exception e) {
-                javafx.application.Platform.runLater(() -> {
-                    finalProgressIndicator1.setVisible(false);
-                    showError("Error loading posts: " + e.getMessage());
-                    e.printStackTrace();
-                });
+                }
+            } catch (SQLException e) {
+                showError("Error loading posts: " + e.getMessage());
+            } finally {
+                if (progressIndicator != null) {
+                    progressIndicator.setVisible(false);
+                }
             }
-        });
-
-        loadThread.setDaemon(true);
-        loadThread.start();
+        }
     }
 
-    /**
-     * Create a view for a pending post
-     */
-    private VBox createPendingPostView(Post post) {
+    private VBox createPostCard(Post post) {
         VBox postBox = new VBox(10);
-        postBox.setStyle("-fx-border-color: #ddd; -fx-border-width: 1; -fx-padding: 15; -fx-background-color: white; -fx-background-radius: 5;");
-
-        // User info section
-        HBox userInfo = new HBox(10);
-        userInfo.setAlignment(Pos.CENTER_LEFT);
-
-        Label userLabel = new Label(post.isAnonymous() ? "Anonymous User" : post.getUser().getNom() + " " + post.getUser().getPrenom());
-        userLabel.setStyle("-fx-font-weight: bold;");
-
-        // Use a simple "Pending" label instead of trying to access a date
-        Label dateLabel = new Label("Pending");
-        if (post.getPublishDate() != null) {
-            dateLabel.setText(post.getPublishDate().toString());
+        postBox.getStyleClass().add("post-card");
+        postBox.setPadding(new Insets(20));
+        postBox.setPrefWidth(300);
+        postBox.setMaxWidth(300);
+        postBox.setMinHeight(250);
+        postBox.setStyle("-fx-background-color: white; " +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); " +
+                "-fx-background-radius: 10; -fx-border-radius: 10;");
+        Label statusLabel = new Label(post.getStatus().toUpperCase());
+        statusLabel.setPadding(new Insets(5, 10, 5, 10));
+        statusLabel.setStyle("-fx-background-radius: 15; -fx-font-size: 12px; -fx-font-weight: bold;");
+        switch (post.getStatus()) {
+            case "pending":
+                statusLabel.setStyle(statusLabel.getStyle() + "-fx-background-color: #f39c12; -fx-text-fill: white;");
+                break;
+            case "approved":
+                statusLabel.setStyle(statusLabel.getStyle() + "-fx-background-color: #2ecc71; -fx-text-fill: white;");
+                break;
+            case "refused":
+                statusLabel.setStyle(statusLabel.getStyle() + "-fx-background-color: #e74c3c; -fx-text-fill: white;");
+                break;
         }
-        dateLabel.setStyle("-fx-text-fill: #7f8c8d;");
-
-        Label statusLabel = new Label("PENDING");
-        statusLabel.setStyle("-fx-background-color: #f39c12; -fx-text-fill: white; -fx-padding: 3 8; -fx-background-radius: 3;");
-
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        userInfo.getChildren().addAll(userLabel, dateLabel, spacer, statusLabel);
-
-        // Post content - using content instead of subject since there's no getSubject() method
-        Label titleLabel = new Label("Post #" + post.getId());
-        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-
+        HBox header = new HBox(10);
+        header.setAlignment(Pos.CENTER_LEFT);
+        Label userLabel = new Label(post.getUser().getNom() + " " + post.getUser().getPrenom());
+        userLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+        Label categoryLabel = new Label(post.getCategory());
+        categoryLabel.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; " +
+                "-fx-padding: 3 8; -fx-background-radius: 4; -fx-font-size: 12px;");
+        header.getChildren().addAll(userLabel, categoryLabel, statusLabel);
         Label contentLabel = new Label(post.getContent());
         contentLabel.setWrapText(true);
+        contentLabel.setMaxHeight(80);
         contentLabel.setStyle("-fx-font-size: 14px;");
-
-        // Category label if available
-        if (post.getCategory() != null && !post.getCategory().isEmpty()) {
-            Label categoryLabel = new Label(post.getCategory());
-            categoryLabel.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-padding: 3 8; -fx-background-radius: 3;");
-            postBox.getChildren().add(categoryLabel);
+        if (post.getContent().length() > 100) {
+            contentLabel.setText(post.getContent().substring(0, 100) + "...");
         }
-
-        // Action buttons
+        ImageView imageView = null;
+        if (!post.getImageUrls().isEmpty()) {
+            try {
+                String imagePath = post.getImageUrls().get(0);
+                Image image;
+                if (imagePath.startsWith("http")) {
+                    image = new Image(imagePath);
+                } else {
+                    image = new Image(new File(imagePath).toURI().toString());
+                }
+                imageView = new ImageView(image);
+                imageView.setFitHeight(120);
+                imageView.setFitWidth(260);
+                imageView.setPreserveRatio(true);
+            } catch (Exception e) {
+                System.err.println("Error loading image: " + e.getMessage());
+            }
+        }
         HBox actionButtons = new HBox(10);
-        actionButtons.setAlignment(Pos.CENTER_RIGHT);
+        actionButtons.setAlignment(Pos.CENTER);
         actionButtons.setPadding(new Insets(10, 0, 0, 0));
-
+        Button viewButton = new Button("View");
+        viewButton.getStyleClass().add("view-button");
+        viewButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 5;");
+        viewButton.setOnAction(e -> openPostDetails(post));
         Button approveButton = new Button("Approve");
-        approveButton.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white;");
+        approveButton.getStyleClass().add("approve-button");
+        approveButton.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-background-radius: 5;");
         approveButton.setOnAction(e -> handleApprovePost(post));
-
         Button rejectButton = new Button("Reject");
-        rejectButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
+        rejectButton.getStyleClass().add("reject-button");
+        rejectButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5;");
         rejectButton.setOnAction(e -> handleRejectPost(post));
-
-        actionButtons.getChildren().addAll(approveButton, rejectButton);
-
-        // Add all components to post box
-        postBox.getChildren().addAll(userInfo, titleLabel, contentLabel, actionButtons);
-
+        Button deleteButton = new Button("Delete");
+        deleteButton.getStyleClass().add("delete-button");
+        deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5;");
+        deleteButton.setOnAction(e -> handleDeletePost(post));
+        if ("pending".equals(post.getStatus())) {
+            actionButtons.getChildren().addAll(viewButton, approveButton, rejectButton);
+        } else {
+            actionButtons.getChildren().addAll(viewButton, deleteButton);
+        }
+        postBox.getChildren().add(header);
+        postBox.getChildren().add(new Separator());
+        postBox.getChildren().add(contentLabel);
+        if (imageView != null) {
+            HBox imageContainer = new HBox();
+            imageContainer.setAlignment(Pos.CENTER);
+            imageContainer.getChildren().add(imageView);
+            postBox.getChildren().add(imageContainer);
+        }
+        Region spacer = new Region();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+        postBox.getChildren().add(spacer);
+        postBox.getChildren().add(new Separator());
+        postBox.getChildren().add(actionButtons);
         return postBox;
     }
 
-    /**
-     * Handle approving a post
-     */
-    private void handleApprovePost(Post post) {
+    private void openPostDetails(Post post) {
         try {
-            // Update post status to approved
-            post.setStatus("approved");
-            // Use the correct method from PostDAO
-            PostDAO.save(post); // Changed from updatePost to save
-
-            // Find and refresh the pending posts tab
-            for (Tab tab : mainTabPane.getTabs()) {
-                if (tab.getText().equals("Pending Posts")) {
-                    VBox content = (VBox) tab.getContent();
-                    loadPendingPostsContent(content);
-                    break;
-                }
-            }
-
-            showInfo("Post approved successfully");
-        } catch (Exception e) {
-            showError("Error approving post: " + e.getMessage());
-            e.printStackTrace();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/publication-details.fxml"));
+            Parent root = loader.load();
+            PublicationDetailsController controller = loader.getController();
+            controller.setPost(post);
+            Stage stage = new Stage();
+            stage.setTitle("Publication Details");
+            Scene scene = new Scene(root, 800, 700);
+            stage.setScene(scene);
+            stage.setMinWidth(600);
+            stage.setMinHeight(500);
+            stage.show();
+        } catch (IOException e) {
+            showError("Error opening publication details: " + e.getMessage());
         }
     }
 
-    /**
-     * Handle rejecting a post
-     */
-    private void handleRejectPost(Post post) {
-        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmDialog.setTitle("Reject Post");
-        confirmDialog.setHeaderText("Are you sure you want to reject this post?");
-        confirmDialog.setContentText("This action cannot be undone.");
 
-        Optional<ButtonType> result = confirmDialog.showAndWait();
+
+
+
+    private void handleApprovePost(Post post) {
+        System.out.println("handleApprovePost called on thread: " + Thread.currentThread().getName());
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Approve Post");
+        confirmation.setHeaderText("Approve Post");
+        confirmation.setContentText("Are you sure you want to approve this post?");
+        Optional<ButtonType> result = confirmation.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                // Update post status to rejected
-                post.setStatus("rejected");
-                // Use the correct method from PostDAO
-                PostDAO.save(post); // Changed from updatePost to save
+                post.setStatus("approved");
+                PostDAO.updateStatus(post.getId(), "approved");
 
-                // Find and refresh the pending posts tab
-                for (Tab tab : mainTabPane.getTabs()) {
-                    if (tab.getText().equals("Pending Posts")) {
-                        VBox content = (VBox) tab.getContent();
-                        loadPendingPostsContent(content);
-                        break;
-                    }
+                User postOwner = post.getUser();
+                if (postOwner != null && postOwner.getEmail() != null) {
+                    Task<Void> emailTask = new Task<Void>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            // Use the correct App Password
+                            EmailPostService emailPostService = new EmailPostService("benalibenalirania123@gmail.com", "jwzu mmvp vsol qwuh");
+                            String subject = "Votre publication a été approuvée";
+                            String htmlContent = EmailPostTemplateService.getPostApprovalTemplate(postOwner, post);
+                            emailPostService.sendHtmlEmail(postOwner.getEmail(), subject, htmlContent);
+                            return null;
+                        }
+                        
+                        @Override
+                        protected void succeeded() {
+                            System.out.println("Email de notification envoyé à " + postOwner.getEmail());
+                        }
+
+                        @Override
+                        protected void failed() {
+                            Throwable exception = getException();
+                            exception.printStackTrace();
+                            System.err.println("Erreur lors de l'envoi de l'email: " + exception.getMessage());
+                            Platform.runLater(() -> showError("Failed to send email notification: " + exception.getMessage()));
+                        }
+                    };
+                    new Thread(emailTask).start();
                 }
 
-                showInfo("Post rejected successfully");
-            } catch (Exception e) {
+                Alert success = new Alert(Alert.AlertType.INFORMATION);
+                success.setTitle("Success");
+                success.setHeaderText(null);
+                success.setContentText("Post has been approved successfully!");
+                success.showAndWait();
+
+                showPendingPosts();
+            } catch (SQLException e) {
+                showError("Error approving post: " + e.getMessage());
+            }
+        }
+    }
+    private void handleRejectPost(Post post) {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Reject Post");
+        confirmation.setHeaderText("Reject Post");
+        confirmation.setContentText("Are you sure you want to reject this post?");
+        Optional<ButtonType> result = confirmation.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                post.setStatus("refused");
+                PostDAO.updateStatus(post.getId(), "refused");
+                Alert success = new Alert(Alert.AlertType.INFORMATION);
+                success.setTitle("Success");
+                success.setHeaderText(null);
+                success.setContentText("Post has been rejected successfully!");
+                success.showAndWait();
+                showPendingPosts();
+            } catch (SQLException e) {
                 showError("Error rejecting post: " + e.getMessage());
-                e.printStackTrace();
             }
         }
     }
 
-    /**
-     * Show reported comments tab
-     */
+    private void handleDeletePost(Post post) {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Delete Post");
+        confirmation.setHeaderText("Delete Post");
+        confirmation.setContentText("Are you sure you want to delete this post? This action cannot be undone.");
+        Optional<ButtonType> result = confirmation.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                PostDAO.delete(post.getId());
+                Alert success = new Alert(Alert.AlertType.INFORMATION);
+                success.setTitle("Success");
+                success.setHeaderText(null);
+                success.setContentText("Post has been deleted successfully!");
+                success.showAndWait();
+                showPendingPosts();
+            } catch (SQLException e) {
+                showError("Error deleting post: " + e.getMessage());
+            }
+        }
+    }
+
     @FXML
     private void showReportedComments() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/reported-comments.fxml"));
-            Parent reportedCommentsView = loader.load();
-
-            // Get existing tabs
+            Parent reportedCommentsContent = loader.load();
             Tab reportedCommentsTab = null;
-
-            // Check if tab already exists
             for (Tab tab : mainTabPane.getTabs()) {
                 if (tab.getText().equals("Reported Comments")) {
                     reportedCommentsTab = tab;
                     break;
                 }
             }
-
-            // Create new tab if it doesn't exist
             if (reportedCommentsTab == null) {
                 reportedCommentsTab = new Tab("Reported Comments");
-                reportedCommentsTab.setContent(reportedCommentsView);
+                reportedCommentsTab.setContent(reportedCommentsContent);
                 reportedCommentsTab.setClosable(true);
                 mainTabPane.getTabs().add(reportedCommentsTab);
+            } else {
+                reportedCommentsTab.setContent(reportedCommentsContent);
             }
-
-            // Select the tab
             mainTabPane.getSelectionModel().select(reportedCommentsTab);
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             showError("Error loading reported comments: " + e.getMessage());
             e.printStackTrace();
         }
@@ -549,7 +553,6 @@ public class AdminDashboardController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/statistics.fxml"));
             Parent statisticsView = loader.load();
-
             Tab statisticsTab = null;
             for (Tab tab : mainTabPane.getTabs()) {
                 if (tab.getText().equals("Statistics")) {
@@ -557,7 +560,6 @@ public class AdminDashboardController {
                     break;
                 }
             }
-
             if (statisticsTab == null) {
                 statisticsTab = new Tab("Statistics");
                 statisticsTab.setContent(statisticsView);
@@ -566,19 +568,78 @@ public class AdminDashboardController {
             } else {
                 statisticsTab.setContent(statisticsView);
             }
-
             mainTabPane.getSelectionModel().select(statisticsTab);
-
         } catch (IOException e) {
             showError("Error loading statistics: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
+    @FXML
+    private void showPostsStatistics() {
+        try {
+            String tabId = "postsStatisticsTab";
+            Tab postsStatisticsTab = findTab(tabId);
+            if (postsStatisticsTab == null) {
+                postsStatisticsTab = new Tab("Publications Statistics");
+                postsStatisticsTab.setId(tabId);
+                postsStatisticsTab.setClosable(false);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/post-statistics.fxml"));
+                Parent content = loader.load();
+                postsStatisticsTab.setContent(content);
+                mainTabPane.getTabs().add(postsStatisticsTab);
+            }
+            mainTabPane.getSelectionModel().select(postsStatisticsTab);
+        } catch (IOException e) {
+            showError("Error loading posts statistics: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
+    private Tab findTab(String id) {
+        for (Tab tab : mainTabPane.getTabs()) {
+            if (id.equals(tab.getId())) {
+                return tab;
+            }
+        }
+        return null;
+    }
 
     @FXML
-    private void showSettings() {
+    private void showProfile() {
+        try {
+            Tab profileTab = null;
+            ProfileController profileController = null;
+            for (Tab tab : mainTabPane.getTabs()) {
+                if ("Profile".equals(tab.getText())) {
+                    profileTab = tab;
+                    if (tab.getContent() instanceof Parent) {
+                        Parent root = (Parent) tab.getContent();
+                        profileController = (ProfileController) root.getUserData();
+                    }
+                    break;
+                }
+            }
+            if (profileTab == null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/profile.fxml"));
+                Parent profileRoot = loader.load();
+                profileController = loader.getController();
+                profileRoot.setUserData(profileController);
+                profileTab = new Tab("Profile", profileRoot);
+                profileTab.setClosable(true);
+                mainTabPane.getTabs().add(profileTab);
+            }
+            if (profileController != null) {
+                User user = Session.getInstance().getUtilisateurConnecte();
+                if (user == null) user = adminUser;
+                User refreshedUser = UserDAO.getUserById(user.getId());
+                profileController.initData(refreshedUser != null ? refreshedUser : user);
+            }
+            mainTabPane.getSelectionModel().select(profileTab);
+        } catch (IOException e) {
+            showError("Error loading profile: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void createUserCard(User user, int row, int col) {
@@ -586,29 +647,19 @@ public class AdminDashboardController {
         card.getStyleClass().add("user-card");
         card.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 8; " +
                 "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);");
-
-        // User Role Badge
         Label roleLabel = new Label(user.getRole());
         roleLabel.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; " +
                 "-fx-padding: 5 10; -fx-background-radius: 4; -fx-font-size: 12px;");
-
-        // User Name
         Label nameLabel = new Label(user.getNom() + " " + user.getPrenom());
         nameLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-
-        // User Email
         Label emailLabel = new Label(user.getEmail());
         emailLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #666;");
-
-        // Action Buttons
         HBox actions = new HBox(10);
         actions.setAlignment(Pos.CENTER);
-
         Button editButton = new Button("Edit");
         editButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; " +
                 "-fx-padding: 8 15; -fx-background-radius: 4;");
         editButton.setOnAction(e -> handleEditUser(user));
-
         Button deleteButton = new Button("Delete");
         deleteButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; " +
                 "-fx-padding: 8 15; -fx-background-radius: 4;");
@@ -618,71 +669,48 @@ public class AdminDashboardController {
                 loadUsersData();
             }
         });
-
         actions.getChildren().addAll(editButton, deleteButton);
-
-        // Add all elements to card
         card.getChildren().addAll(roleLabel, nameLabel, emailLabel, actions);
-
-        // Add hover effect
         card.setOnMouseEntered(e ->
                 card.setStyle(card.getStyle() + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 14, 0, 0, 0);"));
         card.setOnMouseExited(e ->
                 card.setStyle(card.getStyle().replace("rgba(0,0,0,0.2), 14", "rgba(0,0,0,0.1), 10")));
-
-        // Add card to grid
         usersGrid.add(card, col, row);
     }
 
     private void loadUsersData() {
         List<User> users = UserDAO.getAllUsers();
         usersGrid.getChildren().clear();
-
         int col = 0;
         int row = 0;
         for (User user : users) {
             createUserCard(user, row, col);
             col++;
-            if (col == 3) {  // 3 cards per row
+            if (col == 3) {
                 col = 0;
                 row++;
             }
         }
     }
 
-  
-
-  
-
     @FXML
     private void handleEditUser(User user) {
         try {
-            // Get the full user data with role-specific information
             User fullUser = UserDAO.getUserById(user.getId());
             if (fullUser == null) {
                 showError("Could not load user data");
                 return;
             }
-
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/com/pfe/novaview/edituser.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/edituser.fxml"));
             Parent root = loader.load();
-
-            // Get the controller and initialize it with user data
             EditUserController editController = loader.getController();
             editController.initData(fullUser);
-
-            // Create and configure the stage
             Stage stage = new Stage();
             stage.setTitle("Edit User");
             stage.setScene(new Scene(root));
             stage.setResizable(false);
-
-            // Add a listener to refresh the table when the edit window is closed
             stage.setOnHiding(event -> {
                 loadUsersData();
-                
-                // If the edited user is the current admin, update sidebar info
                 if (fullUser.getId() == adminUser.getId()) {
                     User updatedUser = UserDAO.getUserById(adminUser.getId());
                     if (updatedUser != null) {
@@ -691,27 +719,20 @@ public class AdminDashboardController {
                     }
                 }
             });
-
             stage.show();
-
         } catch (IOException e) {
-            e.printStackTrace();
             showError("Error opening edit window: " + e.getMessage());
-        } catch (Exception e) {
             e.printStackTrace();
+        } catch (Exception e) {
             showError("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-    
-    // Update sidebar information with updated user data
+
     public void updateSidebarInfo(User user) {
         if (user == null) return;
-        
-        // Update sidebar profile information
         sidebarProfileName.setText(user.getNom() + " " + user.getPrenom());
         sidebarProfileEmail.setText(user.getEmail());
-        
-        // Update profile image if available
         if (user.getPicture() != null && !user.getPicture().isEmpty()) {
             try {
                 Image image = new Image(Paths.get(user.getPicture()).toUri().toString());
@@ -720,17 +741,12 @@ public class AdminDashboardController {
                 System.err.println("Error updating profile image: " + e.getMessage());
             }
         }
-        
-        // If this is the admin user, update the stored reference
         if (user.getId() == adminUser.getId()) {
             this.adminUser = user;
         }
-        
-        // Refresh the users data if needed
         loadUsersData();
     }
-    
-    // Helper method to show error messages
+
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -738,8 +754,7 @@ public class AdminDashboardController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
-    // Helper method to show info messages
+
     private void showInfo(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information");
@@ -747,91 +762,25 @@ public class AdminDashboardController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
-    // Helper method to confirm deletion
+
     private boolean confirmDelete(User user) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Delete");
         alert.setHeaderText("Delete User");
         alert.setContentText("Are you sure you want to delete " + user.getNom() + " " + user.getPrenom() + "?");
-        
-        Optional<ButtonType> result = alert.showAndWait();
-        return result.isPresent() && result.get() == ButtonType.OK;
+        return alert.showAndWait().map(result -> result == ButtonType.OK).orElse(false);
     }
 
-
-    @FXML
-    private void showProfile() {
-        try {
-            // Check if the Profile tab already exists
-            Tab profileTab = null;
-            ProfileController profileController = null;
-            
-            for (Tab tab : mainTabPane.getTabs()) {
-                if ("Profile".equals(tab.getText())) {
-                    profileTab = tab;
-                    // Try to get the controller if the tab already exists
-                    if (tab.getContent() instanceof Parent) {
-                        Parent root = (Parent) tab.getContent();
-                        profileController = (ProfileController) root.getUserData();
-                    }
-                    break;
-                }
-            }
-
-            if (profileTab == null) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/profile.fxml"));
-                Parent profileRoot = loader.load();
-
-                // Pass the current admin user to the ProfileController
-                profileController = loader.getController();
-                // Store the controller in the root's user data for later access
-                profileRoot.setUserData(profileController);
-                
-                profileTab = new Tab("Profile", profileRoot);
-                profileTab.setClosable(true);
-                mainTabPane.getTabs().add(profileTab);
-            }
-
-            // Always refresh the user data when showing the profile tab
-            if (profileController != null) {
-                // Use the session user if available, otherwise fallback to adminUser
-                User user = Session.getInstance().getUtilisateurConnecte();
-                if (user == null) user = adminUser;
-                
-                // Get the latest user data from the database
-                User refreshedUser = UserDAO.getUserById(user.getId());
-                if (refreshedUser != null) {
-                    profileController.initData(refreshedUser);
-                } else {
-                    profileController.initData(user);
-                }
-            }
-
-            mainTabPane.getSelectionModel().select(profileTab);
-        } catch (IOException e) {
-            showError("Error loading profile: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-
-    // Make sure this is the last method in the class and the class has a proper closing brace
     @FXML
     private void handleAddUser(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/signup.fxml"));
             Parent root = loader.load();
             SignupController signupController = loader.getController();
-
-            // Create a new stage for the signup window
             Stage stage = new Stage();
             stage.setTitle("Add New User");
             stage.setScene(new Scene(root));
-
-            // Add a listener to refresh the users table when the signup window is closed
             stage.setOnHiding(e -> loadUsersData());
-
             stage.show();
         } catch (IOException e) {
             showError("Error opening add user window: " + e.getMessage());
@@ -841,7 +790,6 @@ public class AdminDashboardController {
 
     @FXML
     private void showUsersManagement() {
-        // Create a new tab for users management if it doesn't exist
         Tab usersTab = null;
         for (Tab tab : mainTabPane.getTabs()) {
             if (tab.getText().equals("Users Management")) {
@@ -849,58 +797,39 @@ public class AdminDashboardController {
                 break;
             }
         }
-    
         if (usersTab == null) {
             usersTab = new Tab("Users Management");
             usersTab.setClosable(true);
-    
-            // Create content for users management
             VBox content = new VBox(20);
             content.setPadding(new Insets(20));
             content.setStyle("-fx-background-color: white;");
-    
-            // Add search and filter controls
             HBox controls = new HBox(15);
             controls.setAlignment(Pos.CENTER_LEFT);
             searchField = new TextField();
             searchField.setPromptText("Search users...");
             searchField.setPrefWidth(300);
             filterRole = new ComboBox<>();
-            filterRole.getItems().addAll("ALL", "ADMIN", "MEDECIN", "PATIENT", "DONATEUR");
+            filterRole.getItems().addAll("ALL", "ROLE_ADMIN", "ROLE_MEDECIN", "ROLE_PATIENT", "ROLE_DONATEUR");
             filterRole.setValue("ALL");
             Button addUserBtn = new Button("Add User");
             addUserBtn.setOnAction(this::handleAddUser);
             controls.getChildren().addAll(searchField, filterRole, addUserBtn);
-    
-            // Add users grid
             usersGrid = new GridPane();
             usersGrid.setHgap(20);
             usersGrid.setVgap(20);
-    
-            // Add all components to content
             content.getChildren().addAll(controls, usersGrid);
-    
-            // Set the content and add the tab
             usersTab.setContent(content);
             mainTabPane.getTabs().add(usersTab);
         }
-    
-        // Select the users management tab
         mainTabPane.getSelectionModel().select(usersTab);
-
-        // Load users data
         loadUsersData();
     }
 
     @FXML
     private void showMedicationManagement() {
-
         try {
-            // Charger le fichier FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/medication_management.fxml"));
             Parent root = loader.load();
-
-            // Vider le contenu existant et ajouter le nouveau
             contentArea.getChildren().clear();
             contentArea.getChildren().add(root);
         } catch (IOException e) {
@@ -908,6 +837,7 @@ public class AdminDashboardController {
             e.printStackTrace();
         }
     }
+
     @FXML
     private void showOrderConfirmation() {
         try {
@@ -919,6 +849,7 @@ public class AdminDashboardController {
             showError("Erreur lors du chargement de la confirmation des commandes: " + e.getMessage());
         }
     }
+
     @FXML
     private void showReviewsStatistics() {
         try {
@@ -927,10 +858,11 @@ public class AdminDashboardController {
             contentArea.getChildren().clear();
             contentArea.getChildren().add(reviewsView);
         } catch (IOException e) {
-            e.printStackTrace();
             showError("Erreur lors du chargement des statistiques des avis: " + e.getMessage());
+            e.printStackTrace();
         }
     }
+
     @FXML
     private void showToDoList() {
         try {
@@ -939,48 +871,40 @@ public class AdminDashboardController {
             contentArea.getChildren().clear();
             contentArea.getChildren().add(root);
         } catch (IOException e) {
-            e.printStackTrace();
             showError("Erreur lors du chargement des statistiques des avis: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-
-
-
+    @FXML
     public void showSessions() {
         try {
-            // Load the RapportsAdmin.fxml view
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/viewSessions.fxml"));
             Parent root = loader.load();
-
-            // Set the loaded view into the contentArea
             contentArea.getChildren().clear();
             contentArea.getChildren().add(root);
         } catch (IOException e) {
+            showError("Failed to load viewSessions.fxml: " + e.getMessage());
             e.printStackTrace();
-            System.out.println("Failed to load RapportsAdmin.fxml. Please check the file path.");
         }
     }
+
+    @FXML
     public void showReports() {
         try {
-            // Load the RapportsAdmin.fxml view
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/RapportsAdmin.fxml"));
             Parent root = loader.load();
-
-            // Set the loaded view into the contentArea
             contentArea.getChildren().clear();
             contentArea.getChildren().add(root);
         } catch (IOException e) {
+            showError("Failed to load RapportsAdmin.fxml: " + e.getMessage());
             e.printStackTrace();
-            System.out.println("Failed to load RapportsAdmin.fxml. Please check the file path.");
         }
     }
+
     @FXML
     private void togglePharmacieMenu() {
         pharmacieSubMenu.setVisible(!pharmacieSubMenu.isVisible());
         pharmacieSubMenu.setManaged(!pharmacieSubMenu.isManaged());
     }
 }
-
-
-

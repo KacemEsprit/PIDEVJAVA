@@ -11,6 +11,7 @@ import com.pfe.nova.models.User;
 import com.pfe.nova.components.ChatbotView;
 import com.pfe.nova.services.EmailPostService;
 import com.pfe.nova.services.EmailPostTemplateService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,6 +34,8 @@ import javafx.scene.control.ButtonType;
 import java.util.Optional;
 import javax.sound.sampled.*;
 import java.time.format.DateTimeFormatter;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 
 public class PostListController {
     @FXML private VBox postsContainer;
@@ -296,35 +299,49 @@ public void openMessagesView() {
         return postBox;
     }
 
+
+
+
+
     @FXML
     private void handleApprovePost(Post post) {
+        System.out.println("handleApprovePost called on thread: " + Thread.currentThread().getName());
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Approve Post");
         confirmation.setHeaderText("Approve Post");
         confirmation.setContentText("Are you sure you want to approve this post?");
-
         Optional<ButtonType> result = confirmation.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
                 post.setStatus("approved");
                 PostDAO.updateStatus(post.getId(), "approved");
 
-                // Envoyer un email au propriétaire du post avec le template HTML
                 User postOwner = post.getUser();
                 if (postOwner != null && postOwner.getEmail() != null) {
-                    try {
-                       // EmailPostService emailPostService = new EmailPostService("benalibenalirania123@gmail.com", "qwdb odbp rkgd ihuy");
-                        String subject = "Votre publication a été approuvée";
-                        
-                        // Utiliser le template HTML
-                        String htmlContent = EmailPostTemplateService.getPostApprovalTemplate(postOwner, post);
-                        
-                      //  emailPostService.sendHtmlEmail(postOwner.getEmail(), subject, htmlContent);
-                        System.out.println("Email de notification envoyé à " + postOwner.getEmail());
-                    } catch (Exception e) {
-                        System.err.println("Erreur lors de l'envoi de l'email: " + e.getMessage());
-                        // Ne pas bloquer le processus d'approbation si l'envoi d'email échoue
-                    }
+                    // Create a separate thread with proper exception handling
+                    Thread emailThread = new Thread(() -> {
+                        try {
+                            // Set thread name for debugging
+                            Thread.currentThread().setName("EmailSenderThread");
+                            
+                            EmailPostService emailPostService = new EmailPostService("benalibenalirania123@gmail.com", "jwzu mmvp vsol qwuh");
+                            String subject = "Votre publication a été approuvée";
+                            String htmlContent = EmailPostTemplateService.getPostApprovalTemplate(postOwner, post);
+                            emailPostService.sendHtmlEmail(postOwner.getEmail(), subject, htmlContent);
+                            
+                            Platform.runLater(() -> {
+                                System.out.println("Email de notification envoyé à " + postOwner.getEmail());
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            System.err.println("Erreur lors de l'envoi de l'email: " + e.getMessage());
+                            Platform.runLater(() -> showError("Failed to send email notification: " + e.getMessage()));
+                        }
+                    });
+                    
+                    // Set as daemon thread so it doesn't prevent app from closing
+                    emailThread.setDaemon(true);
+                    emailThread.start();
                 }
 
                 Alert success = new Alert(Alert.AlertType.INFORMATION);
