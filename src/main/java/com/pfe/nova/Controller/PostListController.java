@@ -313,13 +313,13 @@ public void openMessagesView() {
                 User postOwner = post.getUser();
                 if (postOwner != null && postOwner.getEmail() != null) {
                     try {
-                        EmailPostService emailPostService = new EmailPostService("benalibenalirania123@gmail.com", "qwdb odbp rkgd ihuy");
+                       // EmailPostService emailPostService = new EmailPostService("benalibenalirania123@gmail.com", "qwdb odbp rkgd ihuy");
                         String subject = "Votre publication a été approuvée";
                         
                         // Utiliser le template HTML
                         String htmlContent = EmailPostTemplateService.getPostApprovalTemplate(postOwner, post);
                         
-                        emailPostService.sendHtmlEmail(postOwner.getEmail(), subject, htmlContent);
+                      //  emailPostService.sendHtmlEmail(postOwner.getEmail(), subject, htmlContent);
                         System.out.println("Email de notification envoyé à " + postOwner.getEmail());
                     } catch (Exception e) {
                         System.err.println("Erreur lors de l'envoi de l'email: " + e.getMessage());

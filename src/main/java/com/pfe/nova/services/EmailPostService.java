@@ -1,10 +1,22 @@
 package com.pfe.nova.services;
 
-import jakarta.mail.*;
-import jakarta.mail.internet.*;
+
+//import jakarta.mail.*;
+//import jakarta.mail.internet.*;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.util.Properties;
 
 public class EmailPostService {
+    /*
+}
     private final String username;
     private final String password;
     private final Properties props;
@@ -19,10 +31,12 @@ public class EmailPostService {
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
     }
+    */
 
     /**
      * Envoie un email en texte brut
      */
+    /*
     public void sendEmail(String recipient, String subject, String body) throws MessagingException {
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
@@ -40,9 +54,7 @@ public class EmailPostService {
         Transport.send(message);
     }
     
-    /**
-     * Envoie un email au format HTML
-     */
+
     public void sendHtmlEmail(String recipient, String subject, String htmlContent) throws MessagingException {
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
@@ -61,4 +73,6 @@ public class EmailPostService {
 
         Transport.send(message);
     }
+}
+*/
 }
