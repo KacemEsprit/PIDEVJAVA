@@ -107,7 +107,9 @@ public class CompagnieService implements IService<Compagnie> {
                         resultSet.getString("description"),
                         resultSet.getString("logo"),
                         resultSet.getString("siret"),
-                        resultSet.getString("statut_juridique")
+                        resultSet.getString("statut_juridique"),
+                        resultSet.getString("statut_validation"),
+                        resultSet.getInt("donateur_id")
                 );
                 compagnies.add(compagnie);
             }
@@ -154,7 +156,9 @@ public class CompagnieService implements IService<Compagnie> {
                         resultSet.getString("description"),
                         resultSet.getString("logo"),
                         resultSet.getString("siret"),
-                        resultSet.getString("statut_juridique")
+                        resultSet.getString("statut_juridique"),
+                        resultSet.getString("statut_validation"),
+                        resultSet.getInt("donateur_id")
                     );
                     compagnies.add(compagnie);
                 }
@@ -166,6 +170,121 @@ public class CompagnieService implements IService<Compagnie> {
         return compagnies;
     }
 
+    public void confirmerCompagnie(int id) throws SQLException {
+        String sql = "UPDATE compagnie SET statut_validation = ? WHERE id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, "CONFIRMEE");
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    public void rejeterCompagnie(int id) throws SQLException {
+        String sql = "UPDATE compagnie SET statut_validation = ? WHERE id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, "REJETEE");
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    /**
+     * Récupère uniquement les compagnies validées (statut CONFIRMEE)
+     */
+    public List<Compagnie> recupererValidees() {
+        List<Compagnie> compagnies = new ArrayList<>();
+        String query = "SELECT * FROM compagnie WHERE statut_validation = 'CONFIRMEE'";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Compagnie compagnie = new Compagnie(
+                        resultSet.getInt("id"),
+                        resultSet.getString("nom"),
+                        resultSet.getString("adresse"),
+                        resultSet.getString("tel"),
+                        resultSet.getString("email"),
+                        resultSet.getString("site_web"),
+                        resultSet.getString("description"),
+                        resultSet.getString("logo"),
+                        resultSet.getString("siret"),
+                        resultSet.getString("statut_juridique"),
+                        resultSet.getString("statut_validation"),
+                        resultSet.getInt("donateur_id")
+                );
+                compagnies.add(compagnie);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return compagnies;
+    }
+
+    public List<Compagnie> recupererNonValidees() {
+        List<Compagnie> compagnies = new ArrayList<>();
+        String query = "SELECT * FROM compagnie WHERE statut_validation != 'CONFIRMEE'";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Compagnie compagnie = new Compagnie(
+                        resultSet.getInt("id"),
+                        resultSet.getString("nom"),
+                        resultSet.getString("adresse"),
+                        resultSet.getString("tel"),
+                        resultSet.getString("email"),
+                        resultSet.getString("site_web"),
+                        resultSet.getString("description"),
+                        resultSet.getString("logo"),
+                        resultSet.getString("siret"),
+                        resultSet.getString("statut_juridique"),
+                        resultSet.getString("statut_validation"),
+                        resultSet.getInt("donateur_id")
+                );
+                compagnies.add(compagnie);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return compagnies;
+    }
+
+    // Nouvelle méthode pour récupérer les compagnies d'un donateur spécifique
+    public List<Compagnie> recupererParDonateurId(int donateurId) {
+        List<Compagnie> compagnies = new ArrayList<>();
+        String query = "SELECT * FROM compagnie WHERE donateur_id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, donateurId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Compagnie compagnie = new Compagnie(
+                        resultSet.getInt("id"),
+                        resultSet.getString("nom"),
+                        resultSet.getString("adresse"),
+                        resultSet.getString("tel"),
+                        resultSet.getString("email"),
+                        resultSet.getString("site_web"),
+                        resultSet.getString("description"),
+                        resultSet.getString("logo"),
+                        resultSet.getString("siret"),
+                        resultSet.getString("statut_juridique"),
+                        resultSet.getString("statut_validation"),
+                        resultSet.getInt("donateur_id")
+                    );
+                    compagnies.add(compagnie);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return compagnies;
+    }
 
     public void close() throws SQLException {
         if (connection != null && !connection.isClosed()) {

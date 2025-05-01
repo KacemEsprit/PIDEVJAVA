@@ -125,6 +125,24 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 3, 0, 0, 1);
 }
 
+.don-button-pay {
+    -fx-background-color: #e67e22;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-padding: 8 28;
+    -fx-effect: dropshadow(three-pass-box, rgba(230,126,34,0.13), 8, 0, 0, 2);
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-border-color: #d35400;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+}
+
+.don-button-pay:hover {
+    -fx-background-color: #f39c12;
+    -fx-effect: dropshadow(three-pass-box, rgba(241,196,15,0.18), 10, 0, 0, 3);
+}
 
 .don-table {
     -fx-background-color: white;

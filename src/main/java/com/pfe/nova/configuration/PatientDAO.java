@@ -1,10 +1,6 @@
 package com.pfe.nova.configuration;
 
-import com.pfe.nova.models.Medecin;
 import com.pfe.nova.models.Patient;
-import com.pfe.nova.models.User;
-import com.pfe.nova.utils.Session;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

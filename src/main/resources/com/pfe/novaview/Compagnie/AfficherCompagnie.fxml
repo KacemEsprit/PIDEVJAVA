@@ -10,6 +10,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.control.ComboBox?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.pfe.nova.Controller.Compagnie.AfficherCompagnieController"
@@ -32,7 +33,7 @@
                 <padding>
                     <Insets top="10" right="20" bottom="10" left="20"/>
                 </padding>
-
+                <ComboBox fx:id="statutFilterComboBox" promptText="Filtrer par statut..." prefWidth="170"/>
                 <HBox HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT" spacing="10">
                     <TextField fx:id="searchField" promptText="Rechercher une compagnie..." prefWidth="250"/>
                     <Button text="Rechercher" styleClass="compagnie-button" onAction="#rechercherCompagnies"/>
@@ -63,4 +64,3 @@
         </HBox>
     </bottom>
 </BorderPane>
-

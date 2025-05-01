@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.HBox?>
@@ -9,7 +9,6 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -42,7 +41,6 @@
                 </Label>
                 <Text text="Liste des dons enregistrés" fill="white" style="-fx-font-size: 14px;"/>
 
-
                 <HBox spacing="10" alignment="CENTER_LEFT" styleClass="don-toolbar">
                     <padding>
                         <Insets top="10" right="20" bottom="10" left="20"/>
@@ -61,47 +59,31 @@
     </top>
 
     <center>
-        <VBox styleClass="don-content" spacing="20">
-            <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
-            </padding>
-            <effect>
-                <DropShadow color="rgba(0,0,0,0.2)" radius="15" spread="0.05" />
-            </effect>
-            <TableView fx:id="tableview" styleClass="don-table">
-                <columns>
-                    <TableColumn fx:id="idCol" text="ID" prefWidth="50"/>
-                    <TableColumn fx:id="typeDonCol" text="Type de Don" prefWidth="100"/>
-                    <TableColumn fx:id="montantCol" text="Montant" prefWidth="100"/>
-                    <TableColumn fx:id="descriptionCol" text="Description" prefWidth="150"/>
-                    <TableColumn fx:id="dateDonCol" text="Date" prefWidth="100"/>
-                    <TableColumn fx:id="modePaiementCol" text="Mode de Paiement" prefWidth="120"/>
-                    <TableColumn fx:id="preuveDonCol" text="Preuve" prefWidth="100"/>
-                    <TableColumn fx:id="campagneIdCol" text="Campagne ID" prefWidth="100"/>
-                </columns>
-            </TableView>
-        </VBox>
+        <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="don-scroll-pane">
+            <content>
+                <FlowPane fx:id="cardContainer" styleClass="don-card-container" hgap="20" vgap="20">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+                    <HBox.margin>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </HBox.margin>
+                </FlowPane>
+            </content>
+        </ScrollPane>
     </center>
 
     <bottom>
-        <HBox alignment="CENTER_LEFT" styleClass="don-toolbar">
+        <HBox alignment="CENTER" spacing="20" styleClass="don-footer">
             <padding>
-                <Insets top="15" right="30" bottom="15" left="30"/>
+                <Insets top="15" right="20" bottom="15" left="20"/>
             </padding>
-            <Label text="Total des dons: " style="-fx-font-weight: bold;">
-                <font>
-                    <Font size="14"/>
-                </font>
-            </Label>
-            <Label fx:id="lblTotalDons" text="0">
-                <font>
-                    <Font size="14"/>
-                </font>
-            </Label>
+            <Label text="Total des dons : " styleClass="don-total-label"/>
+            <Label fx:id="lblTotalDons" text="0" styleClass="don-total-value"/>
+        
             <effect>
                 <DropShadow color="rgba(0,0,0,0.2)" radius="5" spread="0.05" />
             </effect>
         </HBox>
     </bottom>
 </BorderPane>
-

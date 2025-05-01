@@ -1,33 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.Region?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.pfe.nova.Controller.DonController.AjouterDonController"
+            style="-fx-background-color: white;"
             styleClass="don-container"
-            stylesheets="@../styles/don.css"
-            prefWidth="1000" prefHeight="700">
+            stylesheets="@../styles/don.css">
 
+    <!-- Top Section: Header -->
     <top>
         <StackPane>
-            <Rectangle width="1000" height="120" styleClass="don-header-background" arcWidth="10" arcHeight="10">
+            <Rectangle arcWidth="10" arcHeight="10" styleClass="don-header-background">
                 <effect>
                     <DropShadow color="rgba(0,0,0,0.3)" radius="10" spread="0.05" />
                 </effect>
@@ -36,7 +25,8 @@
                 <padding>
                     <Insets left="40" right="40" top="20" bottom="20"/>
                 </padding>
-                <Label text="Ajouter un Don" styleClass="don-title" alignment="CENTER">
+                <Label text="Ajouter un Don" styleClass="don-title" alignment="CENTER"
+                       style="-fx-text-fill: #3498db;"> <!-- Couleur bleu appliquée -->
                     <font>
                         <Font name="System Bold" size="26"/>
                     </font>
@@ -47,79 +37,128 @@
         </StackPane>
     </top>
 
+    <!-- Center Section: Form + Donation Image -->
     <center>
-        <ScrollPane fitToWidth="true" styleClass="don-form-scroll">
-            <GridPane styleClass="don-form" hgap="20" vgap="15">
-                <padding>
-                    <Insets top="20" right="30" bottom="20" left="30"/>
-                </padding>
-                <effect>
-                    <DropShadow color="rgba(0,0,0,0.2)" radius="15" spread="0.05" />
-                </effect>
+        <HBox spacing="30" alignment="TOP_LEFT">
+            <!-- Formulaire à gauche -->
+            <ScrollPane fitToWidth="true" HBox.hgrow="ALWAYS" styleClass="don-form-scroll">
+                <GridPane styleClass="don-form" hgap="20" vgap="15">
+                    <padding>
+                        <Insets top="20" right="30" bottom="20" left="30"/>
+                    </padding>
+                    <effect>
+                        <DropShadow color="rgba(0,0,0,0.2)" radius="15" spread="0.05" />
+                    </effect>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                        <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                    </columnConstraints>
 
-                <!-- Titre Section 1 -->
-                <Label text="Informations du Don" styleClass="subtitle"
-                       style="-fx-font-size: 18px; -fx-font-weight: bold;"
-                       GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="4"/>
-                <Separator styleClass="separator" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="4"/>
+                    <!-- Section 1: Informations du Don -->
+                    <Label text="Informations du Don" styleClass="subtitle"
+                           style="-fx-font-size: 18px; -fx-font-weight: bold;"
+                           GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="4"/>
+                    <Separator styleClass="separator" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="4"/>
 
-                <!-- Première colonne -->
-                <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                    <Region styleClass="field-icon-type" minWidth="24" minHeight="24"/>
-                    <Label text="Type de Don :" styleClass="field-label"/>
-                    <ComboBox fx:id="cbTypeDon" promptText="Sélectionnez un type" HBox.hgrow="ALWAYS" styleClass="field-input"/>
-                </HBox>
+                    <!-- Première colonne -->
+                    <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                        <ImageView fitWidth="24" fitHeight="24" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@icons/type.png" />
+                            </image>
+                        </ImageView>
+                        <Label text="Type de Don :" styleClass="field-label"/>
+                        <ComboBox fx:id="cbTypeDon" promptText="Sélectionnez un type" HBox.hgrow="ALWAYS" styleClass="field-input"/>
+                    </HBox>
 
-                <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                    <Region styleClass="field-icon-company" minWidth="24" minHeight="24"/>
-                    <Label text="Compagnie :" styleClass="field-label"/>
-                    <ComboBox fx:id="cbCompagnie" promptText="Sélectionnez une compagnie" HBox.hgrow="ALWAYS" styleClass="field-input"/>
-                </HBox>
+                    <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <ImageView fitWidth="24" fitHeight="24" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@icons/company.png" />
+                            </image>
+                        </ImageView>
+                        <Label text="Compagnie :" styleClass="field-label"/>
+                        <ComboBox fx:id="cbCompagnie" promptText="Sélectionnez une compagnie" HBox.hgrow="ALWAYS" styleClass="field-input"/>
+                    </HBox>
 
-                <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                    <Region styleClass="field-icon-money" minWidth="24" minHeight="24"/>
-                    <Label text="Montant :" styleClass="field-label"/>
-                    <TextField fx:id="txtMontant" promptText="Montant du don" HBox.hgrow="ALWAYS" styleClass="field-input"/>
-                </HBox>
+                    <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                        <ImageView fitWidth="24" fitHeight="24" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@icons/money.png" />
+                            </image>
+                        </ImageView>
+                        <Label text="Montant :" styleClass="field-label"/>
+                        <TextField fx:id="txtMontant" promptText="Montant du don" HBox.hgrow="ALWAYS" styleClass="field-input"/>
+                    </HBox>
 
-                <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                    <Region styleClass="field-icon-calendar" minWidth="24" minHeight="24"/>
-                    <Label text="Date du Don :" styleClass="field-label"/>
-                    <DatePicker fx:id="dpDateDon" promptText="Sélectionnez une date" HBox.hgrow="ALWAYS" styleClass="field-input"/>
-                </HBox>
+                    <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <ImageView fitWidth="24" fitHeight="24" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@icons/calendar.png" />
+                            </image>
+                        </ImageView>
+                        <Label text="Date du Don :" styleClass="field-label"/>
+                        <DatePicker fx:id="dpDateDon" promptText="Sélectionnez une date" HBox.hgrow="ALWAYS" styleClass="field-input"/>
+                    </HBox>
 
-                <VBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2">
-                    <Region styleClass="field-icon-description" minWidth="24" minHeight="24"/>
-                    <Label text="Description :" styleClass="field-label"/>
-                    <TextArea fx:id="txtDescriptionMateriel" promptText="Description du matériel" styleClass="field-input" prefRowCount="5" prefColumnCount="30"/>
-                </VBox>
-
-                <!-- Titre Section 2 -->
-                <Label text="Informations Complémentaires" styleClass="subtitle"
-                       style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 10 0 0 0;"
-                       GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="4"/>
-                <Separator styleClass="separator" GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.columnSpan="4"/>
-
-                <!-- Les champs ID Donateur et ID Campagne ont été supprimés -->
-
-                <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="0" GridPane.rowIndex="7">
-                    <Region styleClass="field-icon-payment" minWidth="24" minHeight="24"/>
-                    <Label text="Mode de Paiement :" styleClass="field-label"/>
-                    <TextField fx:id="txtModePaiement" promptText="Mode de paiement utilisé" HBox.hgrow="ALWAYS" styleClass="field-input"/>
-                </HBox>
-
-                <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="7">
-                    <Region styleClass="field-icon-upload" minWidth="24" minHeight="24"/>
-                    <Label text="Preuve de Don :" styleClass="field-label"/>
-                    <VBox spacing="5" HBox.hgrow="ALWAYS">
-                        <Button text="Choisir un fichier" onAction="#choisirFichier" styleClass="don-button-upload"/>
-                        <Label fx:id="lblPreuveDon" text="Aucun fichier sélectionné" style="-fx-text-fill: gray;"/>
+                    <VBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2">
+                        <ImageView fitWidth="24" fitHeight="24" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@icons/description.png" />
+                            </image>
+                        </ImageView>
+                        <Label text="Description :" styleClass="field-label"/>
+                        <TextArea fx:id="txtDescriptionMateriel" promptText="Description du matériel" styleClass="field-input" prefRowCount="5" prefColumnCount="30"/>
                     </VBox>
-                </HBox>
-            </GridPane>
-        </ScrollPane>
+
+                    <!-- Section 2: Informations Complémentaires -->
+                    <Label text="Informations Complémentaires" styleClass="subtitle"
+                           style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 10 0 0 0;"
+                           GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="4"/>
+                    <Separator styleClass="separator" GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.columnSpan="4"/>
+
+                    <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                        <ImageView fitWidth="24" fitHeight="24" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@icons/upload.png" />
+                            </image>
+                        </ImageView>
+                        <Label text="Preuve de Don :" styleClass="field-label"/>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Button text="Choisir un fichier" onAction="#choisirFichier" styleClass="don-button-upload"/>
+                            <Label fx:id="lblPreuveDon" text="Aucun fichier sélectionné" style="-fx-text-fill: gray;"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field" GridPane.columnIndex="0" GridPane.rowIndex="8" visible="false" managed="false">
+                        <ImageView fitWidth="24" fitHeight="24" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@icons/payment.png" />
+                            </image>
+                        </ImageView>
+                        <Label text="Mode de Paiement :" styleClass="field-label"/>
+                        <TextField fx:id="txtModePaiement" promptText="Mode de paiement utilisé" HBox.hgrow="ALWAYS" styleClass="field-input"/>
+                    </HBox>
+                </GridPane>
+            </ScrollPane>
+            <!-- Image illustrative à droite -->
+            <VBox alignment="TOP_CENTER" spacing="15" prefWidth="350">
+                <ImageView fitWidth="300" preserveRatio="true">
+                    <image>
+                        <Image url="@icons/donation.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitWidth="300" preserveRatio="true">
+                    <image>
+                        <Image url="@icons/helping_hand.png" />
+                    </image>
+                </ImageView>
+                <Label text="Faites un geste, donnez !" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #3498db;" />
+            </VBox>
+        </HBox>
     </center>
 
+    <!-- Bottom Section: Toolbar -->
     <bottom>
         <HBox alignment="CENTER_RIGHT" spacing="15" styleClass="don-toolbar">
             <padding>
@@ -130,9 +169,10 @@
                     <DropShadow color="rgba(0,0,0,0.3)" radius="5" spread="0.1" />
                 </effect>
             </Button>
+            <Button fx:id="btnPayer" text="Payer avec stripe" visible="false" managed="false" styleClass="don-button-pay" onAction="#handlePayer" />
             <Button text="Ajouter Don" onAction="#ajouterDon" styleClass="don-button-add">
                 <effect>
-                    <DropShadow color="rgba(0,0,0,0.3)" radius="5" spread="0.1" />
+                    <DropShadow color="rgba(83, 178, 202, 0.3)" radius="5" spread="0.1" />
                 </effect>
             </Button>
         </HBox>

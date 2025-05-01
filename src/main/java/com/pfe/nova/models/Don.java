@@ -13,6 +13,9 @@ public class Don {
     private String modePaiement;
     private String preuveDon;
     private String statut = "EN_ATTENTE";
+    private String donateur; // Pour affichage historique (nom/email)
+    private String beneficiaire; // Pour affichage historique (compagnie ou Individuel)
+    private String typeDonateur; // "Individuel" ou "Compagnie" pour affichage historique
 
     // Constructor without 'id' parameter
     public Don(String typeDon, double montant, String descriptionMateriel, Date dateDon, int donateurId, int campagneId, String modePaiement, String preuveDon) {
@@ -64,6 +67,9 @@ public class Don {
     public int getCampagneId() { return campagneId; }
     public String getModePaiement() { return modePaiement; }
     public String getPreuveDon() { return preuveDon; }
+    public String getDonateur() { return donateur; }
+    public String getBeneficiaire() { return beneficiaire; }
+    public String getTypeDonateur() { return typeDonateur; }
 
     // Setters
     public void setId(int id) { this.id = id; }
@@ -75,6 +81,9 @@ public class Don {
     public void setCampagneId(int campagneId) { this.campagneId = campagneId; }
     public void setModePaiement(String modePaiement) { this.modePaiement = modePaiement; }
     public void setPreuveDon(String preuveDon) { this.preuveDon = preuveDon; }
+    public void setDonateur(String donateur) { this.donateur = donateur; }
+    public void setBeneficiaire(String beneficiaire) { this.beneficiaire = beneficiaire; }
+    public void setTypeDonateur(String typeDonateur) { this.typeDonateur = typeDonateur; }
 
     // Getter and Setter for statut
     public String getStatut() { return statut; }

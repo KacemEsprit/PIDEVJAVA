@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.Scene?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Rectangle?>
+<BorderPane fx:id="rootPane" xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.pfe.nova.Controller.Don.HistoriqueDonController"
+            styleClass="compagnie-container"
+            stylesheets="@../styles/compagnie.css,@../styles/cards.css">
+    <top>
+        <VBox>
+            <VBox styleClass="compagnie-header">
+                <padding>
+                    <Insets top="15" right="20" bottom="15" left="20"/>
+                </padding>
+                <Label text="Historique des dons" styleClass="compagnie-title" alignment="CENTER" style="-fx-text-fill: white; -fx-font-size: 26px; -fx-font-weight: bold;"/>
+                <Label text="Statistiques sur les dons" style="-fx-font-size: 14px; -fx-text-fill: white;"/>
+            </VBox>
+            <VBox fx:id="statSection" style="-fx-padding: 10 30 0 30;">
+                <Separator style="-fx-padding: 0 0 10 0;"/>
+                <Label text="Statistiques" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
+                <VBox fx:id="chartContainer" />
+            </VBox>
+            <Separator style="-fx-padding: 10 0 10 0;"/>
+            <VBox fx:id="listSection" style="-fx-padding: 0 30 0 30;">
+                <Label text="Liste des dons enregistrés" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
+                <HBox spacing="12" alignment="CENTER_LEFT" style="-fx-padding: 10 0 10 0;">
+                    <Label text="Filtrer par type :" style="-fx-text-fill: #34495e; -fx-font-size: 14px;"/>
+                    <ComboBox fx:id="typeDonFilter" promptText="Tous" prefWidth="160" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="edge-to-edge">
+            <FlowPane fx:id="cardsContainer" styleClass="card-grid" hgap="20" vgap="20">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+            </FlowPane>
+        </ScrollPane>
+    </center>
+</BorderPane>

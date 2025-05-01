@@ -14,6 +14,7 @@ public class Compagnie {
     private java.util.Date dateCreation;
     private String statut_juridique;
     private String statut_validation = "EN_ATTENTE";
+    private int donateurId;
 
     // Constructeur sans ID (pour les ajouts)
     public Compagnie(String nom, String adresse, String telephone, String email, String siteWeb, String description, String logo, String siret, String statut_juridique) {
@@ -55,6 +56,37 @@ public class Compagnie {
         this.logo = logo;
         this.siret = siret;
         this.statut_juridique = statut_juridique;
+    }
+
+    // Constructeur avec ID (pour la récupération depuis la base de données)
+    public Compagnie(int id, String nom, String adresse, String telephone, String email, String siteWeb, String description, String logo, String siret, String statut_juridique, String statut_validation) {
+        this.id = id;
+        this.nom = nom;
+        this.adresse = adresse;
+        this.telephone = telephone;
+        this.email = email;
+        this.siteWeb = siteWeb;
+        this.description = description;
+        this.logo = logo;
+        this.siret = siret;
+        this.statut_juridique = statut_juridique;
+        this.statut_validation = statut_validation;
+    }
+
+    // Constructeur avec ID (pour la récupération depuis la base de données)
+    public Compagnie(int id, String nom, String adresse, String telephone, String email, String siteWeb, String description, String logo, String siret, String statut_juridique, String statut_validation, int donateurId) {
+        this.id = id;
+        this.nom = nom;
+        this.adresse = adresse;
+        this.telephone = telephone;
+        this.email = email;
+        this.siteWeb = siteWeb;
+        this.description = description;
+        this.logo = logo;
+        this.siret = siret;
+        this.statut_juridique = statut_juridique;
+        this.statut_validation = statut_validation;
+        this.donateurId = donateurId;
     }
 
     // Getters et setters
@@ -154,6 +186,13 @@ public class Compagnie {
         this.statut_validation = statut_validation;
     }
 
+    public int getDonateurId() {
+        return donateurId;
+    }
+
+    public void setDonateurId(int donateurId) {
+        this.donateurId = donateurId;
+    }
 
     @Override
     public String toString() {

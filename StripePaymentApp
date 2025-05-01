@@ -1,0 +1,63 @@
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+import java.awt.Desktop;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import org.json.JSONObject; // tu peux ajouter json-simple ou org.json
+
+public class StripePaymentApp extends Application {
+
+    private static final String BACKEND_URL = "http://localhost/create_checkout.php"; // Ton backend API
+
+    @Override
+    public void start(Stage primaryStage) {
+        Button payButton = new Button("Faire un Don");
+
+        payButton.setOnAction(e -> {
+            try {
+                String paymentUrl = createCheckoutSession();
+                if (paymentUrl != null) {
+                    Desktop.getDesktop().browse(new URI(paymentUrl));
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        StackPane root = new StackPane(payButton);
+        Scene scene = new Scene(root, 300, 200);
+
+        primaryStage.setTitle("Don avec Stripe");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private String createCheckoutSession() throws Exception {
+        URL url = new URL(BACKEND_URL);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        JSONObject json = new JSONObject(response.toString());
+        return json.getString("url"); // Récupère l'URL Stripe Checkout
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}

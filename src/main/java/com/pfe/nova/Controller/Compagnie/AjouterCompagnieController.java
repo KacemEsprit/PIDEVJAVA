@@ -2,6 +2,7 @@ package com.pfe.nova.Controller.Compagnie;
 
 import com.pfe.nova.models.Compagnie;
 import com.pfe.nova.services.CompagnieService;
+import com.pfe.nova.utils.ImageUploader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -103,8 +104,13 @@ public class AjouterCompagnieController {
             String email = txtEmail.getText();
             String siteWeb = txtSiteWeb.getText();
             String description = txtDescription.getText();
-            String logo = fichierLogo.getAbsolutePath(); // Chemin complet du fichier
             String siret = txtSiret.getText(); // Récupérer la valeur du SIRET
+
+            // Upload du logo et récupération de l'URL
+            String logoUrl = ImageUploader.uploadImage(fichierLogo);
+
+            // Créer un objet Compagnie avec le chemin relatif ou l'URL du logo
+            Compagnie compagnie = new Compagnie(nom, adresse, telephone, email, siteWeb, description, logoUrl, siret);
 
             // Debug statements
             System.out.println("Nom: " + nom);
@@ -113,11 +119,8 @@ public class AjouterCompagnieController {
             System.out.println("Email: " + email);
             System.out.println("Site Web: " + siteWeb);
             System.out.println("Description: " + description);
-            System.out.println("Logo: " + logo);
+            System.out.println("Logo: " + logoUrl);
             System.out.println("SIRET: " + siret);
-
-            // Créer un objet Compagnie
-            Compagnie compagnie = new Compagnie(nom, adresse, telephone, email, siteWeb, description, logo, siret);
 
             // Ajouter la compagnie à la base de données
             CompagnieService compagnieService = new CompagnieService();
@@ -182,7 +185,3 @@ public class AjouterCompagnieController {
         alert.showAndWait();
     }
 }
-
-
-
-

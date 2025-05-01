@@ -11,7 +11,7 @@ import java.util.UUID;
 public class ImageUploader {
     
     // The base directory where images will be stored on the server
-    private static final String SERVER_IMAGE_DIR = "D:/xampp12/htdocs/img/";
+    private static final String SERVER_IMAGE_DIR = "C:/xampp/htdocs/img/";
     
     // The URL prefix for accessing the images
     private static final String IMAGE_URL_PREFIX = "http://127.0.0.1/img/";
@@ -38,7 +38,14 @@ public class ImageUploader {
         // Copy the file to the server directory
         Path sourcePath = imageFile.toPath();
         Path targetPath = Paths.get(SERVER_IMAGE_DIR + uniqueFilename);
-        Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+        try {
+            Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("[ImageUploader] Image successfully copied to: " + targetPath);
+        } catch (IOException e) {
+            System.err.println("[ImageUploader] ERROR copying image to: " + targetPath);
+            e.printStackTrace();
+            throw e;
+        }
         
         // Return the URL to access the image
         return IMAGE_URL_PREFIX + uniqueFilename;

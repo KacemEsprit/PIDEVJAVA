@@ -5,7 +5,10 @@ module com.pfe.nova {
     requires transitive javafx.graphics;
     requires java.sql;
     requires jbcrypt;
-
+    requires com.google.gson;
+    requires com.google.zxing;
+    requires com.google.zxing.javase;
+    requires jakarta.mail;
     opens com.pfe.nova to javafx.fxml;
     opens com.pfe.nova.Application to javafx.graphics;
     opens com.pfe.nova.models to javafx.fxml;
@@ -16,7 +19,7 @@ module com.pfe.nova {
     exports com.pfe.nova.Application;
     exports com.pfe.nova.Controller;
     exports com.pfe.nova.models;
-
+    exports com.pfe.nova.utils;
     exports com.pfe.nova.Controller.Don;
     exports com.pfe.nova.Controller.DonController;
 

@@ -70,13 +70,20 @@
                         <padding>
                             <Insets top="10" right="10" bottom="10" left="10"/>
                         </padding>
-                        <Label text="Chargement de l'interface de gestion des compagnies..." style="-fx-font-size: 14px;"/>
-                        <ProgressIndicator/>
+                        <!-- The AfficherCompagnie.fxml will be loaded dynamically -->
+                    </VBox>
+                </Tab>
+                <!-- Tab for Historique de dons -->
+                <Tab text="Historique des dons" closable="false">
+                    <VBox spacing="10" alignment="CENTER">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </padding>
+                        <Button text="Afficher l'historique des dons" onAction="#showHistoriqueDon" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-size: 14px;"/>
+                        <!-- HistoriqueDon.fxml sera chargé dynamiquement -->
                     </VBox>
                 </Tab>
                 
-                <!-- Tab for Historique de dons -->
-
             </TabPane>
         </StackPane>
     </center>

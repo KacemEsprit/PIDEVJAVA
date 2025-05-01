@@ -155,4 +155,47 @@ public class DonService implements IService<Don> {
         }
         return dons;
     }
+
+    // Récupérer tous les dons pour l'historique admin (tous donateurs, toutes compagnies ou individuels)
+    public List<Don> recupererTousLesDons() {
+        List<Don> dons = new ArrayList<>();
+        String sql = "SELECT d.id, d.type_don, d.montant, d.description_materiel, d.date_don, d.donateur_id, d.campagne_id, d.mode_paiement, d.preuve_don, d.statut, " +
+                "COALESCE(u.nom, u.email) AS donateur, " +
+                "CASE WHEN d.campagne_id IS NOT NULL THEN (SELECT nom FROM compagnie WHERE id = (SELECT compagnie_id FROM campagne WHERE id = d.campagne_id)) ELSE 'Individuel' END AS beneficiaire, " +
+                "u.donateur_type AS typeDonateur " +
+                "FROM don d LEFT JOIN user u ON d.donateur_id = u.id ORDER BY d.date_don DESC";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet rs = statement.executeQuery()) {
+            while (rs.next()) {
+                Don don = new Don(
+                        rs.getInt("id"),
+                        rs.getString("type_don"),
+                        rs.getDouble("montant"),
+                        rs.getString("description_materiel"),
+                        rs.getDate("date_don"),
+                        rs.getInt("donateur_id"),
+                        rs.getInt("campagne_id"),
+                        rs.getString("mode_paiement"),
+                        rs.getString("preuve_don")
+                );
+                don.setStatut(rs.getString("statut"));
+                don.setDonateur(rs.getString("donateur"));
+                don.setBeneficiaire(rs.getString("beneficiaire"));
+                String typeDonateur = rs.getString("typeDonateur");
+                if (typeDonateur == null || typeDonateur.isEmpty()) {
+                    typeDonateur = "Individuel";
+                } else if (typeDonateur.equalsIgnoreCase("COMPAGNIE")) {
+                    typeDonateur = "Compagnie";
+                } else {
+                    typeDonateur = "Individuel";
+                }
+                don.setTypeDonateur(typeDonateur);
+                dons.add(don);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dons;
+    }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+<VBox fx:id="rootVBox" spacing="16" styleClass="don-card" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pfe.nova.Controller.Don.DonCardController" prefWidth="400" maxWidth="420" minWidth="380" prefHeight="300">
+    <HBox spacing="12" alignment="CENTER_LEFT">
+        <Label fx:id="lblTypeDon" styleClass="don-card-title" style="-fx-font-size: 18px;"/>
+        <Label fx:id="lblMontant" styleClass="don-card-montant" style="-fx-font-size: 16px;"/>
+    </HBox>
+    <Text fx:id="txtDescription" wrappingWidth="370" styleClass="don-card-desc" style="-fx-font-size: 15px;"/>
+    <HBox spacing="12" alignment="CENTER_LEFT">
+        <Label fx:id="lblDate" styleClass="don-card-date" style="-fx-font-size: 14px;"/>
+        <Label fx:id="lblModePaiement" styleClass="don-card-mode" style="-fx-font-size: 14px;"/>
+    </HBox>
+    <HBox spacing="12" alignment="CENTER_LEFT">
+        <Label fx:id="lblPreuve" styleClass="don-card-preuve" style="-fx-font-size: 14px;"/>
+        <Label fx:id="lblCampagneId" styleClass="don-card-campagne" style="-fx-font-size: 14px;"/>
+    </HBox>
+    <HBox spacing="12" alignment="CENTER_LEFT">
+        <Label fx:id="lblDonateur" styleClass="don-card-donateur" style="-fx-font-size: 14px;"/>
+        <Label fx:id="lblTypeDonateur" styleClass="don-card-typedonateur" style="-fx-font-size: 14px;"/>
+        <Label fx:id="lblBeneficiaire" styleClass="don-card-beneficiaire" style="-fx-font-size: 14px;"/>
+    </HBox>
+    <padding>
+        <Insets top="18" right="18" bottom="18" left="18"/>
+    </padding>
+</VBox>

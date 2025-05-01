@@ -16,6 +16,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import java.io.IOException;
 import java.sql.SQLException; 
+import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -25,11 +26,13 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import java.util.Optional;
+
 public class AdminDashboardController {
     @FXML private Label welcomeLabel;
     @FXML private Button logoutButton;
     @FXML private StackPane contentArea;
     @FXML private TabPane mainTabPane;
+    @FXML private Tab tabGestionCompagnie;
     @FXML private TableView<User> usersTable;
     @FXML private TextField searchField;
     @FXML private ComboBox<String> filterRole;
@@ -56,6 +59,23 @@ public class AdminDashboardController {
             sessionTestLabel.setText("Session User: " + sessionUser.getEmail());
         } else {
             sessionTestLabel.setText("No user in session.");
+        }
+        // Ajout d'un listener pour charger dynamiquement la gestion compagnie
+        if (mainTabPane != null) {
+            mainTabPane.getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
+                if (newTab != null) {
+                    if ("Gestion Compagnie".equals(newTab.getText())) {
+                        showGestionCompagnie();
+                    }
+                    if ("Historique des dons".equals(newTab.getText())) {
+                        showHistoriqueDon();
+                    }
+                }
+            });
+        }
+        // Ajout automatique du chargement de la gestion compagnie si admin et tab présent
+        if (tabGestionCompagnie != null && sessionUser != null && "ADMIN".equalsIgnoreCase(sessionUser.getRole())) {
+            showGestionCompagnie();
         }
     }
 //    @FXML
@@ -286,46 +306,44 @@ public class AdminDashboardController {
 
         // Load posts in background thread
         ProgressIndicator finalProgressIndicator = progressIndicator;
-        ProgressIndicator finalProgressIndicator1 = progressIndicator;
         Thread loadThread = new Thread(() -> {
+            final List<Post> pendingPosts;
             try {
-                // Get pending posts from database
-                List<Post> pendingPosts = PostDAO.findByStatus("pending");
-
-                // Update UI on JavaFX thread
+                pendingPosts = PostDAO.findByStatus("pending");
+            } catch (SQLException e) {
                 javafx.application.Platform.runLater(() -> {
-                    try {
-                        // Hide loading indicator
-                        finalProgressIndicator.setVisible(false);
-
-                        if (pendingPosts.isEmpty()) {
-                            Label noPostsLabel = new Label("No pending posts to display");
-                            noPostsLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #666;");
-                            postsContainer.getChildren().add(noPostsLabel);
-                        } else {
-                            Label countLabel = new Label("Found " + pendingPosts.size() + " pending posts");
-                            countLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #666; -fx-padding: 0 0 10 0;");
-                            postsContainer.getChildren().add(countLabel);
-
-                            // Add each post to the container
-                            for (Post post : pendingPosts) {
-                                VBox postView = createPendingPostView(post);
-                                postsContainer.getChildren().add(postView);
-                            }
-                        }
-                    } catch (Exception e) {
-                        finalProgressIndicator.setVisible(false);
-                        showError("Error displaying posts: " + e.getMessage());
-                        e.printStackTrace();
-                    }
+                    finalProgressIndicator.setVisible(false);
+                    showError("Erreur lors de la récupération des posts : " + e.getMessage());
                 });
-            } catch (Exception e) {
-                javafx.application.Platform.runLater(() -> {
-                    finalProgressIndicator1.setVisible(false);
-                    showError("Error loading posts: " + e.getMessage());
-                    e.printStackTrace();
-                });
+                return;
             }
+
+            // Update UI on JavaFX thread
+            javafx.application.Platform.runLater(() -> {
+                try {
+                    // Hide loading indicator
+                    finalProgressIndicator.setVisible(false);
+
+                    if (pendingPosts.isEmpty()) {
+                        Label noPostsLabel = new Label("No pending posts to display");
+                        noPostsLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #666;");
+                        postsContainer.getChildren().add(noPostsLabel);
+                    } else {
+                        Label countLabel = new Label("Found " + pendingPosts.size() + " pending posts");
+                        countLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #666; -fx-padding: 0 0 10 0;");
+                        postsContainer.getChildren().add(countLabel);
+
+                        // Add each post to the container
+                        for (Post post : pendingPosts) {
+                            VBox postView = createPendingPostView(post);
+                            postsContainer.getChildren().add(postView);
+                        }
+                    }
+                } catch (Exception e) {
+                    finalProgressIndicator.setVisible(false);
+                    showError("Error displaying posts: " + e.getMessage());
+                }
+            });
         });
 
         loadThread.setDaemon(true);
@@ -593,6 +611,84 @@ public class AdminDashboardController {
         }
     }
 
+    @FXML
+    private void showGestionCompagnie() {
+        try {
+            VBox compagnieContent = new VBox(10);
+            compagnieContent.setPadding(new Insets(20));
+            compagnieContent.setStyle("-fx-background-color: white;");
 
-    // Make sure this is the last method in the class and the class has a proper closing brace
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/Compagnie/AfficherCompagnie.fxml"));
+            Parent compagnieRoot = loader.load();
+            // Passage de l'id du donateur connecté au contrôleur
+            Object controller = loader.getController();
+            if (controller instanceof com.pfe.nova.Controller.Compagnie.AfficherCompagnieController) {
+                com.pfe.nova.Controller.Compagnie.AfficherCompagnieController compController = (com.pfe.nova.Controller.Compagnie.AfficherCompagnieController) controller;
+                // Récupérer l'utilisateur connecté (doit être un Donateur)
+                com.pfe.nova.models.User user = com.pfe.nova.utils.Session.getCurrentUser();
+                if (user instanceof com.pfe.nova.models.Donateur) {
+                    int donateurId = user.getId();
+                    compController.setDonateurIdConnecte(donateurId);
+                }
+            }
+            compagnieContent.getChildren().add(compagnieRoot);
+
+            Tab compagnieTab = null;
+            for (Tab tab : mainTabPane.getTabs()) {
+                if (tab.getText().equals("Gestion Compagnie")) {
+                    compagnieTab = tab;
+                    break;
+                }
+            }
+            if (compagnieTab == null) {
+                compagnieTab = new Tab("Gestion Compagnie");
+                compagnieTab.setContent(compagnieContent);
+                compagnieTab.setClosable(false);
+                mainTabPane.getTabs().add(compagnieTab);
+            } else {
+                // Update existing tab content
+                compagnieTab.setContent(compagnieContent);
+            }
+            mainTabPane.getSelectionModel().select(compagnieTab);
+        } catch (IOException e) {
+            showError("Erreur lors du chargement de la gestion des compagnies : " + e.getMessage());
+        }
+    }
+    
+    private void rafraichirTable() {
+        try {
+            // chargerDonnees(); // Si tu veux rafraîchir une liste, décommente et implémente cette méthode
+            afficherMessage("Info", "Méthode rafraichirTable appelée.");
+        } catch (Exception e) { 
+            afficherMessage("Erreur", "Erreur lors du rafraîchissement : " + e.getMessage());
+        }
+    }
+
+    private void afficherMessage(String titre, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titre);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    // Affiche la vue historique des dons dans l'onglet dédié
+    @FXML
+    private void showHistoriqueDon() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/Don/HistoriqueDon.fxml"));
+            Parent historiqueDonView = loader.load();
+            // On remplace le contenu du tab par la vue dynamique
+            TabPane tabPane = mainTabPane;
+            for (Tab tab : tabPane.getTabs()) {
+                if ("Historique des dons".equals(tab.getText())) {
+                    tab.setContent(historiqueDonView);
+                    tabPane.getSelectionModel().select(tab);
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -303,19 +304,47 @@ public class DashboardController {
     @FXML
     private void handleFaireDon() {
         try {
-            String fxmlPath;
-            String title;
-            if (currentUser instanceof Donateur donateur && "individuel".equalsIgnoreCase(donateur.getDonateurType())) {
-                fxmlPath = "/com/pfe/novaview/Don/AjouterDon.fxml";
-                title = "Faire un Don";
-            } else {
-                fxmlPath = "/com/pfe/novaview/Compagnie/AjouterCompagnie.fxml";
-                title = "Ajouter une Compagnie";
+            if (currentUser instanceof Donateur donateur) {
+                if ("individuel".equalsIgnoreCase(donateur.getDonateurType())) {
+                    // Donateur individuel : ouvrir directement l'interface de don
+                    Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/Don/AjouterDon.fxml"));
+                    Stage stage = (Stage) faireDonButton.getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Faire un Don");
+                    return;
+                } else if ("compagnie".equalsIgnoreCase(donateur.getDonateurType())) {
+                    // Donateur compagnie : vérifier s'il a déjà une compagnie
+                    CompagnieService compagnieService = new CompagnieService();
+                    boolean hasCompany = compagnieService.hasCompagnie(donateur.getEmail());
+                    if (!hasCompany) {
+                        // Ouvrir la fenêtre de création de compagnie
+                        FXMLLoader compLoader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/Compagnie/AjouterCompagnie.fxml"));
+                        Parent compRoot = compLoader.load();
+                        Stage compStage = new Stage();
+                        compStage.setTitle("Créer une Compagnie");
+                        compStage.setScene(new Scene(compRoot));
+                        compStage.initModality(Modality.APPLICATION_MODAL);
+                        compStage.showAndWait();
+                        // Vérifier à nouveau après création
+                        hasCompany = compagnieService.hasCompagnie(donateur.getEmail());
+                        if (!hasCompany) {
+                            showError("Création requise : Vous devez créer une compagnie avant de faire un don.");
+                            return;
+                        }
+                    }
+                    // Si la compagnie existe, ouvrir l'interface de don
+                    Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/Don/AjouterDon.fxml"));
+                    Stage stage = (Stage) faireDonButton.getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Faire un Don");
+                    return;
+                }
             }
-            Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+            // Cas par défaut : ouvrir l'interface de don
+            Parent root = FXMLLoader.load(getClass().getResource("/com/pfe/novaview/Don/AjouterDon.fxml"));
             Stage stage = (Stage) faireDonButton.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle(title);
+            stage.setTitle("Faire un Don");
         } catch (Exception e) {
             e.printStackTrace();
             showError("Erreur lors du chargement de l'interface: " + e.getMessage());
