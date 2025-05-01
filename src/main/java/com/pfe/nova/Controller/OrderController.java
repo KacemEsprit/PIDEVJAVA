@@ -31,13 +31,40 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.beans.Observable;
+import java.util.concurrent.TimeUnit;
+import java.util.List;
+import java.util.Arrays;
+import java.io.IOException;
+import javafx.scene.input.MouseEvent;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
+import javafx.animation.Interpolator;
 public class OrderController {
     @FXML private FlowPane medicationFlowPane;
     @FXML private Button cartButton;
     @FXML private Label cartCountLabel;
     @FXML private TextField searchField;
-
+    @FXML private ImageView micIcon;
+    @FXML private Circle recordingIndicator;
+    private ScaleTransition recordingAnimation;
     private int patientId; 
     
     private List<Medication> allMedications;
@@ -56,6 +83,7 @@ public class OrderController {
         setupCartButton();
         setupSearchField();
         setupSortButton();
+        micIcon.setImage(new Image(getClass().getResourceAsStream("/images/micro.jpeg")));
         medicationFlowPane.setAlignment(Pos.CENTER);
         medicationFlowPane.setHgap(20);
         medicationFlowPane.setVgap(20);
@@ -400,5 +428,59 @@ public class OrderController {
     
     public int getPatientId() {
         return this.patientId;
+    }
+
+
+    public void handleMicButton(MouseEvent event) {
+        try {
+            recordingIndicator.setVisible(true);
+            startRecordingAnimation();
+
+            new Thread(() -> {
+                try {
+                    VoiceRecognition.recognizeSpeech(searchField);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    javafx.application.Platform.runLater(() -> showAlert("Erreur lors de la reconnaissance vocale:", e.getMessage()));
+                } finally {
+                    javafx.application.Platform.runLater(() -> {
+                        recordingIndicator.setVisible(false);
+                        stopRecordingAnimation();
+                    });
+                }
+            }).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Erreur lors de la reconnaissance vocale:", e.getMessage());
+        }
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+
+    private void startRecordingAnimation() {
+        recordingAnimation = new ScaleTransition(Duration.seconds(0.6), recordingIndicator);
+        recordingAnimation.setFromX(1.0);
+        recordingAnimation.setFromY(1.0);
+        recordingAnimation.setToX(1.4);
+        recordingAnimation.setToY(1.4);
+        recordingAnimation.setCycleCount(Timeline.INDEFINITE);
+        recordingAnimation.setAutoReverse(true);
+        recordingAnimation.setInterpolator(Interpolator.EASE_BOTH);
+        recordingAnimation.play();
+    }
+
+    private void stopRecordingAnimation() {
+        if (recordingAnimation != null) {
+            recordingAnimation.stop();
+            recordingIndicator.setScaleX(1.0);
+            recordingIndicator.setScaleY(1.0);
+        }
     }
 }

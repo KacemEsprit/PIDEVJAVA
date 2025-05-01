@@ -44,10 +44,18 @@
                     <graphic><Label text="📄" styleClass="icon-label"/></graphic>
                     <text>Reports</text>
                 </Button>
+                <Button fx:id="settingsBtn" styleClass="nav-button" onAction="#showProfile">
+                    <graphic>
+                        <Label text="👤" styleClass="icon-label"/>
+                    </graphic>
+                    <text>Profile</text>
+                </Button>
                 <Button fx:id="pharmacieBtn" styleClass="nav-button" onAction="#togglePharmacieMenu">
                     <graphic><Label text="💊" styleClass="icon-label"/></graphic>
                     <text>Pharmacie</text>
                 </Button>
+
+
 
                 <!-- Sous-menu Pharmacie -->
                 <VBox fx:id="pharmacieSubMenu" visible="false" managed="false" spacing="5">
@@ -60,6 +68,7 @@
                     <Button text="ToDo List" onAction="#showToDoList"
                             style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-pref-width: 140; -fx-translate-x: 20;"/>
                 </VBox>
+
 
                 <Region VBox.vgrow="ALWAYS"/>
                 <Button fx:id="logoutButton" styleClass="nav-button, logout-button" onAction="#handleLogout">

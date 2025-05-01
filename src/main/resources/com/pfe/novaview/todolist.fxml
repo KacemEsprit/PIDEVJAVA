@@ -5,6 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.*?>
 
+<?import javafx.scene.effect.DropShadow?>
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.pfe.nova.Controller.TodoListController"
@@ -21,56 +22,56 @@
     </top>
     <center>
         <HBox spacing="40" alignment="TOP_CENTER" style="-fx-padding: 30;">
-            
-            <!-- METEO + DATE avec SEPARATOR au centre -->
-            <VBox spacing="20" alignment="TOP_LEFT">
-                <GridPane hgap="20" alignment="CENTER_LEFT"
-                          style="-fx-background-color: white; 
-                                 -fx-padding: 20; 
-                                 -fx-background-radius: 20; 
-                                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 0);">
 
-                    <!-- METEO -->
-                    <HBox spacing="10" alignment="CENTER_LEFT" GridPane.columnIndex="0">
-                        <ImageView fx:id="weatherIcon" fitHeight="40" fitWidth="40" />
-                        <VBox spacing="3">
-                            <Label fx:id="temperatureLabel"
-                                   style="-fx-font-size: 20px; -fx-font-weight: bold;" />
-                            <Label fx:id="locationLabel" 
-                                   style="-fx-font-size: 12px; -fx-text-fill: #6c757d;" />
-                        </VBox>
-                    </HBox>
+            <!-- GAUCHE : METEO + DATE + IMAGE -->
+            <VBox spacing="20" alignment="TOP_CENTER">
 
-                    <!-- SEPARATOR -->
-                    <Separator orientation="VERTICAL" GridPane.columnIndex="1"
-                               prefHeight="50" style="-fx-opacity: 0.3;" />
-
-                    <!-- DATE -->
-                    <VBox spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="2">
-                        <Label fx:id="dateLabel" 
-                               style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-                        <HBox spacing="5" alignment="CENTER_LEFT">
-    <Label text="📅" style="-fx-font-size: 12px;" />
-    <Label fx:id="dayLabel" 
-           style="-fx-font-size: 12px; -fx-text-fill: #6c757d;" />
-</HBox>
-
+                <!-- METEO + DATE -->
+                <HBox spacing="20" alignment="CENTER_LEFT"
+                      style="-fx-background-color: white;
+                         -fx-padding: 20;
+                         -fx-background-radius: 20;
+                         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                    <ImageView fx:id="weatherIcon" fitHeight="40" fitWidth="40" />
+                    <VBox spacing="3">
+                        <Label fx:id="temperatureLabel"
+                               style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+                        <Label fx:id="locationLabel"
+                               style="-fx-font-size: 12px; -fx-text-fill: #6c757d;" />
                     </VBox>
+                    <VBox spacing="5" alignment="CENTER_LEFT">
+                        <Label fx:id="dateLabel"
+                               style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                        <Label fx:id="dayLabel"
+                               style="-fx-font-size: 12px; -fx-text-fill: #6c757d;" />
+                    </VBox>
+                </HBox>
 
-                    <columnConstraints>
-                        <ColumnConstraints percentWidth="45" halignment="LEFT"/>
-                        <ColumnConstraints percentWidth="10" halignment="CENTER"/>
-                        <ColumnConstraints percentWidth="45" halignment="RIGHT"/>
-                    </columnConstraints>
-                </GridPane>
+                <!-- IMAGE CENTRALE -->
+                <VBox alignment="CENTER" spacing="10"
+                      style="-fx-background-color: white;
+                         -fx-padding: 20;
+                         -fx-background-radius: 20;
+                         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 15, 0, 0, 0);">
+                    <ImageView fx:id="stateImage"
+                               fitWidth="600"
+                               fitHeight="400"
+                               preserveRatio="true"
+                               visible="false"
+                               style="-fx-background-radius: 20;">
+                        <effect>
+                            <DropShadow color="#00000033" radius="8"/>
+                        </effect>
+                    </ImageView>
+                </VBox>
             </VBox>
 
-            <!-- TODO LIST -->
+            <!-- TO-DO LIST -->
             <VBox spacing="20"
-                  style="-fx-background-color: white; 
-                         -fx-padding: 30; 
-                         -fx-background-radius: 20; 
-                         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 0);"
+                  style="-fx-background-color: white;
+                     -fx-padding: 30;
+                     -fx-background-radius: 20;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 0);"
                   prefWidth="400" maxWidth="400">
 
                 <VBox spacing="5" alignment="CENTER">

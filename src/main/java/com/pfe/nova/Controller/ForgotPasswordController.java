@@ -69,7 +69,35 @@ public class ForgotPasswordController {
             message.setFrom(new InternetAddress(fromEmail));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
             message.setSubject("Password Reset Code");
-            message.setText("Your password reset code is: " + code);
+           // message.setText("Your password reset code is: " + code);
+
+            String htmlContent = "<!DOCTYPE html>" +
+                    "<html>" +
+                    "<head>" +
+                    "  <style>" +
+                    "    body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }" +
+                    "    .container { background-color: #ffffff; padding: 20px; border-radius: 8px; max-width: 500px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }" +
+                    "    h2 { color: #2c3e50; }" +
+                    "    p { color: #34495e; }" +
+                    "    .code { font-size: 24px; font-weight: bold; color: #e74c3c; background-color: #f9ecec; padding: 10px; border-radius: 5px; text-align: center; }" +
+                    "    .footer { margin-top: 20px; font-size: 12px; color: #95a5a6; }" +
+                    "  </style>" +
+                    "</head>" +
+                    "<body>" +
+                    "  <div class='container'>" +
+                    "    <h2>Password Reset Request</h2>" +
+                    "    <p>Dear user,</p>" +
+                    "    <p>We received a request to reset your password. Use the code below to proceed:</p>" +
+                    "    <div class='code'>" + code + "</div>" +
+                    "    <p>If you didn't request a password reset, please ignore this email.</p>" +
+                    "    <p class='footer'>This is an automated message. Please do not reply.</p>" +
+                    "  </div>" +
+                    "</body>" +
+                    "</html>";
+
+            message.setContent(htmlContent, "text/html; charset=utf-8");
+
+
             Transport.send(message);
             return true;
         } catch (Exception e) {

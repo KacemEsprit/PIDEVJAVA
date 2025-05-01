@@ -3,6 +3,7 @@ import com.pfe.nova.models.Task;
 import com.pfe.nova.configuration.TaskDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.geometry.Insets;
@@ -16,6 +17,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.time.format.TextStyle;
+import java.util.Objects;
+
 import org.json.JSONObject;
 
 
@@ -31,7 +34,8 @@ public class TodoListController {
     @FXML private Label temperatureLabel;
     @FXML private Label locationLabel;
     @FXML private ImageView weatherIcon;
-
+    @FXML
+    private ImageView stateImage;
     @FXML
     public void initialize() {
         // Style du VBox principal
@@ -44,6 +48,7 @@ public class TodoListController {
         
         loadTasksFromDatabase();
         loadWeatherAndDate();
+        loadStateImage();
     }
 
     private void loadTasksFromDatabase() {
@@ -180,6 +185,15 @@ public class TodoListController {
             temperatureLabel.setText("N/A");
             locationLabel.setText("Erreur de météo");
             e.printStackTrace();
+        }
+    }
+    private void loadStateImage() {
+        try {
+            Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/oncophoto.png")));
+            stateImage.setImage(img);
+            stateImage.setVisible(true); // la rendre visible après chargement
+        } catch (Exception e) {
+            System.err.println("Erreur chargement image: " + e.getMessage());
         }
     }
 }

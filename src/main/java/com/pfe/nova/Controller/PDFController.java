@@ -23,7 +23,13 @@ public class PDFController {
             String fileName = saveDirectory + "Facture_" + order.getId() + "_" + System.currentTimeMillis() + ".pdf";
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
+            Image logo = Image.getInstance(getClass().getResource("/images/logo.png"));
+            logo.scaleToFit(100, 100); // largeur max, hauteur max
+            logo.setAbsolutePosition(document.right() - 100, document.top() - 70); // en haut à droite
+            logo.setAlignment(Image.ALIGN_LEFT);
+            logo.setAbsolutePosition(document.leftMargin(), document.top() - 70); // positionner en haut à gauche
 
+            document.add(logo);
             // Canvas pour arrière-plan
             PdfContentByte backgroundCanvas = writer.getDirectContentUnder();
             drawBackgroundCurves(backgroundCanvas, document.getPageSize());

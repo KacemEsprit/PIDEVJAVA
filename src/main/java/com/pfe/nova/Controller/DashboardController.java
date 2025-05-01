@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -17,7 +18,8 @@ import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import java.nio.file.Paths;
-
+import com.pfe.nova.utils.QRCodeGenerator;
+import com.pfe.nova.utils.RewardPDFGenerator;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -35,6 +37,7 @@ public class DashboardController {
     @FXML private VBox userInfoBox;
     @FXML private VBox mainContentBox;
     @FXML private StackPane contentArea;
+    @FXML private HBox welcome;
 
     @FXML private TabPane contentTabPane; // Add this missing FXML field
     @FXML private Button adminPostsBtn; // Add this for the admin button
@@ -520,6 +523,8 @@ public class DashboardController {
             // Masquer la fiche utilisateur
             userInfoBox.setVisible(false);
             userInfoBox.setManaged(false);
+            welcome.setVisible(false);
+            welcome.setManaged(false);
 
             // Afficher la pharmacie en plein espace
             contentArea.getChildren().setAll(root);

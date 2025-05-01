@@ -145,6 +145,7 @@
       <artifactId>client-sdk</artifactId>
       <version>1.34.0</version> <!-- Vérifiez la dernière version -->
     </dependency>
+
   </dependencies>
 
 

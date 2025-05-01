@@ -242,6 +242,8 @@
     -fx-text-fill: white;
 }
 
-
+#recordingIndicator {
+    -fx-effect: dropshadow(gaussian, red, 10, 0.5, 0, 0);
+}
 
 

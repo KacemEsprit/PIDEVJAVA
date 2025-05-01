@@ -21,10 +21,11 @@ module com.pfe.nova {
     requires google.api.client;
 
     requires java.mail;
-    requires jdk.httpserver;    // Ouvre les packages pour FXML et JavaFX
+    requires jdk.httpserver;
+    requires client.sdk;    // Ouvre les packages pour FXML et JavaFX
     opens com.pfe.nova to javafx.fxml;
     opens com.pfe.nova.Application to javafx.graphics, javafx.fxml;
-    opens com.pfe.nova.models to javafx.base, javafx.fxml;
+    opens com.pfe.nova.models to javafx.base, javafx.fxml,com.google.api.client;
     opens com.pfe.nova.Controller to javafx.fxml;
     opens com.pfe.nova.configuration to javafx.fxml;
 

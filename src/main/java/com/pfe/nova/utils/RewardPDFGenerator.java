@@ -61,10 +61,10 @@ public class RewardPDFGenerator {
 
             Paragraph content = new Paragraph(
                     "Commande N° " + order.getId() + "\n\n" +
-                    "🗓️ Date : " + dateFormatted + "\n\n" +
-                    "🎉 Félicitations 🎉\n\n" +
-                    "Vous avez gagné :\n\n" +
-                    cadeau,
+                            "🗓️ Date : " + dateFormatted + "\n\n" +
+                            "🎉 Félicitations 🎉\n\n" +
+                            "Vous avez gagné :\n\n" +
+                            cadeau,
                     textFont
             );
             content.setAlignment(Element.ALIGN_CENTER);
