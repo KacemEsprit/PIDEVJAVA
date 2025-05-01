@@ -49,7 +49,25 @@
                         style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;
                                -fx-background-radius: 5; -fx-padding: 5 10; -fx-cursor: hand;
                                -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;"/>
-                <Button fx:id="pharmacieNavBtn" text="Pharmacie" onAction="#handleOrder"
+                <Button fx:id="createRapportTab" text="CreateRapport" onAction="#handleRapport"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;
+                               -fx-background-radius: 5; -fx-padding: 5 10; -fx-cursor: hand;
+                               -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;"/>
+                <Button fx:id="viewRapportTab" text="ViewRapport" onAction="#handleViewRapport"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;
+                               -fx-background-radius: 5; -fx-padding: 5 10; -fx-cursor: hand;
+                               -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;"/>
+                <Button fx:id="createSession" text="Create Session" onAction="#handleCreateSession"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;
+                               -fx-background-radius: 5; -fx-padding: 5 10; -fx-cursor: hand;
+                               -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;"/>
+                <Button fx:id="viewSession" text="View Session" onAction="#handleViewsession"
+                        style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;
+                               -fx-background-radius: 5; -fx-padding: 5 10; -fx-cursor: hand;
+                               -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;"/>
+
+
+                <Button fx:id="viewStatistique" text="Statistique" onAction="#handleStatistics"
                         style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;
                                -fx-background-radius: 5; -fx-padding: 5 10; -fx-cursor: hand;
                                -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;"/>

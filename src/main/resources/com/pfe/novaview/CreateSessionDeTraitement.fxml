@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pfe.nova.Controller.CreateSessionDeTraitementController">
+    <VBox alignment="TOP_CENTER" spacing="20" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <!-- Header -->
+        <Label style="-fx-text-fill:#2980b9;" text="Créer une Session de Traitement">
+            <font>
+                <Font name="Arial Bold" size="37.0" />
+            </font>
+            <padding>
+                <Insets top="20" />
+            </padding>
+        </Label>
+
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+            <VBox spacing="20" style="-fx-padding: 20;">
+                <!-- Patient Information Section -->
+                <TitledPane expanded="true" text="Information Patient">
+                    <GridPane hgap="15.0" vgap="10.0">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
+
+                        <Label style="-fx-font-weight: bold;" text="Patient ID" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <ComboBox fx:id="patientIdComboBox" prefWidth="150.0" style="-fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label style="-fx-font-weight: bold;" text="Date Session" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <DatePicker fx:id="dateSessionPicker" prefWidth="150.0" style="-fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                    </GridPane>
+                </TitledPane>
+
+                <!-- Session Details Section -->
+                <TitledPane expanded="true" text="Détails de la Session">
+                    <GridPane hgap="15.0" vgap="10.0">
+                        <padding>
+                            <Insets bottom="10" left="10" right="10" top="10" />
+                        </padding>
+
+                        <Label style="-fx-font-weight: bold;" text="Type de Traitement" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <ComboBox fx:id="typeTraitementComboBox" prefWidth="150.0" style="-fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label style="-fx-font-weight: bold;" text="Durée (minutes)" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <TextField fx:id="dureeField" style="-fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                        <Label style="-fx-font-weight: bold;" text="Salle" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="salleComboBox" prefWidth="150.0" style="-fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label style="-fx-font-weight: bold;" text="Médecin" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="medecinComboBox" prefWidth="150.0" style="-fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                    </GridPane>
+                </TitledPane>
+
+
+            </VBox>
+        </ScrollPane>
+
+        <Button fx:id="creerSessionButton"  onAction="#handleSave" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;" text="Créer Session">
+            <Button fx:id="cancelButton" text="Cancel" layoutX="20" layoutY="250" onAction="#handleCancel"/>
+
+            <VBox.margin>
+                <Insets bottom="20" />
+            </VBox.margin>
+        </Button>
+    </VBox>
+</AnchorPane>

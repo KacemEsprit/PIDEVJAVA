@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.pfe.nova.Controller.Statistique"
+            prefHeight="900.0" prefWidth="1400.0"
+            style="-fx-background-color: linear-gradient(to bottom right, #f0f2f5, #ffffff);">
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <top>
+        <VBox alignment="CENTER" spacing="15" style="-fx-padding: 25 20 20 20;">
+            <effect>
+                <DropShadow color="rgba(0,0,0,0.1)" radius="10" offsetY="2"/>
+            </effect>
+            <Label fx:id="headerLabel" text="Tableau de Bord Médical"
+                   style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-padding: 0;">
+            <VBox spacing="40" style="-fx-padding: 30 40;" alignment="CENTER">
+
+                <HBox spacing="15" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10;">
+                    <effect>
+                        <DropShadow color="rgba(0,0,0,0.1)" radius="10" offsetY="2"/>
+                    </effect>
+                    <Label text="Sélectionner un patient:" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;" />
+                    <ComboBox fx:id="patientComboBox" promptText="Choisir un patient"
+                              style="-fx-pref-width: 300px; -fx-font-size: 14px; -fx-background-radius: 5;"/>
+                </HBox>
+
+
+                <HBox fx:id="ewsBox" spacing="20" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;">
+                    <effect>
+                        <DropShadow color="rgba(0,0,0,0.1)" radius="10" offsetY="2"/>
+                    </effect>
+                    <Label text="Score d'Alerte Précoce (EWS):"
+                           style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #34495e;" />
+                    <Label fx:id="ewsLabel" text="0"
+                           style="-fx-font-size: 30px; -fx-font-weight: bold;" />
+                </HBox>
+
+                <HBox spacing="20" alignment="CENTER">
+                    <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" HBox.hgrow="ALWAYS">
+                        <effect>
+                            <DropShadow color="rgba(0,0,0,0.1)" radius="10" offsetY="2"/>
+                        </effect>
+                        <Label text="Distribution de la Tension Artérielle" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;" />
+                        <PieChart fx:id="donutChart" legendVisible="true" labelsVisible="true" style="-fx-pref-height: 300px;" />
+                    </VBox>
+
+                    <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;" HBox.hgrow="ALWAYS">
+                        <effect>
+                            <DropShadow color="rgba(0,0,0,0.1)" radius="10" offsetY="2"/>
+                        </effect>
+                        <Label text="Évolution des Paramètres Vitaux" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;" />
+                        <LineChart fx:id="lineChart" style="-fx-pref-height: 300px;">
+                            <xAxis><CategoryAxis label="Date" /></xAxis>
+                            <yAxis><NumberAxis label="Valeur" /></yAxis>
+                        </LineChart>
+                    </VBox>
+                </HBox>
+
+                <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;">
+                    <effect>
+                        <DropShadow color="rgba(0,0,0,0.1)" radius="10" offsetY="2"/>
+                    </effect>
+                    <Label text="Fréquence de Traitement vs Perte de Sang Moyenne" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #34495e;" />
+                    <BarChart fx:id="barChart" style="-fx-pref-height: 300px;">
+                        <xAxis><CategoryAxis label="Fréquence" /></xAxis>
+                        <yAxis><NumberAxis label="Perte de Sang (ml)" /></yAxis>
+                    </BarChart>
+                </VBox>
+
+
+
+                <VBox alignment="CENTER" spacing="15" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 15;">
+                    <effect>
+                        <DropShadow color="rgba(0,0,0,0.15)" radius="10" offsetY="3"/>
+                    </effect>
+
+                    <!-- Larger ImageView above the button -->
+                    <ImageView fx:id="aiIcon" fitWidth="120" fitHeight="120" visible="true"
+                               style="-fx-opacity: 0;" />
+
+                    <Button fx:id="predictButton" onAction="#handlePredict"
+                            text="Prédire l'état du patient avec l'IA"
+                            visible="false"
+                            style="-fx-font-size: 16px;
+                   -fx-font-weight: bold;
+                   -fx-text-fill: white;
+                   -fx-background-radius: 25;
+                   -fx-padding: 12 24;
+                   -fx-background-color: linear-gradient(to right, #2193b0, #6dd5ed);
+                   -fx-cursor: hand;">
+                        <effect>
+                            <DropShadow color="rgba(0,0,0,0.3)" radius="6" offsetY="3"/>
+                        </effect>
+                    </Button>
+                </VBox>
+
+                <HBox fx:id="etat" alignment="CENTER" spacing="30"
+                      style="-fx-background-color: linear-gradient(to bottom right, #ffffff, #f0f4f8);
+             -fx-padding: 30; -fx-background-radius: 25; -fx-border-radius: 25;
+             -fx-border-color: #d1d9e6; -fx-border-width: 2;">
+                    <effect>
+                        <DropShadow color="rgba(0,0,0,0.15)" radius="15" offsetY="4"/>
+                    </effect>
+
+                    <!-- Title Section -->
+                    <VBox alignment="CENTER" spacing="20">
+                        <Label text="Patient State Overview"
+                               style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #34495e;">
+                            <effect>
+                                <DropShadow color="rgba(0,0,0,0.2)" radius="5" offsetY="2"/>
+                            </effect>
+                        </Label>
+
+                        <!-- Image and Label Section -->
+                        <VBox alignment="CENTER" spacing="20">
+                            <ImageView fx:id="stateImage" fitWidth="180" fitHeight="180" visible="false">
+                                <effect>
+                                    <DropShadow color="#00000033" radius="15"/>
+                                </effect>
+                            </ImageView>
+
+                            <Label fx:id="patientStateLabel" text="" visible="false"
+                                   style="-fx-font-size: 30px; -fx-font-weight: bold;
+                          -fx-text-fill: #2c3e50; -fx-padding: 15; -fx-background-radius: 10;
+                          -fx-background-color: linear-gradient(to right, #e3f2fd, #bbdefb);">
+                                <effect>
+                                    <DropShadow color="rgba(0,0,0,0.2)" radius="8" offsetY="2"/>
+                                </effect>
+                            </Label>
+                        </VBox>
+                    </VBox>
+                </HBox>
+
+
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>
