@@ -508,5 +508,98 @@ public class UserDAO {
         
         return null;
     }
+
+    public static User findById(int userId) {
+        String query = "SELECT * FROM user WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String role = rs.getString("role");
+                    User user = null;
+
+                    switch (role) {
+                        case "ADMIN":
+                            user = new User(
+                                    rs.getInt("id"),
+                                    rs.getString("nom"),
+                                    rs.getString("prenom"),
+                                    rs.getString("email"),
+                                    rs.getString("tel"),
+                                    rs.getString("adresse"),
+                                    rs.getString("password"),
+                                    rs.getString("picture"),
+                                    "ADMIN"
+                            );
+                            break;
+                        case "MEDECIN":
+                            user = new Medecin(
+                                    rs.getInt("id"),
+                                    rs.getString("nom"),
+                                    rs.getString("prenom"),
+                                    rs.getString("email"),
+                                    rs.getString("tel"),
+                                    rs.getString("adresse"),
+                                    rs.getString("password"),
+                                    rs.getString("picture"),
+                                    rs.getString("specialite"),
+                                    rs.getString("experience"),
+                                    rs.getString("diplome")
+                            );
+                            break;
+                        case "PATIENT":
+                            user = new Patient(
+                                    rs.getInt("id"),
+                                    rs.getString("nom"),
+                                    rs.getString("prenom"),
+                                    rs.getString("email"),
+                                    rs.getString("tel"),
+                                    rs.getString("adresse"),
+                                    rs.getString("password"),
+                                    rs.getString("picture"),
+                                    rs.getInt("age"),
+                                    rs.getString("gender"),
+                                    rs.getString("blood_type")
+                            );
+                            break;
+                        case "DONATEUR":
+                            user = new Donateur(
+                                    rs.getInt("id"),
+                                    rs.getString("nom"),
+                                    rs.getString("prenom"),
+                                    rs.getString("email"),
+                                    rs.getString("tel"),
+                                    rs.getString("adresse"),
+                                    rs.getString("password"),
+                                    rs.getString("picture"),
+                                    rs.getString("donateur_type")
+                            );
+                            break;
+                        default:
+                            user = new User(
+                                    rs.getInt("id"),
+                                    rs.getString("nom"),
+                                    rs.getString("prenom"),
+                                    rs.getString("email"),
+                                    rs.getString("tel"),
+                                    rs.getString("adresse"),
+                                    rs.getString("password"),
+                                    rs.getString("picture"),
+                                    role
+                            );
+                    }
+                    return user;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error finding user by ID: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
 

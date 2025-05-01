@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.effect.DropShadow?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.pfe.nova.Controller.Compagnie.AjouterCompagnieController"
+            styleClass="compagnie-container"
+            stylesheets="@../styles/compagnie.css">
+
+    <top>
+        <StackPane>
+            <Rectangle width="800" height="100" styleClass="compagnie-header-background" arcWidth="10" arcHeight="10">
+                <effect>
+                    <DropShadow color="rgba(0,0,0,0.3)" radius="10" spread="0.05" />
+                </effect>
+            </Rectangle>
+            <VBox styleClass="compagnie-header" alignment="CENTER_LEFT">
+                <padding>
+                    <Insets left="30" right="30" top="15" bottom="15"/>
+                </padding>
+                <Label text="Ajouter une Compagnie" styleClass="compagnie-title" style="-fx-text-fill: blue; -fx-alignment: center;" maxWidth="Infinity">
+                    <font>
+                        <Font name="System Bold" size="26"/>
+                    </font>
+                </Label>
+                <Text text="Remplissez les informations pour ajouter une nouvelle compagnie"
+                      fill="white" style="-fx-font-size: 14px;"/>
+            </VBox>
+        </StackPane>
+    </top>
+
+    <center>
+        <VBox styleClass="compagnie-form" spacing="20">
+            <padding>
+                <Insets top="30" right="30" bottom="30" left="30"/>
+            </padding>
+            <effect>
+                <DropShadow color="rgba(0,0,0,0.2)" radius="15" spread="0.05" />
+            </effect>
+
+            <Label text="Informations de la Compagnie" styleClass="subtitle" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <Separator styleClass="separator"/>
+
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field">
+                <Region styleClass="field-icon-company" minWidth="24" minHeight="24" maxWidth="24" maxHeight="24"/>
+                <Label text="Nom :" minWidth="100" styleClass="field-label"/>
+                <TextField fx:id="txtNom" promptText="Nom de la compagnie" HBox.hgrow="ALWAYS" styleClass="field-input"/>
+            </HBox>
+
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field">
+                <Region styleClass="field-icon-company" minWidth="24" minHeight="24" maxWidth="24" maxHeight="24"/>
+                <Label text="SIRET :" minWidth="100" styleClass="field-label"/>
+                <TextField fx:id="txtSiret" promptText="Numéro SIRET" HBox.hgrow="ALWAYS" styleClass="field-input"/>
+            </HBox>
+
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field">
+                <Region styleClass="field-icon-location" minWidth="24" minHeight="24" maxWidth="24" maxHeight="24"/>
+                <Label text="Adresse :" minWidth="100" styleClass="field-label"/>
+                <TextField fx:id="txtAdresse" promptText="Adresse complète" HBox.hgrow="ALWAYS" styleClass="field-input"/>
+            </HBox>
+
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field">
+                <Region styleClass="field-icon-phone" minWidth="24" minHeight="24" maxWidth="24" maxHeight="24"/>
+                <Label text="Téléphone :" minWidth="100" styleClass="field-label"/>
+                <TextField fx:id="txtTelephone" promptText="Numéro de téléphone" HBox.hgrow="ALWAYS" styleClass="field-input"/>
+            </HBox>
+
+            <Label text="Informations de Contact" styleClass="subtitle" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 10 0 0 0;"/>
+            <Separator styleClass="separator"/>
+
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field">
+                <Region styleClass="field-icon-email" minWidth="24" minHeight="24" maxWidth="24" maxHeight="24"/>
+                <Label text="Email :" minWidth="100" styleClass="field-label"/>
+                <TextField fx:id="txtEmail" promptText="Adresse email" HBox.hgrow="ALWAYS" styleClass="field-input"/>
+            </HBox>
+
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field">
+                <Region styleClass="field-icon-web" minWidth="24" minHeight="24" maxWidth="24" maxHeight="24"/>
+                <Label text="Site Web :" minWidth="100" styleClass="field-label"/>
+                <TextField fx:id="txtSiteWeb" promptText="URL du site web" HBox.hgrow="ALWAYS" styleClass="field-input"/>
+            </HBox>
+
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field">
+                <Region styleClass="field-icon-description" minWidth="24" minHeight="24" maxWidth="24" maxHeight="24"/>
+                <Label text="Description :" minWidth="100" styleClass="field-label"/>
+                <TextField fx:id="txtDescription" promptText="Description de la compagnie" HBox.hgrow="ALWAYS" styleClass="field-input"/>
+            </HBox>
+
+            <!-- Upload file section -->
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="form-field">
+                <Region styleClass="field-icon-upload" minWidth="24" minHeight="24" maxWidth="24" maxHeight="24"/>
+                <Label text="Logo :" minWidth="100" styleClass="field-label"/>
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Button text="Choisir un fichier" onAction="#choisirFichier" styleClass="compagnie-button-upload"/>
+                    <Label fx:id="lblLogo" text="Aucun fichier sélectionné" style="-fx-text-fill: gray;"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="15" styleClass="compagnie-toolbar">
+            <padding>
+                <Insets top="15" right="30" bottom="15" left="30"/>
+            </padding>
+            <Button text="Annuler" styleClass="compagnie-button-delete">
+                <effect>
+                    <DropShadow color="rgba(0,0,0,0.3)" radius="5" spread="0.1" />
+                </effect>
+            </Button>
+            <Button text="Ajouter Compagnie" onAction="#ajouterCompagnie" styleClass="compagnie-button-add">
+                <effect>
+                    <DropShadow color="rgba(0,0,0,0.3)" radius="5" spread="0.1" />
+                </effect>
+            </Button>
+        </HBox>
+    </bottom>
+</BorderPane>
+

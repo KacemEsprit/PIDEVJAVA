@@ -1,0 +1,407 @@
+/* Base Styles */
+.messages-main-container {
+    -fx-background-color: #f5f7fb;
+}
+
+/* Header Styles */
+.messages-header {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+}
+
+.header-top-bar {
+    -fx-background-color: #6c5ce7;
+    -fx-padding: 12px 20px;
+}
+
+.app-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-fill: white;
+}
+
+.refresh-button, .settings-button {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-radius: 50%;
+    -fx-min-width: 36px;
+    -fx-min-height: 36px;
+    -fx-max-width: 36px;
+    -fx-max-height: 36px;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+
+.refresh-button:hover, .settings-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+}
+
+.button-icon {
+    -fx-fill: white;
+}
+
+/* Channel Selector Container */
+/* Rendre la barre de sélection de canal invisible mais fonctionnelle */
+.channel-selector-container {
+    -fx-background-color: transparent;
+    -fx-opacity: 0;
+    -fx-max-height: 0;
+    -fx-padding: 0;
+}
+
+/* Masquer les éléments individuels */
+#channelSelector, .new-channel-button, #refreshButton {
+    -fx-visibility: hidden;
+    -fx-managed: false;
+}
+
+.channels-sidebar {
+    -fx-background-color: #f5f7fb;
+    -fx-min-width: 250px;
+    -fx-pref-width: 250px;
+    -fx-max-width: 250px;
+    -fx-border-color: #e1e4e8;
+    -fx-border-width: 0 1 0 0;
+}
+
+.sidebar-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-fill: #2d3436;
+}
+
+.add-channel-button {
+    -fx-background-color: #6c5ce7;
+    -fx-background-radius: 50%;
+    -fx-min-width: 24px;
+    -fx-min-height: 24px;
+    -fx-max-width: 24px;
+    -fx-max-height: 24px;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+
+.add-channel-button:hover {
+    -fx-background-color: #5649c0;
+}
+
+.channels-list-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.channels-list-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.channels-list {
+    -fx-background-color: transparent;
+    -fx-padding: 5px 0;
+}
+
+/* Channel Item in Sidebar */
+.channel-item {
+    -fx-background-color: transparent;
+    -fx-padding: 8px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.channel-item:hover {
+    -fx-background-color: #e9ecef;
+}
+
+.channel-item.selected {
+    -fx-background-color: #6c5ce7;
+}
+
+.channel-icon {
+    -fx-fill: #6c5ce7;
+    -fx-font-size: 14px;
+}
+
+.channel-item.selected .channel-icon {
+    -fx-fill: white;
+}
+
+.channel-item-text {
+    -fx-font-size: 14px;
+    -fx-fill: #2d3436;
+}
+
+.channel-item.selected .channel-item-text {
+    -fx-fill: white;
+}
+
+/* Messages Area */
+.messages-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.messages-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Message Styles */
+.message-container {
+    -fx-background-color: #f1f3f5;
+    -fx-background-radius: 10px;
+    -fx-max-width: 80%;
+    -fx-alignment: center-left;
+    -fx-padding: 10px;
+    -fx-spacing: 5;
+}
+
+/* Style pour les messages de l'utilisateur actuel */
+.message-container.own-message {
+    -fx-background-color: #d0d3ff;
+    -fx-alignment: center-right;
+    -fx-translate-x: 20%; /* Déplace le message vers la droite */
+}
+
+/* Conteneur pour aligner les messages à droite */
+.messages-box .own-message-container {
+    -fx-alignment: center-right;
+}
+
+/* Conteneur pour aligner les messages à gauche */
+.messages-box .other-message-container {
+    -fx-alignment: center-left;
+}
+
+.message-username {
+    -fx-font-weight: bold;
+    -fx-fill: #2d3436;
+}
+
+.message-timestamp {
+    -fx-font-size: 12px;
+    -fx-fill: #6c757d;
+}
+
+.message-text {
+    -fx-font-size: 14px;
+    -fx-fill: #2d3436;
+}
+
+/* Input Area */
+.message-input {
+    -fx-background-color: #f1f3f5;
+    -fx-background-radius: 20px;
+    -fx-padding: 10px 15px;
+}
+
+.send-button {
+    -fx-background-color: #6c5ce7;
+    -fx-background-radius: 50%;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+
+.send-button:hover {
+    -fx-background-color: #5649c0;
+}
+
+.send-icon {
+    -fx-fill: white;
+    -fx-font-size: 16px;
+}
+
+/* Chat Container */
+.chat-container {
+    -fx-background-color: white;
+}
+
+.selected-channel-header {
+    -fx-background-color: white;
+    -fx-border-color: #e1e4e8;
+    -fx-border-width: 0 0 1 0;
+}
+
+.channel-name {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-fill: #2d3436;
+}
+
+.online-users-count {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6c757d;
+}
+
+/* Messages Area */
+.messages-area {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+}
+
+/* No Channel Selected */
+.no-channel-container {
+    -fx-background-color: white;
+}
+
+.no-channel-icon {
+    -fx-fill: #e1e4e8;
+}
+
+.no-channel-text {
+    -fx-font-size: 16px;
+    -fx-fill: #6c757d;
+}
+
+.create-channel-button {
+    -fx-background-color: #6c5ce7;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.create-channel-button:hover {
+    -fx-background-color: #5649c0;
+}
+
+/* Message Styles */
+.message-bubble {
+    -fx-background-radius: 18px;
+    -fx-padding: 10px 15px;
+    -fx-max-width: 400px;
+}
+
+.user-message {
+    -fx-background-color: #6c5ce7;
+    -fx-background-radius: 18px 18px 0 18px;
+}
+
+.user-message-text {
+    -fx-fill: white;
+    -fx-font-size: 14px;
+}
+
+.other-message {
+    -fx-background-color: #f1f3f5;
+    -fx-background-radius: 18px 18px 18px 0;
+}
+
+.other-message-text {
+    -fx-fill: #2d3436;
+    -fx-font-size: 14px;
+}
+
+.message-sender {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-fill: #6c757d;
+}
+
+.message-time {
+    -fx-font-size: 10px;
+    -fx-fill: #adb5bd;
+}
+
+/* Message Input Area */
+.message-input-container {
+    -fx-background-color: white;
+    -fx-border-color: #e1e4e8;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 15px;
+}
+
+.message-input {
+    -fx-background-color: #f1f3f5;
+    -fx-background-radius: 20px;
+    -fx-padding: 10px 15px;
+    -fx-font-size: 14px;
+}
+
+.send-button {
+    -fx-background-color: #6c5ce7;
+    -fx-background-radius: 50%;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+
+.send-button:hover {
+    -fx-background-color: #5649c0;
+}
+
+.send-icon {
+    -fx-fill: white;
+}
+
+/* Style pour le menu contextuel */
+.context-menu {
+    -fx-background-color: white;
+    -fx-background-radius: 5px;
+    -fx-border-color: #e1e4e8;
+    -fx-border-radius: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+}
+
+.menu-item {
+    -fx-padding: 8px 15px;
+}
+
+.menu-item:hover {
+    -fx-background-color: #f1f3f5;
+}
+
+.menu-item .label {
+    -fx-font-size: 14px;
+}
+
+.menu-item:focused {
+    -fx-background-color: #6c5ce7;
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: white;
+}
+
+/* Style pour les boutons d'action des messages */
+.message-action-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 50%;
+    -fx-min-width: 24px;
+    -fx-min-height: 24px;
+    -fx-max-width: 24px;
+    -fx-max-height: 24px;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+
+.message-action-button:hover {
+    -fx-background-color: rgba(108, 92, 231, 0.1);
+}
+
+.message-action-icon {
+    -fx-fill: #6c5ce7;
+    -fx-font-size: 12px;
+}
+
+/* Style pour le bouton de modification */
+.edit-icon {
+    -fx-fill: #6c5ce7;
+}
+
+/* Style pour le bouton de suppression */
+.delete-icon {
+    -fx-fill: #e74c3c;
+}
+
+/* Style pour les notifications de succès */
+.success-notification {
+    -fx-background-color: #4caf50;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+}

@@ -6,17 +6,17 @@ import com.pfe.nova.models.Medecin;
 import com.pfe.nova.models.Rapport;
 import com.pfe.nova.models.User;
 import com.pfe.nova.utils.Session;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.collections.FXCollections;
 import javafx.scene.control.Alert.AlertType;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import com.pfe.nova.models.Patient;
 public class RapportControlleur implements Initializable {
 
     @FXML
@@ -272,7 +272,7 @@ public class RapportControlleur implements Initializable {
             alert.showAndWait();
         }
     private void showSuccess(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

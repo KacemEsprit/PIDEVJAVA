@@ -16,32 +16,30 @@
                 <padding>
                     <Insets top="15" right="20" bottom="15" left="20"/>
                 </padding>
-                
-                <Label text="Reported Comments Management" styleClass="content-title"/>
-                
-                <Region HBox.hgrow="ALWAYS"/>
-                
-                <Button text="Refresh" onAction="#refreshReports" 
-                        styleClass="action-button"/>
-                        
 
-            </HBox>
-            
-            <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-background-color: white; -fx-padding: 10 20;">
-                <Label fx:id="statusLabel" text="Loading reported comments..." 
-                       style="-fx-font-size: 14px;"/>
-                       
+                <Label text="Reported Comments Management" styleClass="content-title"/>
+
                 <Region HBox.hgrow="ALWAYS"/>
-                
-                <Label fx:id="reportCountLabel" text="0 reports" 
+
+                <Button text="Refresh" onAction="#refreshReports"
+                        styleClass="action-button"/>
+            </HBox>
+
+            <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-background-color: white; -fx-padding: 10 20;">
+                <Label fx:id="statusLabel" text="Loading reported comments..."
+                       style="-fx-font-size: 14px;"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label fx:id="reportCountLabel" text="0 reports"
                        style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
             </HBox>
-            
-            <ProgressBar fx:id="progressBar" progress="-1.0" maxWidth="Infinity" 
+
+            <ProgressBar fx:id="progressBar" progress="-1.0" maxWidth="Infinity"
                          style="-fx-pref-height: 4;" visible="true"/>
         </VBox>
     </top>
-    
+
     <center>
         <ScrollPane fitToWidth="true" styleClass="content-scroll">
             <VBox fx:id="reportsContainer" spacing="15" styleClass="content-container">

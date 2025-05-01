@@ -3,7 +3,6 @@ module com.pfe.nova {
     requires javafx.fxml;
     requires itextpdf;
     requires org.controlsfx.controls;
-    requires java.sql;
     requires org.apache.poi.poi;
     requires org.apache.poi.ooxml;
     requires static jbcrypt;
@@ -22,7 +21,13 @@ module com.pfe.nova {
     requires javafx.web;
     requires jdk.jsobject;
     requires okhttp3;
-    requires java.desktop;    // Ouvre les packages pour FXML et JavaFX
+    requires de.jensd.fx.glyphs.fontawesome;
+    requires jjwt.api;
+    requires okio;
+    requires com.fasterxml.jackson.databind;
+    requires java.sql;
+    requires java.desktop;
+    requires java.net.http;    // Ouvre les packages pour FXML et JavaFX
     opens com.pfe.nova to javafx.fxml;
     opens com.pfe.nova.Application to javafx.graphics, javafx.fxml;
     opens com.pfe.nova.models to javafx.base, javafx.fxml,com.google.api.client;

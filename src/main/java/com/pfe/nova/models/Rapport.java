@@ -233,6 +233,9 @@ public class Rapport {
         this.respirationAssistee = respirationAssistee;
     }
 
+    public int  getRespirationAssistee() {
+        return respirationAssistee;
+    }
     public String getComplications() {
         return complications;
     }

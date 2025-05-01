@@ -1,0 +1,154 @@
+
+@import "main.css";
+
+
+.don-container {
+    -fx-background-color: linear-gradient(to bottom right, #f5f7fa, #3498db);
+    -fx-padding: 20px;
+}
+
+
+.don-header-background {
+    -fx-fill: linear-gradient(to right, #3498db, #2980b9);
+    -fx-stroke: transparent;
+}
+
+.don-header {
+    -fx-padding: 15px;
+}
+
+.don-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);
+}
+
+
+.don-form {
+    -fx-spacing: 20;
+    -fx-padding: 30;
+    -fx-background-color: #3498db;
+    -fx-background-radius: 8px;
+}
+
+.don-form .subtitle {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3498db;
+}
+
+.don-form .separator {
+    -fx-background-color: #e0e0e0;
+    -fx-opacity: 0.7;
+    -fx-padding: 0 0 10 0;
+}
+
+.don-form .field-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.form-field {
+    -fx-padding: 5 0;
+}
+
+.don-form .text-field, .don-form .combo-box, .don-form .date-picker {
+    -fx-background-radius: 4px;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 4px;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+}
+
+.don-form .text-field:focused, .don-form .combo-box:focused, .don-form .date-picker:focused {
+    -fx-border-color: #3498db;
+    -fx-effect: dropshadow(three-pass-box, rgba(52, 152, 219, 0.3), 5, 0, 0, 0);
+}
+
+
+.field-icon-type, .field-icon-money, .field-icon-description, .field-icon-calendar,
+.field-icon-user, .field-icon-campaign, .field-icon-payment, .field-icon-upload {
+    -fx-background-color: #3498db;
+    -fx-opacity: 0.8;
+}
+
+
+.don-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20 10 20;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-transition: -fx-background-color 0.3s ease;
+}
+
+.don-button:hover {
+    -fx-background-color: #2980b9;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 2);
+}
+
+.don-button-add {
+    -fx-background-color: linear-gradient(to right, #2ecc71, #27ae60);
+    -fx-padding: 12 25 12 25;
+    -fx-font-size: 14px;
+}
+
+.don-button-add:hover {
+    -fx-background-color: linear-gradient(to right, #27ae60, #219653);
+    -fx-translate-y: -1px;
+}
+
+.don-button-delete {
+    -fx-background-color: linear-gradient(to right, #e74c3c, #c0392b);
+    -fx-padding: 12 25 12 25;
+    -fx-font-size: 14px;
+}
+
+.don-button-delete:hover {
+    -fx-background-color: linear-gradient(to right, #c0392b, #a93226);
+    -fx-translate-y: -1px;
+}
+
+.don-button-upload {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 15 8 15;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+}
+
+.don-button-upload:hover {
+    -fx-background-color: #2980b9;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 3, 0, 0, 1);
+}
+
+
+.don-table {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-color: #ddd;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+.don-table .column-header {
+    -fx-background-color: linear-gradient(to right, #3498db, #2980b9);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 12px;
+}
+
+.don-table .table-row-cell:selected {
+    -fx-background-color: derive(#3498db, 90%);
+}
+
+
+.don-toolbar {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #e9ecef;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 10px;
+}

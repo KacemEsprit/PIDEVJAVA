@@ -66,15 +66,23 @@ public class DashboardController {
     @FXML private TableColumn<Medecin, String> experienceColumn;
     @FXML private TableColumn<Medecin, String> contactColumn;
     
-    @FXML private Tab createRapportTab;
-    @FXML private Tab viewRapportTab;
+    @FXML private Button createRapportTab;
+    @FXML private Button viewRapportTab;
     @FXML private Label sessionTestLabel;
     @FXML private Button communityPostsButton;
     @FXML private Button createRapportButton;
     @FXML private Button viewRapportsButton;
 
     private User currentUser;
-    
+
+    @FXML
+    private Button createSession;
+    @FXML
+    private Button viewSession;
+
+   // Add this field
+    @FXML Button viewStatistique;
+
     @FXML
     public void initialize() {
         try {
@@ -130,6 +138,90 @@ public class DashboardController {
         }
     }
 
+    public  void handleRapport(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/CreateRapport.fxml"));
+            Parent root = loader.load();
+            // Masquer la fiche utilisateur
+            userInfoBox.setVisible(false);
+            userInfoBox.setManaged(false);
+            welcome.setVisible(false);
+            welcome.setManaged(false);
+
+            // Afficher la pharmacie en plein espace
+            contentArea.getChildren().setAll(root);
+        } catch (IOException e) {
+            showError("Erreur lors du chargement de la confirmation des commandes: " + e.getMessage());
+        }
+
+    }
+    public void handleViewRapport(){
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/ViewRapports.fxml"));
+            Parent root = loader.load();
+            // Masquer la fiche utilisateur
+            userInfoBox.setVisible(false);
+            userInfoBox.setManaged(false);
+            welcome.setVisible(false);
+            welcome.setManaged(false);
+
+            // Afficher la pharmacie en plein espace
+            contentArea.getChildren().setAll(root);
+        } catch (IOException e) {
+            showError("Erreur lors du chargement de la confirmation des commandes: " + e.getMessage());
+        }
+    }
+
+    public void handleCreateSession(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/CreateSessionDeTraitement.fxml"));
+            Parent root = loader.load();
+            // Masquer la fiche utilisateur
+            userInfoBox.setVisible(false);
+            userInfoBox.setManaged(false);
+            welcome.setVisible(false);
+            welcome.setManaged(false);
+
+            // Afficher la pharmacie en plein espace
+            contentArea.getChildren().setAll(root);
+        } catch (IOException e) {
+            showError("Erreur lors du chargement de la confirmation des commandes: " + e.getMessage());
+        }
+    }
+
+    public void handleViewsession(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/viewSessions.fxml"));
+            Parent root = loader.load();
+            // Masquer la fiche utilisateur
+            userInfoBox.setVisible(false);
+            userInfoBox.setManaged(false);
+            welcome.setVisible(false);
+            welcome.setManaged(false);
+
+            // Afficher la pharmacie en plein espace
+            contentArea.getChildren().setAll(root);
+        } catch (IOException e) {
+            showError("Erreur lors du chargement de la confirmation des commandes: " + e.getMessage());
+        }
+    }
+    public void handleStatistics(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/statistique.fxml"));
+            Parent root = loader.load();
+            // Masquer la fiche utilisateur
+            userInfoBox.setVisible(false);
+            userInfoBox.setManaged(false);
+            welcome.setVisible(false);
+            welcome.setManaged(false);
+
+            // Afficher la pharmacie en plein espace
+            contentArea.getChildren().setAll(root);
+        } catch (IOException e) {
+            showError("Erreur lors du chargement de la confirmation des commandes: " + e.getMessage());
+        }
+    }
     private void setupTableColumns() {
         // Setup Patient table columns
         if (patientNameColumn != null) {

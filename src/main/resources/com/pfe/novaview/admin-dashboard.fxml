@@ -30,20 +30,21 @@
                 </Button>
                 <Button fx:id="pendingPostsBtn" styleClass="nav-button" onAction="#showPendingPosts">
                     <graphic><Label text="🕒" styleClass="icon-label"/></graphic>
-                    <text>Pending Posts</text>
+                    <text>Posts Management</text>
                 </Button>
                 <Button fx:id="reportedCommentsBtn" styleClass="nav-button" onAction="#showReportedComments">
                     <graphic><Label text="🚩" styleClass="icon-label"/></graphic>
                     <text>Reported Comments</text>
                 </Button>
+                <Button fx:id="postsStatsBtn" styleClass="nav-button" onAction="#showPostsStatistics">
+                    <graphic><Label text="📊" styleClass="icon-label"/></graphic>
+                    <text>Posts Statistics</text>
+                </Button>
                 <Button fx:id="statsBtn" styleClass="nav-button" onAction="#showStatistics">
                     <graphic><Label text="📊" styleClass="icon-label"/></graphic>
                     <text>Statistics</text>
                 </Button>
-                <Button fx:id="reportsBtn" styleClass="nav-button" onAction="#showReports">
-                    <graphic><Label text="📄" styleClass="icon-label"/></graphic>
-                    <text>Reports</text>
-                </Button>
+
                 <Button fx:id="settingsBtn" styleClass="nav-button" onAction="#showProfile">
                     <graphic>
                         <Label text="👤" styleClass="icon-label"/>
@@ -56,7 +57,6 @@
                 </Button>
 
 
-
                 <!-- Sous-menu Pharmacie -->
                 <VBox fx:id="pharmacieSubMenu" visible="false" managed="false" spacing="5">
                     <Button text="Gestion Médicaments" onAction="#showMedicationManagement"
@@ -67,7 +67,22 @@
                             style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-pref-width: 140; -fx-translate-x: 20;"/>
                     <Button text="ToDo List" onAction="#showToDoList"
                             style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-pref-width: 140; -fx-translate-x: 20;"/>
+
                 </VBox>
+                <Button styleClass="nav-button" onAction="#showReports">
+                    <graphic>
+                        <Label text="📄" styleClass="icon-label"/> <!-- Updated icon for Reports -->
+                    </graphic>
+                    <text>Reports</text>
+                </Button>
+
+                <Button styleClass="nav-button" onAction="#showSessions">
+                    <graphic>
+                        <Label text="🗓️" styleClass="icon-label"/> <!-- Updated icon for Sessions -->
+                    </graphic>
+                    <text>Sessions</text>
+                </Button>
+
 
 
                 <Region VBox.vgrow="ALWAYS"/>

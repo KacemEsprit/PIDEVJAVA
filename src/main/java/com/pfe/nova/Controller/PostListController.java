@@ -8,6 +8,10 @@ import com.pfe.nova.configuration.CommentDAO;
 import com.pfe.nova.configuration.LikeDAO;
 import com.pfe.nova.models.Like;
 import com.pfe.nova.models.User;
+import com.pfe.nova.components.ChatbotView;
+import com.pfe.nova.services.EmailPostService;
+import com.pfe.nova.services.EmailPostTemplateService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,56 +25,152 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import java.util.Optional;
+import javax.sound.sampled.*;
+import java.time.format.DateTimeFormatter;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 
 public class PostListController {
-    // Add missing FXML field declarations
     @FXML private VBox postsContainer;
     @FXML private ComboBox<String> categoryFilter;
     @FXML private ToggleButton adminModeToggle;
     @FXML private VBox adminSidebar;
     @FXML private VBox pendingPostsContainer;
     @FXML private CheckBox showPendingPosts;
+    @FXML private VBox chatbotContainer;
+    @FXML private ToggleButton chatbotToggleButton;
+    @FXML private HBox paginationContainer;
+    @FXML private Button prevPageButton;
+    @FXML private Label pageNumberLabel;
+    @FXML private Button nextPageButton;
 
-    // Add missing field declarations
     private boolean isAdminMode = false;
     private int currentUserId;
-
     private User currentUser;
+    private boolean isChatbotInitialized = false;
+    private int currentPage = 1;
+    private final int pageSize = 10;
+    private int totalPosts = 0;
+
+    // Audio recording fields
+    private AudioFormat audioFormat;
+    private TargetDataLine line;
+    private File audioFile;
+    private boolean isRecording = false;
+    private long startTime;
 
     public void setCurrentUser(User user) {
         this.currentUser = user;
         this.currentUserId = user.getId();
-        loadPosts(); // Load posts immediately when user is set
+        loadPosts();
     }
 
     @FXML
     public void initialize() {
         setupCategoryFilter();
-        
-        // Add listener for the pending posts checkbox
         if (showPendingPosts != null) {
             showPendingPosts.selectedProperty().addListener((obs, oldVal, newVal) -> {
+                currentPage = 1;
                 loadPosts();
             });
         }
-        // We'll load posts when the user is set
+        if (chatbotToggleButton != null) {
+            chatbotToggleButton.setText("💬 Chatbot");
+            chatbotToggleButton.selectedProperty().addListener((obs, oldVal, newVal) -> {
+                chatbotToggleButton.setText(newVal ? "❌ Close Chatbot" : "💬 Chatbot");
+            });
+        }
+        setupPaginationControls();
+        // Initialize audio format
+        audioFormat = new AudioFormat(44100, 16, 2, true, false);
     }
 
-    // Remove the toggleAdminMode method
-    // @FXML private void toggleAdminMode() { ... }
+    private void setupPaginationControls() {
+        if (prevPageButton != null) {
+            prevPageButton.setOnAction(e -> goToPreviousPage());
+        }
+        if (nextPageButton != null) {
+            nextPageButton.setOnAction(e -> goToNextPage());
+        }
+        updatePaginationControls();
+    }
+
+    private void goToPreviousPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            loadPosts();
+        }
+    }
+
+    private void goToNextPage() {
+        int totalPages = (int) Math.ceil((double) totalPosts / pageSize);
+        if (currentPage < totalPages) {
+            currentPage++;
+            loadPosts();
+        }
+    }
+
+    private void updatePaginationControls() {
+        if (pageNumberLabel != null) {
+            int totalPages = (int) Math.ceil((double) totalPosts / pageSize);
+            pageNumberLabel.setText(String.format("Page %d of %d", currentPage, Math.max(1, totalPages)));
+            prevPageButton.setDisable(currentPage <= 1);
+            nextPageButton.setDisable(currentPage >= totalPages);
+        }
+    }
+
+    @FXML
+    private void toggleChatbot() {
+        if (chatbotContainer == null || chatbotToggleButton == null) return;
+        boolean isVisible = chatbotToggleButton.isSelected();
+        chatbotContainer.setVisible(isVisible);
+        chatbotContainer.setManaged(isVisible);
+        if (isVisible && !isChatbotInitialized) {
+            ChatbotView chatbotView = new ChatbotView();
+            chatbotContainer.getChildren().add(chatbotView);
+            isChatbotInitialized = true;
+        }
+    }
+
+@FXML
+public void openMessagesView() {
+    try {
+        System.out.println("Tentative d'ouverture de la vue Messages");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/views/messages-view.fxml"));
+        System.out.println("Loader créé, tentative de chargement du FXML");
+        Parent messagesView = loader.load();
+        System.out.println("FXML chargé avec succès");
+        
+        // Récupérer le contrôleur et définir l'utilisateur actuel
+        MessagesViewController controller = loader.getController();
+        System.out.println("Contrôleur récupéré: " + (controller != null ? "OK" : "NULL"));
+        controller.setCurrentUser(currentUser);
+        System.out.println("Utilisateur défini: " + (currentUser != null ? currentUser.getId() : "NULL"));
+        
+        Scene scene = new Scene(messagesView);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Messages");
+        stage.show();
+        System.out.println("Fenêtre affichée");
+    } catch (Exception e) {
+        System.err.println("Erreur lors de l'ouverture de la vue Messages: " + e.getMessage());
+        e.printStackTrace();
+    }
+}
 
     @FXML
     private void switchToAdminPostsManagement() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/admin-posts-management.fxml"));
             Parent root = loader.load();
-
             Stage stage = (Stage) postsContainer.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Admin Posts Management");
@@ -79,44 +179,32 @@ public class PostListController {
         }
     }
 
-    // Add the missing setupCategoryFilter method
     private void setupCategoryFilter() {
-        categoryFilter.getItems().addAll(
-                "All",
-                "Témoignage",
-                "Question médicale",
-                "Conseil",
-                "Autre"
-        );
+        categoryFilter.getItems().addAll("All", "Témoignage", "Question médicale", "Conseil", "Autre");
         categoryFilter.setValue("All");
-        categoryFilter.setOnAction(e -> loadPosts());
+        categoryFilter.setOnAction(e -> {
+            currentPage = 1;
+            loadPosts();
+        });
     }
 
-    // Modify the toggleAdminMode method
     @FXML
     private void toggleAdminMode() {
         isAdminMode = adminModeToggle.isSelected();
-
         if (isAdminMode) {
-            // Switch to admin posts management
             switchToAdminPostsManagement();
         } else {
-            // Just reload posts in user mode - use current user instead of hardcoded ID
+            currentPage = 1;
             loadPosts();
         }
     }
 
     @FXML
     private void setupAdminView() {
-        // Clear the regular posts container
         postsContainer.getChildren().clear();
-
-        // Show admin sidebar if it exists
         if (adminSidebar != null) {
             adminSidebar.setVisible(true);
         }
-
-        // Load pending posts for approval
         loadPendingPosts();
     }
 
@@ -125,10 +213,7 @@ public class PostListController {
         try {
             if (pendingPostsContainer != null) {
                 pendingPostsContainer.getChildren().clear();
-
-                // Get all pending posts
                 List<Post> pendingPosts = PostDAO.findByStatus("pending");
-
                 if (pendingPosts.isEmpty()) {
                     Label noPostsLabel = new Label("No pending posts to approve");
                     noPostsLabel.getStyleClass().add("no-posts-label");
@@ -144,14 +229,11 @@ public class PostListController {
         }
     }
 
-    @FXML
-    // Change from private to public
     public VBox createAdminPostView(Post post) {
         VBox postBox = new VBox(10);
         postBox.getStyleClass().add("admin-post-card");
         postBox.setPadding(new Insets(15));
 
-        // Post header with user info
         HBox header = new HBox(10);
         header.setAlignment(Pos.CENTER_LEFT);
 
@@ -163,12 +245,10 @@ public class PostListController {
 
         header.getChildren().addAll(userLabel, categoryLabel);
 
-        // Post content
         Label contentLabel = new Label(post.getContent());
         contentLabel.getStyleClass().add("admin-post-content");
         contentLabel.setWrapText(true);
 
-        // Action buttons
         HBox actionButtons = new HBox(15);
         actionButtons.setAlignment(Pos.CENTER_RIGHT);
 
@@ -185,10 +265,8 @@ public class PostListController {
 
         actionButtons.getChildren().addAll(approveButton, rejectButton);
 
-        // Add all components to post box
         postBox.getChildren().addAll(header, contentLabel);
 
-        // Add images if any
         if (!post.getImageUrls().isEmpty()) {
             FlowPane imagePane = new FlowPane(10, 10);
             imagePane.getStyleClass().add("admin-post-images");
@@ -221,125 +299,141 @@ public class PostListController {
         return postBox;
     }
 
+
+
+
+
     @FXML
     private void handleApprovePost(Post post) {
-        // Create a simple confirmation dialog
+        System.out.println("handleApprovePost called on thread: " + Thread.currentThread().getName());
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Approve Post");
         confirmation.setHeaderText("Approve Post");
         confirmation.setContentText("Are you sure you want to approve this post?");
-
-        // Use the standard OK and Cancel buttons
         Optional<ButtonType> result = confirmation.showAndWait();
-
-        // Check if OK was pressed
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                // Update the post status in the database
                 post.setStatus("approved");
                 PostDAO.updateStatus(post.getId(), "approved");
 
-                // Show success message
+                User postOwner = post.getUser();
+                if (postOwner != null && postOwner.getEmail() != null) {
+                    // Create a separate thread with proper exception handling
+                    Thread emailThread = new Thread(() -> {
+                        try {
+                            // Set thread name for debugging
+                            Thread.currentThread().setName("EmailSenderThread");
+                            
+                            EmailPostService emailPostService = new EmailPostService("benalibenalirania123@gmail.com", "jwzu mmvp vsol qwuh");
+                            String subject = "Votre publication a été approuvée";
+                            String htmlContent = EmailPostTemplateService.getPostApprovalTemplate(postOwner, post);
+                            emailPostService.sendHtmlEmail(postOwner.getEmail(), subject, htmlContent);
+                            
+                            Platform.runLater(() -> {
+                                System.out.println("Email de notification envoyé à " + postOwner.getEmail());
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            System.err.println("Erreur lors de l'envoi de l'email: " + e.getMessage());
+                            Platform.runLater(() -> showError("Failed to send email notification: " + e.getMessage()));
+                        }
+                    });
+                    
+                    // Set as daemon thread so it doesn't prevent app from closing
+                    emailThread.setDaemon(true);
+                    emailThread.start();
+                }
+
                 Alert success = new Alert(Alert.AlertType.INFORMATION);
                 success.setTitle("Success");
                 success.setHeaderText(null);
                 success.setContentText("Post has been approved successfully!");
                 success.showAndWait();
 
-                // Refresh the pending posts list
                 loadPendingPosts();
             } catch (SQLException e) {
                 showError("Error approving post: " + e.getMessage());
-                e.printStackTrace(); // Print stack trace for debugging
+                e.printStackTrace();
             }
         }
     }
 
     private void handleRejectPost(Post post) {
-        // Create a simple confirmation dialog
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Reject Post");
         confirmation.setHeaderText("Reject Post");
         confirmation.setContentText("Are you sure you want to reject this post? This will delete the post permanently.");
 
-        // Use the standard OK and Cancel buttons
         Optional<ButtonType> result = confirmation.showAndWait();
-
-        // Check if OK was pressed
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
                 PostDAO.delete(post.getId());
 
-                // Show success message
                 Alert success = new Alert(Alert.AlertType.INFORMATION);
                 success.setTitle("Success");
                 success.setHeaderText(null);
                 success.setContentText("Post has been rejected and deleted successfully!");
                 success.showAndWait();
 
-                loadPendingPosts(); // Refresh the pending posts list
+                loadPendingPosts();
             } catch (SQLException e) {
                 showError("Error rejecting post: " + e.getMessage());
-                e.printStackTrace(); // Print stack trace for debugging
+                e.printStackTrace();
             }
         }
     }
 
-    // Modify the loadPosts method to handle the checkbox
-    // Update the loadPosts method to use currentUser consistently
     private void loadPosts() {
         try {
             postsContainer.getChildren().clear();
             String selectedCategory = categoryFilter.getValue();
 
-            // Hide admin sidebar if it exists
             if (adminSidebar != null) {
                 adminSidebar.setVisible(false);
             }
 
             List<Post> posts;
-            
-            // Check if we should show pending posts for the current user
             if (showPendingPosts != null && showPendingPosts.isSelected() && currentUser != null) {
-                // Use the method that shows both approved posts and user's pending posts
                 posts = PostDAO.findApprovedAndUserPending(currentUser.getId());
-            } else if (currentUser != null && currentUser.getId() == 3) { // Check if current user is admin
-                // Admin sees all posts
+            } else if (currentUser != null && currentUser.getId() == 3) {
                 posts = PostDAO.findAll();
             } else {
-                // Regular users see only approved posts
                 posts = PostDAO.findByStatus("approved");
             }
 
-            // Sort posts by date (newest first)
-            posts.sort((post1, post2) -> post2.getPublishDate().compareTo(post1.getPublishDate()));
+            posts = posts.stream()
+                    .filter(post -> selectedCategory == null || selectedCategory.equals("All") || selectedCategory.equals(post.getCategory()))
+                    .sorted((post1, post2) -> post2.getPublishDate().compareTo(post1.getPublishDate()))
+                    .toList();
+
+            totalPosts = posts.size();
+
+            int startIndex = (currentPage - 1) * pageSize;
+            int endIndex = Math.min(startIndex + pageSize, posts.size());
+            List<Post> postsToDisplay = startIndex < posts.size() ? posts.subList(startIndex, endIndex) : List.of();
 
             boolean isFirst = true;
-            for (Post post : posts) {
-                // Filter by category if needed
-                if (selectedCategory == null || selectedCategory.equals("All") || selectedCategory.equals(post.getCategory())) {
-                    // For pending posts belonging to current user, show a special indicator
-                    if (post.getStatus().equals("pending") && currentUser != null && post.getUser().getId() == currentUser.getId()) {
-                        VBox pendingNotice = createPendingPostNotice(post);
-                        postsContainer.getChildren().add(pendingNotice);
-                    } else if (post.getStatus().equals("approved")) {
-                        // Only show approved posts to everyone
-                        if (!isFirst) {
-                            Separator separator = new Separator();
-                            separator.getStyleClass().add("post-separator");
-                            postsContainer.getChildren().add(separator);
-                        }
-                        postsContainer.getChildren().add(createPostView(post));
-                        isFirst = false;
+            for (Post post : postsToDisplay) {
+                if (post.getStatus().equals("pending") && currentUser != null && post.getUser().getId() == currentUser.getId()) {
+                    VBox pendingNotice = createPendingPostNotice(post);
+                    postsContainer.getChildren().add(pendingNotice);
+                } else if (post.getStatus().equals("approved")) {
+                    if (!isFirst) {
+                        Separator separator = new Separator();
+                        separator.getStyleClass().add("post-separator");
+                        postsContainer.getChildren().add(separator);
                     }
+                    postsContainer.getChildren().add(createPostView(post));
+                    isFirst = false;
                 }
             }
+
+            updatePaginationControls();
         } catch (SQLException e) {
             showError("Error loading posts: " + e.getMessage());
         }
     }
 
-    // Add this method to create a notice for pending posts
     private VBox createPendingPostNotice(Post post) {
         VBox noticeBox = new VBox(10);
         noticeBox.getStyleClass().add("pending-notice");
@@ -358,38 +452,44 @@ public class PostListController {
     }
 
     private VBox createPostView(Post post) {
-        VBox postBox = new VBox(15);
-        postBox.getStyleClass().addAll("post-box", "post-card");  // Add both classes
-        postBox.setPadding(new Insets(20));
+        VBox postBox = new VBox(10);
+        postBox.getStyleClass().add("post-box");
+        postBox.setPadding(new Insets(15));
 
-        // Header with category and author
-        HBox header = new HBox(15);
+        HBox header = new HBox(10);
         header.setAlignment(Pos.CENTER_LEFT);
 
-        Label categoryLabel = new Label(post.getCategory());
-        categoryLabel.getStyleClass().add("post-category");
+        String authorText;
+        if (post.isAnonymous()) {
+            authorText = "Anonymous";
+        } else if (post.getUser() != null) {
+            authorText = (post.getUser().getNom() != null && post.getUser().getPrenom() != null)
+                    ? post.getUser().getNom() + " " + post.getUser().getPrenom()
+                    : post.getUser().getNom() != null ? post.getUser().getNom() : "Unknown User";
+        } else {
+            authorText = "Unknown User";
+        }
 
-        Label authorLabel = new Label("Posted by " +
-                (post.isAnonymous() ? "Anonymous" : post.getUser().getNom()));
+        Label authorLabel = new Label("Posted by " + authorText);
         authorLabel.getStyleClass().add("post-author");
 
         Region headerSpacer = new Region();
         HBox.setHgrow(headerSpacer, Priority.ALWAYS);
 
-        // Format the date properly
         String formattedDate = post.getPublishDate().toLocalDate().format(
                 java.time.format.DateTimeFormatter.ofPattern("MMM dd, yyyy"));
         Label dateLabel = new Label(formattedDate);
         dateLabel.getStyleClass().add("post-date");
 
+        Label categoryLabel = new Label(post.getCategory());
+        categoryLabel.getStyleClass().add("post-category");
+
         header.getChildren().addAll(categoryLabel, authorLabel, headerSpacer, dateLabel);
 
-        // Content
         Label contentLabel = new Label(post.getContent());
         contentLabel.getStyleClass().add("post-content");
         contentLabel.setWrapText(true);
 
-        // Images with improved layout
         FlowPane imagePane = new FlowPane(15, 15);
         imagePane.getStyleClass().add("post-images");
 
@@ -408,7 +508,6 @@ public class PostListController {
                 imageView.setPreserveRatio(true);
                 imageView.getStyleClass().add("post-image");
 
-                // Add a container for the image with styling
                 VBox imageContainer = new VBox(imageView);
                 imageContainer.getStyleClass().add("image-container");
                 imageContainer.setStyle("-fx-background-color: #f8f9fa; -fx-padding: 5; -fx-background-radius: 5;");
@@ -419,29 +518,24 @@ public class PostListController {
             }
         }
 
-        // Actions section with modern styling
         HBox actionsBox = new HBox(20);
         actionsBox.getStyleClass().add("post-actions");
         actionsBox.setAlignment(Pos.CENTER_LEFT);
 
-        // Reaction section (likes)
         HBox reactionBox = new HBox(15);
         reactionBox.getStyleClass().add("post-actions");
         reactionBox.setAlignment(Pos.CENTER_LEFT);
         reactionBox.setPadding(new Insets(10, 0, 10, 0));
 
-        // Get like count and user like status
         int likeCount = 0;
         boolean userHasLiked = false;
         try {
             likeCount = LikeDAO.countLikes(post.getId());
-            // Use current user ID instead of hardcoded value
             userHasLiked = currentUser != null ? LikeDAO.hasUserLiked(post.getId(), currentUser.getId()) : false;
         } catch (SQLException e) {
             System.err.println("Error loading likes: " + e.getMessage());
         }
 
-        // Create styled like button
         ToggleButton likeButton = new ToggleButton();
         likeButton.getStyleClass().add("post-action-button");
 
@@ -453,7 +547,6 @@ public class PostListController {
             likeButton.setText("♡ Like");
         }
 
-        // Like count label
         Label likeCountLabel = new Label(likeCount + " likes");
         likeCountLabel.getStyleClass().add("post-like-count");
 
@@ -461,18 +554,17 @@ public class PostListController {
             try {
                 Like like = new Like();
                 like.setPublicationId(post.getId());
-                // Use current user ID instead of hardcoded value
                 like.setUserId(currentUser != null ? currentUser.getId() : 0);
+                like.setCreatedAt(LocalDateTime.now());
 
-                LikeDAO.save(like);
-
-                // Update UI
                 if (likeButton.isSelected()) {
+                    LikeDAO.save(like);
                     likeButton.setText("❤ Liked");
                     likeButton.setStyle("-fx-text-fill: #e74c3c;");
                     int currentLikes = Integer.parseInt(likeCountLabel.getText().split(" ")[0]);
                     likeCountLabel.setText((currentLikes + 1) + " likes");
                 } else {
+                    LikeDAO.delete(post.getId(), currentUser != null ? currentUser.getId() : 0, null);
                     likeButton.setText("♡ Like");
                     likeButton.setStyle("");
                     int currentLikes = Integer.parseInt(likeCountLabel.getText().split(" ")[0]);
@@ -481,19 +573,16 @@ public class PostListController {
                     }
                 }
             } catch (SQLException ex) {
-                System.err.println("Error updating like: " + ex.getMessage());
+                showError("Error updating like: " + ex.getMessage());
             }
         });
 
-        // Comment button
         Button commentBtn = new Button("💬 Comment");
         commentBtn.getStyleClass().add("post-action-button");
-
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        // Action buttons
         Button editButton = new Button("Edit");
         editButton.getStyleClass().add("post-action-button");
 
@@ -501,22 +590,18 @@ public class PostListController {
         deleteButton.getStyleClass().add("post-action-button");
         deleteButton.setStyle("-fx-text-fill: #e74c3c;");
 
-        // Only show edit/delete buttons if the post belongs to current user
         if (currentUser != null && post.getUser().getId() == currentUser.getId()) {
             editButton.setOnAction(e -> handleEditPost(post));
             deleteButton.setOnAction(e -> handleDeletePost(post));
             reactionBox.getChildren().addAll(likeButton, likeCountLabel, commentBtn, spacer, editButton, deleteButton);
         } else {
-            // For other users' posts, only show like and comment buttons
             reactionBox.getChildren().addAll(likeButton, likeCountLabel, commentBtn);
         }
 
-        // Comments section
         VBox commentsBox = new VBox(10);
         commentsBox.getStyleClass().add("comments-container");
         commentsBox.setPadding(new Insets(10, 0, 0, 0));
 
-        // Comment input
         HBox commentInput = new HBox(10);
         commentInput.setAlignment(Pos.CENTER_LEFT);
         commentInput.getStyleClass().add("comment-input");
@@ -524,28 +609,38 @@ public class PostListController {
         TextField commentField = new TextField();
         commentField.setPromptText("Write a comment...");
         commentField.setPrefWidth(300);
+        commentField.setUserData(post); // Attach post to commentField's user data
         commentField.getStyleClass().add("comment-field");
         HBox.setHgrow(commentField, Priority.ALWAYS);
 
         Button submitComment = new Button("Post");
         submitComment.getStyleClass().add("comment-submit-button");
-        submitComment.setOnAction(e -> handleAddComment(post.getId(), commentField));
 
-        commentInput.getChildren().addAll(commentField, submitComment);
+        Button recordButton = new Button("🎤 Record");
+        recordButton.getStyleClass().add("comment-action-button");
 
-        // Add a label for comments section
+        Button stopButton = new Button("⬛ Stop");
+        stopButton.getStyleClass().add("comment-action-button");
+        stopButton.setVisible(false);
+        stopButton.setManaged(false);
+
+        // Bind the actions directly, ensuring correct button references
+        recordButton.setOnAction(e -> startRecording(commentField, submitComment, recordButton, stopButton));
+        stopButton.setOnAction(e -> stopRecording(commentField, submitComment, recordButton, stopButton));
+        submitComment.setOnAction(e -> handleAddComment(post.getId(), commentField, null));
+
+        commentInput.getChildren().addAll(commentField, recordButton, stopButton, submitComment);
+
         Label commentsLabel = new Label("Comments");
         commentsLabel.getStyleClass().add("comments-header");
         commentsLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 5 0;");
 
         commentsBox.getChildren().addAll(commentsLabel, commentInput);
 
-        // Add separator
         Separator separator = new Separator();
         separator.getStyleClass().add("comment-separator");
         commentsBox.getChildren().add(separator);
 
-        // Load existing comments
         try {
             List<Comment> comments = CommentDAO.findByPostId(post.getId());
             for (Comment comment : comments) {
@@ -556,22 +651,19 @@ public class PostListController {
             System.err.println("Error loading comments: " + ex.getMessage());
         }
 
-        // Make the post clickable
         postBox.setOnMouseClicked(e -> {
             if (e.getTarget() != commentField && e.getTarget() != submitComment
                     && e.getTarget() != editButton && e.getTarget() != deleteButton
-                    && e.getTarget() != likeButton) {
+                    && e.getTarget() != likeButton && e.getTarget() != recordButton
+                    && e.getTarget() != stopButton) {
                 openPublicationDetails(post);
             }
         });
 
-        // Add all components to the post box in correct order
         postBox.getChildren().addAll(header, contentLabel);
-
         if (!post.getImageUrls().isEmpty()) {
             postBox.getChildren().add(imagePane);
         }
-
         postBox.getChildren().addAll(reactionBox, commentsBox);
 
         return postBox;
@@ -582,7 +674,6 @@ public class PostListController {
         commentBox.getStyleClass().add("comment-box");
         commentBox.setPadding(new Insets(10));
 
-        // Avatar placeholder (you can replace with actual user avatar)
         Region avatarPlaceholder = new Region();
         avatarPlaceholder.setPrefSize(32, 32);
         avatarPlaceholder.setMinSize(32, 32);
@@ -603,14 +694,33 @@ public class PostListController {
         contentLabel.getStyleClass().add("comment-text");
         contentLabel.setWrapText(true);
 
-        // Add reported badge if comment is reported
-        if (comment.isReported()) {
-            Label reportedBadge = new Label("⚠ Reported");
-            reportedBadge.getStyleClass().add("reported-badge");
-            reportedBadge.setStyle("-fx-background-color: #ff9800; -fx-text-fill: white; -fx-padding: 2 5; -fx-background-radius: 3;");
-            commentContent.getChildren().addAll(authorLabel, contentLabel, reportedBadge);
+        if ("voice".equals(comment.getType()) && comment.getVoiceUrl() != null) {
+            HBox voiceBox = new HBox(10);
+            Button playButton = new Button("▶ Play");
+            playButton.getStyleClass().add("comment-action-button");
+            playButton.setOnAction(e -> playVoiceMessage(comment.getVoiceUrl()));
+            Label durationLabel = new Label(comment.getDuration() + "s");
+            durationLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #6c757d;");
+            voiceBox.getChildren().addAll(playButton, durationLabel);
+            commentContent.getChildren().add(voiceBox);
         } else {
-            commentContent.getChildren().addAll(authorLabel, contentLabel);
+            commentContent.getChildren().add(contentLabel);
+        }
+
+        if (comment.isReported()) {
+            try {
+                boolean isStillReported = CommentDAO.isCommentReported(comment.getId());
+                if (isStillReported) {
+                    Label reportedBadge = new Label("⚠ Reported");
+                    reportedBadge.getStyleClass().add("reported-badge");
+                    reportedBadge.setStyle("-fx-background-color: #ff9800; -fx-text-fill: white; -fx-padding: 2 5; -fx-background-radius: 3;");
+                    commentContent.getChildren().add(reportedBadge);
+                } else {
+                    comment.setReported(false);
+                }
+            } catch (SQLException e) {
+                System.err.println("Error checking comment report status: " + e.getMessage());
+            }
         }
 
         Region spacer = new Region();
@@ -630,19 +740,19 @@ public class PostListController {
         deleteButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #e74c3c;");
         deleteButton.setOnAction(e -> handleDeleteComment(comment));
 
-        // Add report button
         Button reportButton = new Button("⚠ Report");
         reportButton.getStyleClass().add("comment-action-button");
         reportButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #ff9800;");
 
-        // Check if current user has already reported this comment
         try {
-            // Use currentUser.getId() instead of currentUserId
-            boolean hasReported = CommentReportDAO.hasUserReported(comment.getId(), 
-                currentUser != null ? currentUser.getId() : 0);
-            if (hasReported) {
+            boolean hasReported = CommentReportDAO.hasUserReported(comment.getId(),
+                    currentUser != null ? currentUser.getId() : 0);
+            if (hasReported && comment.isReported()) {
                 reportButton.setText("✓ Reported");
                 reportButton.setDisable(true);
+            } else if (hasReported && !comment.isReported()) {
+                reportButton.setText("⚠ Report");
+                reportButton.setDisable(false);
             }
         } catch (SQLException ex) {
             System.err.println("Error checking report status: " + ex.getMessage());
@@ -650,12 +760,9 @@ public class PostListController {
 
         reportButton.setOnAction(e -> handleReportComment(comment));
 
-        // Only show edit/delete buttons if the comment belongs to current user
-        // Use currentUser.getId() instead of currentUserId
         if (currentUser != null && comment.getUserId() == currentUser.getId()) {
             buttonsBox.getChildren().addAll(editButton, deleteButton);
         } else {
-            // Only show report button for comments from other users
             buttonsBox.getChildren().add(reportButton);
         }
 
@@ -664,18 +771,119 @@ public class PostListController {
         return commentBox;
     }
 
-    // Add method to handle comment reporting
+    private void startRecording(TextField commentField, Button submitButton, Button recordButton, Button stopButton) {
+        if (isRecording) return;
+        isRecording = true;
+
+        // Disable text input and submit button during recording
+        commentField.setDisable(true);
+        submitButton.setDisable(true);
+        recordButton.setVisible(false);
+        recordButton.setManaged(false);
+        stopButton.setVisible(true);
+        stopButton.setManaged(true);
+
+        // Create directory if it doesn't exist
+        File audioDir = new File("audio/comments");
+        if (!audioDir.exists()) {
+            audioDir.mkdirs();
+        }
+
+        // Generate unique filename
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        audioFile = new File(audioDir, "comment_" + timestamp + ".wav");
+
+        try {
+            DataLine.Info info = new DataLine.Info(TargetDataLine.class, audioFormat);
+            line = (TargetDataLine) AudioSystem.getLine(info);
+            line.open(audioFormat);
+            line.start();
+            startTime = System.currentTimeMillis();
+
+            new Thread(() -> {
+                try (AudioInputStream ais = new AudioInputStream(line)) {
+                    AudioSystem.write(ais, AudioFileFormat.Type.WAVE, audioFile);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    showError("Error recording audio: " + e.getMessage());
+                }
+            }).start();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+            showError("Microphone not available: " + e.getMessage());
+            isRecording = false;
+            commentField.setDisable(false);
+            submitButton.setDisable(false);
+            recordButton.setVisible(true);
+            recordButton.setManaged(true);
+            stopButton.setVisible(false);
+            stopButton.setManaged(false);
+        }
+    }
+
+    private void stopRecording(TextField commentField, Button submitButton, Button recordButton, Button stopButton) {
+        if (!isRecording) return;
+        isRecording = false;
+
+        // Re-enable text input and submit button
+        commentField.setDisable(false);
+        submitButton.setDisable(false);
+        recordButton.setVisible(true);
+        recordButton.setManaged(true);
+        stopButton.setVisible(false);
+        stopButton.setManaged(false);
+
+        // Stop and close the recording line
+        line.stop();
+        line.close();
+
+        // Calculate duration
+        long endTime = System.currentTimeMillis();
+        int duration = (int) ((endTime - startTime) / 1000);
+
+        // Update comment field to indicate voice message
+        commentField.setText("[Voice Message]");
+
+        // Store audio file path and duration for submission
+        Post post = (Post) commentField.getUserData(); // Retrieve post from user data
+        submitButton.setOnAction(e -> handleAddComment(
+                post.getId(),
+                commentField,
+                new CommentData(audioFile.getAbsolutePath(), duration)
+        ));
+    }
+
+    private void playVoiceMessage(String voiceUrl) {
+        try {
+            File soundFile = new File(voiceUrl);
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Error playing voice message: " + e.getMessage());
+        }
+    }
+
+    private class CommentData {
+        String voiceUrl;
+        int duration;
+
+        CommentData(String voiceUrl, int duration) {
+            this.voiceUrl = voiceUrl;
+            this.duration = duration;
+        }
+    }
+
     private void handleReportComment(Comment comment) {
-        // Create a dialog to select report reason
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Report Comment");
         dialog.setHeaderText("Why are you reporting this comment?");
 
-        // Set the button types
         ButtonType reportButtonType = new ButtonType("Report", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(reportButtonType, ButtonType.CANCEL);
 
-        // Create the radio buttons for report reasons
         ToggleGroup group = new ToggleGroup();
 
         RadioButton rb1 = new RadioButton("Inappropriate content");
@@ -695,14 +903,12 @@ public class PostListController {
         rb4.setToggleGroup(group);
         rb4.setUserData("fausse_information");
 
-        // Create layout for dialog
         VBox vbox = new VBox(10);
         vbox.getChildren().addAll(rb1, rb2, rb3, rb4);
         vbox.setPadding(new Insets(20, 10, 10, 10));
 
         dialog.getDialogPane().setContent(vbox);
 
-        // Convert the result to a string when the report button is clicked
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == reportButtonType) {
                 return group.getSelectedToggle().getUserData().toString();
@@ -714,31 +920,21 @@ public class PostListController {
 
         result.ifPresent(reason -> {
             try {
-                // Add debugging output
-                System.out.println("Reporting comment ID: " + comment.getId() + 
-                    ", User ID: " + (currentUser != null ? currentUser.getId() : 0) + 
-                    ", Reason: " + reason);
+                CommentReportDAO.reportComment(comment.getId(),
+                        currentUser != null ? currentUser.getId() : 0, reason);
 
-                // Create a new comment report - use currentUser.getId()
-                CommentReportDAO.reportComment(comment.getId(), 
-                    currentUser != null ? currentUser.getId() : 0, reason);
-
-                // Update the comment's reported status
                 comment.setReported(true);
                 comment.setReportReason(reason);
                 CommentDAO.updateReportStatus(comment.getId(), true, reason);
 
-                // Show confirmation
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Comment Reported");
                 alert.setHeaderText(null);
                 alert.setContentText("Thank you for your report. Our moderators will review it.");
                 alert.showAndWait();
 
-                // Refresh the view
                 loadPosts();
             } catch (SQLException ex) {
-                // Improve error handling with more details
                 System.err.println("Error reporting comment: " + ex.getMessage());
                 ex.printStackTrace();
                 showError("Error reporting comment: " + ex.getMessage());
@@ -756,67 +952,103 @@ public class PostListController {
             try {
                 comment.setContenuCom(newContent);
                 CommentDAO.save(comment);
-                loadPosts(); // Refresh to show edited comment
+                loadPosts();
             } catch (SQLException ex) {
                 showError("Error updating comment: " + ex.getMessage());
             }
         });
     }
 
-    // Update the handleAddComment method to use currentUser
-    private void handleAddComment(int postId, TextField commentField) {
+    private void handleAddComment(int postId, TextField commentField, CommentData commentData) {
         String content = commentField.getText().trim();
-        if (content.isEmpty()) return;
+        if (content.isEmpty() && commentData == null) return;
 
         try {
             Comment comment = new Comment();
             comment.setPublicationId(postId);
-            // Use current user ID instead of hardcoded value
             comment.setUserId(currentUser != null ? currentUser.getId() : 0);
-            comment.setContenuCom(content);
+            if (commentData != null) {
+                comment.setType("voice");
+                comment.setContenuCom("[Voice Message]");
+                comment.setVoiceUrl(commentData.voiceUrl);
+                comment.setDuration(commentData.duration);
+            } else {
+                comment.setType("text");
+                comment.setContenuCom(content);
+            }
 
             CommentDAO.save(comment);
             commentField.clear();
-            loadPosts(); // Refresh to show new comment
+            loadPosts();
         } catch (SQLException ex) {
             showError("Error adding comment: " + ex.getMessage());
         }
     }
 
     private void handleDeleteComment(Comment comment) {
-        try {
-            CommentDAO.delete(comment.getId());
-            loadPosts(); // Refresh to remove deleted comment
-        } catch (SQLException ex) {
-            showError("Error deleting comment: " + ex.getMessage());
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Delete Comment");
+        confirmation.setHeaderText("Delete Comment");
+        confirmation.setContentText("Are you sure you want to delete this comment? This action cannot be undone.");
+
+        Optional<ButtonType> result = confirmation.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                CommentDAO.delete(comment.getId());
+
+                Alert success = new Alert(Alert.AlertType.INFORMATION);
+                success.setTitle("Success");
+                success.setHeaderText(null);
+                success.setContentText("Comment deleted successfully!");
+                success.showAndWait();
+
+                loadPosts();
+            } catch (SQLException e) {
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setHeaderText("Error deleting comment");
+                error.setContentText("An error occurred: " + e.getMessage());
+                error.showAndWait();
+                e.printStackTrace();
+            }
         }
     }
 
-    // Add this method to handle creating a new post
     @FXML
-    // Update the handleNewPost method to pass the current user
+    private void closeChatbot() {
+        if (chatbotToggleButton != null) {
+            chatbotToggleButton.setSelected(false);
+            chatbotContainer.setVisible(false);
+            chatbotContainer.setManaged(false);
+        }
+    }
+
+    @FXML
     private void handleNewPost() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/post-form.fxml"));
             Parent root = loader.load();
 
-            // Get the controller and set the current user
             PostFormController controller = loader.getController();
             controller.setCurrentUser(currentUser);
 
             Stage stage = new Stage();
             stage.setTitle("Create New Post");
-            stage.setScene(new Scene(root));
+
+            Scene scene = new Scene(root, 700, 600);
+            stage.setScene(scene);
+
+            stage.setMinWidth(500);
+            stage.setMinHeight(400);
+
             stage.showAndWait();
 
-            // Refresh the posts list after creating a new post
             loadPosts();
         } catch (IOException e) {
             showError("Error opening post form: " + e.getMessage());
         }
     }
 
-    // Update the handleEditPost method to pass the current user
     private void handleEditPost(Post post) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/post-form.fxml"));
@@ -827,11 +1059,17 @@ public class PostListController {
             controller.setEditMode(post);
 
             Stage stage = new Stage();
+
+            Scene scene = new Scene(root, 700, 600);
+            stage.setScene(scene);
+
+            stage.setMinWidth(500);
+            stage.setMinHeight(400);
+
             stage.setTitle("Edit Post");
-            stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            loadPosts(); // Refresh the list after editing
+            loadPosts();
         } catch (IOException e) {
             showError("Error opening edit form: " + e.getMessage());
         }
@@ -847,7 +1085,7 @@ public class PostListController {
             if (response == ButtonType.OK) {
                 try {
                     PostDAO.delete(post.getId());
-                    loadPosts(); // Refresh the list after deletion
+                    loadPosts();
                 } catch (SQLException ex) {
                     showError("Error deleting post: " + ex.getMessage());
                 }
@@ -863,10 +1101,7 @@ public class PostListController {
         alert.showAndWait();
     }
 
-    // Add this method to allow switching to user mode from admin view
-    // Remove this hardcoded user ID in setUserMode method
     public void setUserMode() {
-        // Remove hardcoded ID (2) and use the current user instead
         isAdminMode = false;
         if (adminModeToggle != null) {
             adminModeToggle.setSelected(false);
@@ -881,15 +1116,20 @@ public class PostListController {
 
             PublicationDetailsController controller = loader.getController();
             controller.setPost(post);
+            controller.setCurrentUser(currentUser);
 
             Stage stage = new Stage();
             stage.setTitle("Publication Details");
-            stage.setScene(new Scene(root));
+
+            Scene scene = new Scene(root, 800, 700);
+            stage.setScene(scene);
+
+            stage.setMinWidth(600);
+            stage.setMinHeight(500);
+
             stage.show();
         } catch (IOException e) {
             showError("Error opening publication details: " + e.getMessage());
         }
     }
-
-
 }
