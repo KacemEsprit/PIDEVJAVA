@@ -6,24 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="cc4d44b3-873d-422a-bea4-dd33ed12ab3c" name="Changes" comment="kacems">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/CartController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/DashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/ForgotPasswordController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/ForgotPasswordController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/OrderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/OrderHistoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/OrderHistoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PDFController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/PDFController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/TodoListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/Controller/TodoListController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/utils/RewardPDFGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/utils/RewardPDFGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/admin-dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/admin-dashboard.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/dashboard.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/order_management.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/order_management.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/todolist.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/todolist.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/DashboardController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/DashboardController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/novaview/dashboard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pfe/novaview/dashboard.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +83,7 @@
     &quot;Maven.Nova [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;nova&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/DELL/OneDrive/Bureau/javapi/PIDEVJAVA&quot;,
