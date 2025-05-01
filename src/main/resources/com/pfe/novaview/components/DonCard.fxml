@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.layout.StackPane?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" styleClass="don-card" spacing="10">
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
+    
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label fx:id="typeDonLabel" styleClass="don-card-title" text="Type de Don"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="montantLabel" styleClass="don-card-montant" text="Montant"/>
+    </HBox>
+    
+    <Label fx:id="descriptionLabel" styleClass="don-card-description" text="Description" wrapText="true"/>
+    
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Date: " styleClass="don-card-label"/>
+        <Label fx:id="dateDonLabel" styleClass="don-card-value"/>
+    </HBox>
+    
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Mode de paiement: " styleClass="don-card-label"/>
+        <Label fx:id="modePaiementLabel" styleClass="don-card-value"/>
+    </HBox>
+    
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="modifierButton" text="Modifier" styleClass="don-card-button"/>
+        <Button fx:id="supprimerButton" text="Supprimer" styleClass="don-card-button-delete"/>
+    </HBox>
+</VBox>

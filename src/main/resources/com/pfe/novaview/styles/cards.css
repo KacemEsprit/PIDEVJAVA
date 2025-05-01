@@ -1,0 +1,70 @@
+.don-card, .compagnie-card {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-min-width: 300px;
+    -fx-max-width: 350px;
+    -fx-transition: all 0.3s ease;
+}
+
+.don-card:hover, .compagnie-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 15, 0, 0, 4);
+    -fx-translate-y: -2px;
+}
+
+.don-card-title, .compagnie-card-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.don-card-montant {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #27ae60;
+}
+
+.don-card-description, .compagnie-card-description {
+    -fx-font-size: 14px;
+    -fx-text-fill: #7f8c8d;
+    -fx-wrap-text: true;
+}
+
+.don-card-label, .compagnie-card-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
+}
+
+.don-card-value, .compagnie-card-value {
+    -fx-text-fill: #7f8c8d;
+}
+
+.don-card-button, .compagnie-card-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+}
+
+.don-card-button-delete, .compagnie-card-button-delete {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+}
+
+.don-card-button:hover, .compagnie-card-button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.don-card-button-delete:hover, .compagnie-card-button-delete:hover {
+    -fx-background-color: #c0392b;
+}
+
+.card-grid {
+    -fx-padding: 20px;
+    -fx-hgap: 20px;
+    -fx-vgap: 20px;
+    -fx-alignment: center;
+}

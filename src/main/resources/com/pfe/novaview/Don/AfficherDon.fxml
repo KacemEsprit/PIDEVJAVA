@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.pfe.nova.Controller.Don.AfficherDonController"
+            styleClass="don-container"
+            stylesheets="@../styles/don.css,@../styles/cards.css"
+            prefWidth="1000" prefHeight="700">
+
+    <top>
+        <StackPane>
+            <Rectangle width="1000" height="120" styleClass="don-header-background" arcWidth="10" arcHeight="10">
+                <effect>
+                    <DropShadow color="rgba(0,0,0,0.3)" radius="10" spread="0.05" />
+                </effect>
+            </Rectangle>
+            <VBox styleClass="don-header" alignment="CENTER">
+                <padding>
+                    <Insets left="40" right="40" top="20" bottom="20"/>
+                </padding>
+                <Label text="Gestion des Dons" styleClass="don-title" alignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="26"/>
+                    </font>
+                </Label>
+                <Text text="Liste des dons enregistrés" fill="white" style="-fx-font-size: 14px;"/>
+
+
+                <HBox spacing="10" alignment="CENTER_LEFT" styleClass="don-toolbar">
+                    <padding>
+                        <Insets top="10" right="20" bottom="10" left="20"/>
+                    </padding>
+                    <Button text="Ajouter" onAction="#ajouterDon" styleClass="don-button-add"/>
+                    <Button text="Modifier" onAction="#modifierDon" styleClass="don-button"/>
+                    <Button text="Supprimer" onAction="#supprimerDon" styleClass="don-button-delete"/>
+
+                    <HBox HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT" spacing="10">
+                        <TextField fx:id="searchField" promptText="Rechercher un don..." prefWidth="250"/>
+                        <Button text="Rechercher" styleClass="don-button"/>
+                    </HBox>
+                </HBox>
+            </VBox>
+        </StackPane>
+    </top>
+
+    <center>
+        <VBox styleClass="don-content" spacing="20">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <effect>
+                <DropShadow color="rgba(0,0,0,0.2)" radius="15" spread="0.05" />
+            </effect>
+            <TableView fx:id="tableview" styleClass="don-table">
+                <columns>
+                    <TableColumn fx:id="idCol" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="typeDonCol" text="Type de Don" prefWidth="100"/>
+                    <TableColumn fx:id="montantCol" text="Montant" prefWidth="100"/>
+                    <TableColumn fx:id="descriptionCol" text="Description" prefWidth="150"/>
+                    <TableColumn fx:id="dateDonCol" text="Date" prefWidth="100"/>
+                    <TableColumn fx:id="modePaiementCol" text="Mode de Paiement" prefWidth="120"/>
+                    <TableColumn fx:id="preuveDonCol" text="Preuve" prefWidth="100"/>
+                    <TableColumn fx:id="campagneIdCol" text="Campagne ID" prefWidth="100"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_LEFT" styleClass="don-toolbar">
+            <padding>
+                <Insets top="15" right="30" bottom="15" left="30"/>
+            </padding>
+            <Label text="Total des dons: " style="-fx-font-weight: bold;">
+                <font>
+                    <Font size="14"/>
+                </font>
+            </Label>
+            <Label fx:id="lblTotalDons" text="0">
+                <font>
+                    <Font size="14"/>
+                </font>
+            </Label>
+            <effect>
+                <DropShadow color="rgba(0,0,0,0.2)" radius="5" spread="0.05" />
+            </effect>
+        </HBox>
+    </bottom>
+</BorderPane>
+
