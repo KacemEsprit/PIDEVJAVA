@@ -40,10 +40,7 @@
                     <graphic><Label text="📊" styleClass="icon-label"/></graphic>
                     <text>Statistics</text>
                 </Button>
-                <Button fx:id="reportsBtn" styleClass="nav-button" onAction="#showReports">
-                    <graphic><Label text="📄" styleClass="icon-label"/></graphic>
-                    <text>Reports</text>
-                </Button>
+
                 <Button fx:id="settingsBtn" styleClass="nav-button" onAction="#showProfile">
                     <graphic>
                         <Label text="👤" styleClass="icon-label"/>
@@ -56,7 +53,6 @@
                 </Button>
 
 
-
                 <!-- Sous-menu Pharmacie -->
                 <VBox fx:id="pharmacieSubMenu" visible="false" managed="false" spacing="5">
                     <Button text="Gestion Médicaments" onAction="#showMedicationManagement"
@@ -67,7 +63,22 @@
                             style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-pref-width: 140; -fx-translate-x: 20;"/>
                     <Button text="ToDo List" onAction="#showToDoList"
                             style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-pref-width: 140; -fx-translate-x: 20;"/>
+
                 </VBox>
+                <Button styleClass="nav-button" onAction="#showReports">
+                    <graphic>
+                        <Label text="📄" styleClass="icon-label"/> <!-- Updated icon for Reports -->
+                    </graphic>
+                    <text>Reports</text>
+                </Button>
+
+                <Button styleClass="nav-button" onAction="#showSessions">
+                    <graphic>
+                        <Label text="🗓️" styleClass="icon-label"/> <!-- Updated icon for Sessions -->
+                    </graphic>
+                    <text>Sessions</text>
+                </Button>
+
 
 
                 <Region VBox.vgrow="ALWAYS"/>

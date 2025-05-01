@@ -1,11 +1,11 @@
 package com.pfe.nova.configuration;
 
-import com.pfe.nova.models.Medecin;
 import com.pfe.nova.models.Patient;
-import com.pfe.nova.models.User;
-import com.pfe.nova.utils.Session;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +15,25 @@ public class PatientDAO {
     public PatientDAO() throws SQLException {
         connection = DatabaseConnection.getConnection();
         System.out.println("PatientDAO initialized with connection: " + (connection != null));
+    }
+
+    public static String getPatientName(int patientId) {
+        String query = "SELECT nom, prenom FROM user WHERE id = ? AND (role = 'ROLE_PATIENT' OR role = 'PATIENT')";
+        String patientName = null;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, patientId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String nom = rs.getString("nom");
+                String prenom = rs.getString("prenom");
+                patientName = nom + " " + prenom;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return patientName;
     }
 
     public List<Patient> displayPatients() throws SQLException {
@@ -83,5 +102,6 @@ public class PatientDAO {
         System.out.println("Retrieved IDs: " + ids); // Debug statement
         return ids;
     }
+
 
 }

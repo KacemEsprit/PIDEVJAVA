@@ -63,6 +63,15 @@ public class AdminDashboardController {
     @FXML
     private Button postsManagementBtn; // Add this field for the posts management button
 
+
+    @FXML private TextField searchField;
+    @FXML private ComboBox<String> filterRole;
+
+    private User adminUser;
+
+
+    @FXML
+    private GridPane reportsGridPane;
     @FXML
     public void initialize() {
         setupUI();
@@ -77,11 +86,6 @@ public class AdminDashboardController {
     }
 
 
-    @FXML
-    private TextField searchField;
-    @FXML
-    private ComboBox<String> filterRole;
-    private User adminUser;
 
 
     private void setupTableColumns() {
@@ -571,9 +575,7 @@ public class AdminDashboardController {
         }
     }
 
-    @FXML
-    private void showReports() {
-    }
+
 
     @FXML
     private void showSettings() {
@@ -944,6 +946,35 @@ public class AdminDashboardController {
 
 
 
+
+    public void showSessions() {
+        try {
+            // Load the RapportsAdmin.fxml view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/viewSessions.fxml"));
+            Parent root = loader.load();
+
+            // Set the loaded view into the contentArea
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to load RapportsAdmin.fxml. Please check the file path.");
+        }
+    }
+    public void showReports() {
+        try {
+            // Load the RapportsAdmin.fxml view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/pfe/novaview/RapportsAdmin.fxml"));
+            Parent root = loader.load();
+
+            // Set the loaded view into the contentArea
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to load RapportsAdmin.fxml. Please check the file path.");
+        }
+    }
     @FXML
     private void togglePharmacieMenu() {
         pharmacieSubMenu.setVisible(!pharmacieSubMenu.isVisible());
