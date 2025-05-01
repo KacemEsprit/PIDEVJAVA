@@ -5,31 +5,80 @@
 <?import javafx.geometry.Insets?>
 <?import java.net.URL?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.pfe.nova.Controller.PostListController"
-      spacing="25" styleClass="main-container">
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.pfe.nova.Controller.PostListController"
+            prefWidth="1000" prefHeight="600">
 
-    <padding>
-        <Insets top="30" right="30" bottom="30" left="30"/>
-    </padding>
+    <center>
+        <VBox spacing="25" styleClass="main-container">
+            <padding>
+                <Insets top="30" right="30" bottom="30" left="30"/>
+            </padding>
 
-    <!-- Filter and Actions -->
-    <HBox spacing="15" alignment="CENTER_LEFT" styleClass="filter-container">
-        <Label text="Filter by:" styleClass="filter-label"/>
-        <ComboBox fx:id="categoryFilter" prefWidth="250" styleClass="category-filter"/>
-        <CheckBox fx:id="showPendingPosts" text="Show My Pending Posts" styleClass="pending-filter"/>
-        <Region HBox.hgrow="ALWAYS"/>
-        <!-- Removed the admin toggle button -->
-        <Button text="✏️ Create New Post" onAction="#handleNewPost" styleClass="new-post-button"/>
-    </HBox>
+            <!-- Filter and Actions -->
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="filter-container">
+                <Label text="Filter by:" styleClass="filter-label"/>
+                <ComboBox fx:id="categoryFilter" prefWidth="250" styleClass="category-filter"/>
+                <CheckBox fx:id="showPendingPosts" text="Show My Pending Posts" styleClass="pending-filter"/>
+                <Region HBox.hgrow="ALWAYS"/>
 
-    <!-- Posts List -->
-    <ScrollPane fitToWidth="true" styleClass="posts-scroll" VBox.vgrow="ALWAYS">
-        <VBox fx:id="postsContainer" spacing="20" styleClass="posts-container"/>
-    </ScrollPane>
+<!-- ... existing code ... -->
+<Button styleClass="messages-button" onAction="#openMessagesView" text="Messages" />
+<!-- ... existing code ... -->                <Button text="Create New Post" onAction="#handleNewPost" styleClass="new-post-button"/>
+            </HBox>
+
+            <!-- Posts List -->
+            <ScrollPane fitToWidth="true" styleClass="posts-scroll" VBox.vgrow="ALWAYS">
+                <VBox fx:id="postsContainer" spacing="20" styleClass="posts-container"/>
+            </ScrollPane>
+
+            <!-- Pagination Controls -->
+            <HBox fx:id="paginationContainer" spacing="10" alignment="CENTER" styleClass="pagination-container">
+                <Button fx:id="prevPageButton" text="Previous" styleClass="pagination-button"/>
+                <Label fx:id="pageNumberLabel" text="Page 1 of 1" styleClass="pagination-label"/>
+                <Button fx:id="nextPageButton" text="Next" styleClass="pagination-button"/>
+            </HBox>
+        </VBox>
+    </center>
+
+    <!-- Chatbot positioned as overlay in the bottom-right corner -->
+    <bottom>
+        <StackPane alignment="BOTTOM_RIGHT">
+            <padding>
+                <Insets bottom="20" right="20"/>
+            </padding>
+
+            <!-- Chatbot Toggle Button -->
+            <ToggleButton fx:id="chatbotToggleButton" text="💬 Chatbot" onAction="#toggleChatbot"
+                          styleClass="chatbot-icon-button" maxWidth="120"/>
+
+            <!-- Chatbot Container (initially hidden) -->
+            <VBox fx:id="chatbotContainer" prefWidth="350" prefHeight="450"
+                  styleClass="chatbot-container" visible="false" managed="false"
+                  StackPane.alignment="BOTTOM_RIGHT">
+                <!-- Add a header with close button -->
+                <HBox styleClass="chatbot-header" alignment="CENTER_LEFT">
+                    <padding>
+                        <Insets top="8" right="10" bottom="8" left="10"/>
+                    </padding>
+                    <Label text="Oncokidscare Assistant" styleClass="chatbot-title"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="chatbotCloseButton" text="✕" onAction="#closeChatbot"
+                            styleClass="chatbot-close-button"/>
+                </HBox>
+
+                <!-- Content area for the chatbot -->
+                <VBox VBox.vgrow="ALWAYS" styleClass="chatbot-content-area">
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10"/>
+                    </padding>
+                </VBox>
+            </VBox>
+        </StackPane>
+    </bottom>
 
     <stylesheets>
         <URL value="@styles/post-list.css"/>
     </stylesheets>
-</VBox>
+</BorderPane>

@@ -144,4 +144,20 @@ public class LikeDAO {
     public static boolean hasUserLiked(int publicationId, int userId) throws SQLException {
         return likeExists(publicationId, userId, null);
     }
+    
+
+    // Update the delete method to take only postId and userId
+    // Remove this duplicate method
+    public static void delete(int postId, int userId) throws SQLException {
+        String sql = "DELETE FROM publication_like WHERE publication_id = ? AND user_id = ? AND comment_id IS NULL";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, postId);
+            stmt.setInt(2, userId);
+            
+            stmt.executeUpdate();
+        }
+    }
 }

@@ -1,0 +1,37 @@
+/* Style de base pour tous les messages */
+.message-container {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 10px;
+    -fx-max-width: 80%;
+    -fx-alignment: center-left;
+}
+
+/* Style pour les messages de l'utilisateur actuel */
+.own-message {
+    -fx-background-color: #dcf8c6;
+    -fx-alignment: center-right;
+    -fx-translate-x: 20%;
+}
+
+/* Style pour le conteneur principal des messages */
+.messages-scroll {
+    -fx-background-color: transparent;
+}
+
+/* Style pour le texte des messages */
+.message-text {
+    -fx-font-size: 14px;
+    -fx-wrap-text: true;
+}
+
+/* Style pour le nom d'utilisateur */
+.message-username {
+    -fx-font-weight: bold;
+    -fx-fill: #4285f4;
+}
+
+/* Style pour l'horodatage */
+.message-timestamp {
+    -fx-font-size: 12px;
+    -fx-fill: #757575;
+}

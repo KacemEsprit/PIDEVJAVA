@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" styleClass="compagnie-card" spacing="10">
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
+    
+    <StackPane>
+        <ImageView fx:id="logoImageView" fitHeight="100" fitWidth="100" preserveRatio="true"/>
+    </StackPane>
+    
+    <Label fx:id="nomLabel" styleClass="compagnie-card-title" text="Nom de la compagnie"/>
+    
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Adresse: " styleClass="compagnie-card-label"/>
+        <Label fx:id="adresseLabel" styleClass="compagnie-card-value" wrapText="true"/>
+    </HBox>
+    
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Téléphone: " styleClass="compagnie-card-label"/>
+        <Label fx:id="telephoneLabel" styleClass="compagnie-card-value"/>
+    </HBox>
+    
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Email: " styleClass="compagnie-card-label"/>
+        <Label fx:id="emailLabel" styleClass="compagnie-card-value"/>
+    </HBox>
+    
+    <Label fx:id="descriptionLabel" styleClass="compagnie-card-description" text="Description" wrapText="true"/>
+    
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="modifierButton" text="Modifier" styleClass="compagnie-card-button"/>
+        <Button fx:id="supprimerButton" text="Supprimer" styleClass="compagnie-card-button-delete"/>
+    </HBox>
+</VBox>
