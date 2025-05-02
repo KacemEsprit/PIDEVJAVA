@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17"
+      fx:controller="com.pfe.nova.Controller.CreateAppointmentController">
+    
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Schedule New Appointment" style="-fx-font-size: 18; -fx-font-weight: bold"/>
+
+    <GridPane vgap="10" hgap="10">
+        <Label text="Select Doctor:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="doctorComboBox" prefWidth="200" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Select Date:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <DatePicker fx:id="appointmentDate" prefWidth="200" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Select Time:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="appointmentTime" prefWidth="200" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="saveButton" text="Save" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" onAction="#handleSaveAppointment"/>
+        <Button fx:id="cancelButton" text="Cancel" style="-fx-background-color: #f44336; -fx-text-fill: white;" onAction="#handleCancel"/>    </HBox>
+
+</VBox>

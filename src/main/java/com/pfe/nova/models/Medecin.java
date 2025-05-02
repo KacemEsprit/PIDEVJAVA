@@ -5,7 +5,7 @@ public class Medecin extends User {
     private String experience;
     private String diplome;
 
-    public Medecin() {
+    public Medecin(int id, String nom, String prenom, String email, String tel, String adresse, String password, String specialite, String experience, String diplome) {
         super();
         setRole("MEDECIN");
     }
@@ -40,5 +40,9 @@ public class Medecin extends User {
 
     public void setDiplome(String diplome) {
         this.diplome = diplome;
+    }
+
+    public String toString() {
+        return getNom() + " " + getPrenom();
     }
 }

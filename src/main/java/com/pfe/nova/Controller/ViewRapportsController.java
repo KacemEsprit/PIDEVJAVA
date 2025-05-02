@@ -80,8 +80,7 @@ public class ViewRapportsController {
             rapportDAO = new RapportDAO();
             
             // Initialize table columns
-            setupTableColumns();
-            
+
             loadPatients();
             setupSearch();
             System.out.println("Initializing controller...");
@@ -200,31 +199,4 @@ public class ViewRapportsController {
             System.out.println("Erreur" + "Erreur lors de la recherche: " + e.getMessage());
         }
     }
-    private void setupTableColumns() {
-        ageColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getAge())));
-        dateRapportColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDateRapport()));
-        sexeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getSexe()));
-        tensionColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getTensionArterielle())));
-        poulsColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getPouls())));
-        temperatureColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getTemperature())));
-        saturationColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getSaturationOxygene())));
-        imcColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getImc())));
-        niveauDouleurColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getNiveauDouleur())));
-        traitementColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTraitement()));
-        doseColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getDoseMedicament())));
-        frequenceColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getFrequenceTraitement()));
-        perteSangColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getPerteDeSang())));
-        tempsOperationColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getTempsOperation())));
-        dureeSeanceColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getDureeSeance())));
-        filtrationColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getFiltrationSang())));
-        creatinineColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getCreatinine())));
-        glasgowColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getScoreGlasgow())));
-        respirationColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().isRespirationAssistee() == 1 ? "Oui" : "Non"));
-        complicationsColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getComplications()));
-    }
-
-
-
-
-
 }

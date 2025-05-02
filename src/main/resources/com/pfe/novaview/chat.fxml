@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.pfe.nova.Controller.ChatController"
+            style="-fx-background-color: #f5f6fa;">
+
+
+    <!-- Center Chat Area -->
+    <center>
+        <VBox spacing="10" style="-fx-padding: 10;">
+            <!-- Header -->
+            <HBox alignment="CENTER" style="-fx-background-color: #3498db; -fx-padding: 10; -fx-background-radius: 5;">
+                <Label text="Global Chat" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="userCountLabel" text="Users: 1" style="-fx-font-size: 14px; -fx-text-fill: white;"/>
+            </HBox>
+
+            <!-- Chat Area -->
+            <ListView fx:id="chatListView" prefHeight="500" prefWidth="600"
+                      style="-fx-background-color: white; -fx-background-radius: 10;
+                             -fx-border-color: #ddd; -fx-border-radius: 10; -fx-border-width: 1;">
+                <placeholder>
+                    <Label text="No messages yet" style="-fx-text-fill: #7f8c8d; -fx-font-size: 14px; -fx-alignment: center;"/>
+                </placeholder>
+            </ListView>
+
+            <!-- Input Area -->
+            <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
+                <TextField fx:id="messageField" promptText="Type your message..." prefWidth="500"
+                           style="-fx-background-color: white; -fx-background-radius: 20;
+                                  -fx-border-color: #ddd; -fx-border-radius: 20; -fx-border-width: 1;
+                                  -fx-padding: 10; -fx-font-size: 14px;"
+                           onAction="#handleSend"/>
+                <Button fx:id="sendButton" text="Send" onAction="#handleSend"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;
+                               -fx-background-radius: 20; -fx-padding: 10 20; -fx-cursor: hand;"
+                        onMouseEntered="#handleButtonHover"
+                        onMouseExited="#handleButtonExit"/>
+            </HBox>
+        </VBox>
+    </center>
+
+    <!-- Right Sidebar (Placeholder for future features) -->
+    <right>
+        <VBox prefWidth="200" style="-fx-background-color: white; -fx-padding: 10;">
+            <Label text="Online Users" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+            <!-- Add dynamic user list here if needed -->
+        </VBox>
+    </right>
+
+</BorderPane>

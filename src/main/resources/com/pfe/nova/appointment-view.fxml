@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.pfe.nova.Controller.AppointmentController"
+      spacing="20" style="-fx-padding: 20; -fx-background-color: #f5f6fa;">
+
+    <!-- Schedule New Appointment Section (Hidden for Medecin) -->
+    <GridPane fx:id="appointmentsGrid" hgap="10" vgap="10">
+        <Label text="Schedule New Appointment" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"
+               GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
+
+        <Label text="Select Doctor:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <ComboBox fx:id="doctorComboBox" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+        <Label text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <DatePicker fx:id="appointmentDate" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+        <Label text="Time:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <ComboBox fx:id="appointmentTime" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+        <Button text="Schedule Appointment" onAction="#handleCreateAppointment"
+                style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;"
+                GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.halignment="RIGHT"/>
+    </GridPane>
+
+    <!-- My Appointments Header -->
+    <Label fx:id="aa" text="My Appointments" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+    <!-- Unused HBox (possibly for a top-level cancel button) -->
+    <HBox fx:id="adzadza" spacing="10" visible="false" managed="false"/>
+
+    <!-- Appointment Cards -->
+    <FlowPane fx:id="appointmentsCardContainer" hgap="10" vgap="10" prefWrapLength="800"/>
+
+</VBox>

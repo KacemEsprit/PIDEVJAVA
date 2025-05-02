@@ -52,32 +52,7 @@
                        style="-fx-font-weight: bold; -fx-font-size: 24; -fx-text-fill: #333333;"/>
             </HBox>
 
-            <!-- Table of Reports -->
-            <TableView fx:id="patientReportsTable" VBox.vgrow="ALWAYS"
-                       style="-fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">
-                <columns>
-                    <TableColumn fx:id="ageColumn" text="Âge" prefWidth="80"/>
-                    <TableColumn fx:id="dateRapportColumn" text="Date Rapport" prefWidth="120"/>
-                    <TableColumn fx:id="sexeColumn" text="Sexe" prefWidth="80"/>
-                    <TableColumn fx:id="tensionColumn" text="Tension Artérielle" prefWidth="120"/>
-                    <TableColumn fx:id="poulsColumn" text="Pouls" prefWidth="80"/>
-                    <TableColumn fx:id="temperatureColumn" text="Température" prefWidth="100"/>
-                    <TableColumn fx:id="saturationColumn" text="Saturation Oxygène" prefWidth="120"/>
-                    <TableColumn fx:id="imcColumn" text="IMC" prefWidth="80"/>
-                    <TableColumn fx:id="niveauDouleurColumn" text="Niveau Douleur" prefWidth="120"/>
-                    <TableColumn fx:id="traitementColumn" text="Traitement" prefWidth="150"/>
-                    <TableColumn fx:id="doseColumn" text="Dose Médicament" prefWidth="120"/>
-                    <TableColumn fx:id="frequenceColumn" text="Fréquence Traitement" prefWidth="150"/>
-                    <TableColumn fx:id="perteSangColumn" text="Perte de Sang" prefWidth="120"/>
-                    <TableColumn fx:id="tempsOperationColumn" text="Temps Opération" prefWidth="120"/>
-                    <TableColumn fx:id="dureeSeanceColumn" text="Durée Séance" prefWidth="120"/>
-                    <TableColumn fx:id="filtrationColumn" text="Filtration Sang" prefWidth="120"/>
-                    <TableColumn fx:id="creatinineColumn" text="Créatinine" prefWidth="100"/>
-                    <TableColumn fx:id="glasgowColumn" text="Score Glasgow" prefWidth="120"/>
-                    <TableColumn fx:id="respirationColumn" text="Respiration Assistée" prefWidth="150"/>
-                    <TableColumn fx:id="complicationsColumn" text="Complications" prefWidth="200"/>
-                </columns>
-            </TableView>
+            <!-- Table of Reports removed: Use card-based view in controller -->
         </VBox>
 
     </SplitPane>
