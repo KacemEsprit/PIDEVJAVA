@@ -6,25 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="cc4d44b3-873d-422a-bea4-dd33ed12ab3c" name="Changes" comment="kacems">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/post-list.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/post-list.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/post-list.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/styles/post-list.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Application/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/DashboardController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/LoginController$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/LoginController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/SignupController$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/Controller/SignupController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/HelloApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/HelloController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/configuration/DatabaseConnection.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/configuration/UserDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/nova/models/User.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/novaview/dashboard.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/novaview/hello-view.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/novaview/login.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/pfe/novaview/signup.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/PNG.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,50 +68,53 @@
   &quot;associatedIndex&quot;: 7
 }</component>
   <component name="ProjectId" id="2vB1IylvRQHIvWUos2Oi7F8fwRl" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.HelloApplication.executor": "Debug",
-    "Application.Main (1)instance2.executor": "Run",
-    "Application.Main.executor": "Run",
-    "Application.com.pfe.nova.Main.executor": "Run",
-    "Maven.Nova [clean].executor": "Run",
-    "Maven.Nova [install:install-file].executor": "Run",
-    "Maven.Nova [install].executor": "Run",
-    "Maven.Nova [org.apache.maven.plugins:maven-clean-plugin:2.5:clean].executor": "Run",
-    "Maven.Nova [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
-    "Maven.Nova [org.apache.maven.plugins:maven-install-plugin:3.1.2:install-file].executor": "Run",
-    "Maven.Nova [org.apache.maven.plugins:maven-install-plugin:3.1.2:install].executor": "Run",
-    "Maven.Nova [org.apache.maven.plugins:maven-jar-plugin:3.4.1:jar].executor": "Run",
-    "Maven.oncokidscare [org.apache.maven.plugins:maven-clean-plugin:2.5:clean].executor": "Run",
-    "Maven.oncokidscare [org.apache.maven.plugins:maven-install-plugin:2.4:install].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "rania",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/test/PIDEVJAVA",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Problems",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.HelloApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;Application.Main (1)instance2.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.com.pfe.nova.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Nova [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Nova [install:install-file].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Nova [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Nova [org.apache.maven.plugins:maven-clean-plugin:2.5:clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Nova [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Nova [org.apache.maven.plugins:maven-install-plugin:3.1.2:install-file].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Nova [org.apache.maven.plugins:maven-install-plugin:3.1.2:install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Nova [org.apache.maven.plugins:maven-jar-plugin:3.4.1:jar].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.oncokidscare [org.apache.maven.plugins:maven-clean-plugin:2.5:clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.oncokidscare [org.apache.maven.plugins:maven-install-plugin:2.4:install].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;rania&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/test/PIDEVJAVA&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.javacompiler&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="ReadonlyStatusHandler">
     <option name="SHOW_DIALOG" value="false" />
   </component>
