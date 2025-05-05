@@ -30,7 +30,7 @@ public class ChatbotView extends VBox {
         this.setStyle("-fx-background-color: #f5f5f5; -fx-background-radius: 10;");
 
         // Header
-        Label headerLabel = new Label("Oncokidscare Assistant ");
+        Label headerLabel = new Label("KidoCare Bot");
         headerLabel.setFont(Font.font("System", FontWeight.BOLD, 16));
         headerLabel.setStyle("-fx-text-fill: #2c3e50;");
 

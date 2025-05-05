@@ -40,14 +40,14 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        
+
                         <Label text="Content" textFill="#95E1D3">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
                         <TextArea fx:id="contentArea" prefHeight="200.0" prefWidth="750.0" promptText="What's on your mind?" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #e0e0e0; -fx-background-color: white;" wrapText="true" />
-                        
+
                         <HBox spacing="30.0">
                            <children>
                               <VBox spacing="10.0" prefWidth="350.0">
@@ -60,7 +60,7 @@
                                     <ComboBox fx:id="categoryComboBox" prefHeight="40.0" prefWidth="350.0" promptText="Select a category" style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 5; -fx-background-radius: 5;" />
                                  </children>
                               </VBox>
-                              
+
                               <VBox spacing="10.0" prefWidth="350.0">
                                  <children>
                                     <Label text="Privacy" textFill="#95E1D3">
@@ -77,15 +77,15 @@
                               </VBox>
                            </children>
                         </HBox>
-                        
+
                         <Line endX="650.0" startX="-100.0" stroke="#e0e0e0" />
-                        
+
                         <Label text="Add Images (Optional)" textFill="#95E1D3">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        
+
                         <HBox spacing="15.0" alignment="CENTER_LEFT">
                            <children>
                               <Button fx:id="addImagesButton" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #95E1D3; -fx-text-fill: white; -fx-background-radius: 5;" text="Choose Images" />
@@ -96,15 +96,15 @@
                               </Label>
                            </children>
                         </HBox>
-                        
+
                         <FlowPane fx:id="imagePreviewPane" hgap="10.0" vgap="10.0" prefHeight="100.0" prefWidth="750.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #e0e0e0;">
                            <padding>
                               <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
                            </padding>
                         </FlowPane>
-                        
+
                         <Label fx:id="errorLabel" text="" style="-fx-text-fill: #f44336; -fx-font-size: 14px;" visible="false" />
-                        
+
                         <HBox alignment="CENTER_RIGHT" spacing="15.0">
                            <children>
                               <Button onAction="#handleCancel" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: #e0e0e0; -fx-text-fill: #424242; -fx-background-radius: 5;" text="Cancel" />

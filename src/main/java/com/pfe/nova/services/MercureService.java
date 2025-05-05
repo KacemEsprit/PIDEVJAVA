@@ -27,7 +27,7 @@ public class MercureService {
             .writeTimeout(30, TimeUnit.SECONDS)
             .build();
     
-    private static Key getSigningKey() {
+    private static Key getSigningKey()  {
         return Keys.hmacShaKeyFor(JWT_SECRET.getBytes());
     }
     

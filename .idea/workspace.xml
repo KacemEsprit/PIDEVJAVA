@@ -6,6 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="cc4d44b3-873d-422a-bea4-dd33ed12ab3c" name="Changes" comment="kacems">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/components/ChatbotView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/components/ChatbotView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pfe/nova/services/MercureService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pfe/nova/services/MercureService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/post-form.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/post-form.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/post-statistics.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/pfe/novaview/post-statistics.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -275,6 +279,7 @@
       <workItem from="1745844069446" duration="2000" />
       <workItem from="1745879585426" duration="20239000" />
       <workItem from="1746051663637" duration="6382000" />
+      <workItem from="1746430299531" duration="1000" />
     </task>
     <task id="LOCAL-00001" summary="crud">
       <option name="closed" value="true" />
